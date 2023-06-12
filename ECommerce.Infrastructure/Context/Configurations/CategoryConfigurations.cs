@@ -12,11 +12,11 @@ public class CategoryConfigurations : IEntityTypeConfiguration<Category>
             .IsRequired(true)
             .HasMaxLength(100);
 
-        builder
-            .Property(c => c.IsDeleted)
-            .IsRequired(true)
-            .HasDefaultValue(false);
-
-        builder.HasQueryFilter(e => !e.IsDeleted);
+        //builder
+        //    .Property(c => c.IsDeleted)
+        //    .IsRequired(true)
+        //    .HasDefaultValue(false);
+        //builder
+        //    .HasQueryFilter(e => !e.IsDeleted);
     }
 }

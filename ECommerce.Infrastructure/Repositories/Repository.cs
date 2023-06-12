@@ -39,7 +39,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
         TEntity entity,
         CancellationToken cancellationToken = default)
     {
-        _entities.Remove(entity);
+        _entities.Update(entity);
         return Task.CompletedTask;
     }
     public virtual Task UpdatedRangeAsync(
