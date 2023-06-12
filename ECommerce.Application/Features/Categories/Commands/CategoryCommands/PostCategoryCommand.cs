@@ -1,5 +1,3 @@
-﻿using ECommerce.Application.Features.Categories.CategoryDTOs;
-
-namespace ECommerce.Application.Features.Categories.Commands.CategoryCommands;
-public record PostCategoryCommand(PostCategoryDTO CategoryDTO) : IRequest<Response<GetCategoryDTO>>;
+﻿namespace ECommerce.Application.Features.Categories.Commands.CategoryCommands;
+public record PostCategoryCommand(PostCategoryDTO CategoryDTO) : IRequest<Response<CategoryDTO>>;
 
