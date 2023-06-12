@@ -1,4 +1,6 @@
-﻿namespace ECommerce.Application;
+﻿using ECommerce.Application.Behaviors.ValidatorBehavior;
+
+namespace ECommerce.Application;
 public static class ApplicationDependencies
 {
     public static IServiceCollection AddApplicationDependencies(this IServiceCollection services)

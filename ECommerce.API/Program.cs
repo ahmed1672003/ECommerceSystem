@@ -1,3 +1,5 @@
+using ECommerce.Application.MiddleWares;
+
 namespace ECommerce.API;
 public class Program
 {

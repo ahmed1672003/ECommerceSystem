@@ -1,6 +1,4 @@
-﻿using System.Net;
-
-namespace ECommerce.Application.Responses.ResponseServices;
+﻿namespace ECommerce.Application.Responses.ResponseServices;
 public class Response<TData> where TData : class
 {
     public Response(
@@ -9,7 +7,7 @@ public class Response<TData> where TData : class
         TData? data = default,
         dynamic meta = default,
         string message = default,
-        List<string> errors = default)
+        object errors = default)
     {
         StatusCode = statusCode;
         IsSucceeded = isSucceeded;
@@ -24,5 +22,5 @@ public class Response<TData> where TData : class
     public TData? Data { get; set; }
     public dynamic Meta { get; set; }
     public string Message { get; set; }
-    public List<string> Errors { get; set; }
+    public object Errors { get; set; }
 }

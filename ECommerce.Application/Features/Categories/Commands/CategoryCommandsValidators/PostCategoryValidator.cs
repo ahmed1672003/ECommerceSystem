@@ -11,18 +11,17 @@ public class PostCategoryValidator : AbstractValidator<PostCategoryCommand>
     private void ApplyValidatorRules()
     {
         RuleFor(c => c.CategoryDTO.Name)
-            .NotEmpty().WithMessage("Name can not be not empty")
-            .NotNull().WithMessage("Name can not be not null")
-            .MaximumLength(100).WithMessage("Name his length can not be bigger than 100")
-            .MinimumLength(1).WithMessage("Name his length can not be less than 1");
+            .NotEmpty().WithMessage(c => $"{nameof(c.CategoryDTO.Name)} can not be empty")
+            .NotNull().WithMessage(c => $"{nameof(c.CategoryDTO.Name)} can not be null")
+            .MaximumLength(100).WithMessage(c => $"{nameof(c.CategoryDTO.Name)} his length can not be bigger than {100}")
+            .MinimumLength(1).WithMessage(c => $"{nameof(c.CategoryDTO.Name)} his length can not be less than {1}");
     }
     private void ApplyCustomValidatorRules()
     {
-        if (!(_context.Categories.CountAsync().Result == 0))
-            RuleFor(c => c.CategoryDTO.Name)
-                .MustAsync(async (name, cancellationToken) =>
-                await _context.Categories.IsExist(c => c.Name.Equals(name), cancellationToken))
-                .WithMessage("Category name is already exist !");
+        RuleFor(c => c.CategoryDTO)
+            .MustAsync(async (categoryDTO, cancellationToken) =>
+            !await _context.Categories.CanCreated(categoryDTO.Name, cancellationToken))
+            .WithMessage(c => $"{c.CategoryDTO.Name} is already exist !");
     }
 }
 

@@ -3,8 +3,7 @@ global using System.Reflection;
 global using System.Text.Json;
 
 global using AutoMapper;
-
-global using ECommerce.Application.Behaviors.ValidatorBehavior;
+//global using ECommerce.Application.Behaviors.ValidatorBehavior;
 global using ECommerce.Application.Features.Categories.CategoryDTOs;
 global using ECommerce.Application.Features.Categories.Commands.CategoryCommands;
 global using ECommerce.Application.Features.Categories.Queries.CategoryQueries;

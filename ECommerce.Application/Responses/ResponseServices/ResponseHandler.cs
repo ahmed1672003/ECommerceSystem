@@ -12,7 +12,7 @@ public class ResponseHandler : IResponseHandler
         TData data = null,
         dynamic meta = null,
         string message = null,
-        List<string> errors = null) where TData : class => new(
+        object errors = null) where TData : class => new(
             statusCode: HttpStatusCode.OK,
             isSucceeded: true,
             message: message == null ? ResponseMessages.SuccessMessage : message,
@@ -24,7 +24,7 @@ public class ResponseHandler : IResponseHandler
         TData data = null,
         dynamic meta = null,
         string message = null,
-        List<string> errors = null) where TData : class => new(
+        object errors = null) where TData : class => new(
             statusCode: HttpStatusCode.NotFound,
             isSucceeded: true,
             message: message == null ? ResponseMessages.NotFoundMessage : message,
@@ -36,7 +36,7 @@ public class ResponseHandler : IResponseHandler
         TData data = null,
         dynamic meta = null,
         string message = null,
-        List<string> errors = null) where TData : class => new(
+        object errors = null) where TData : class => new(
             statusCode: HttpStatusCode.BadRequest,
             isSucceeded: false,
             message: message == null ? ResponseMessages.BadRequestMessage : message,
@@ -48,7 +48,7 @@ public class ResponseHandler : IResponseHandler
         TData data = null,
         dynamic meta = null,
         string message = null,
-        List<string> errors = null) where TData : class =>
+        List<dynamic> errors = null) where TData : class =>
         new(
             statusCode: HttpStatusCode.Unauthorized,
             isSucceeded: false,
@@ -61,7 +61,7 @@ public class ResponseHandler : IResponseHandler
         TData data = null,
         dynamic meta = null,
         string message = null,
-        List<string> errors = null) where TData : class => new(
+        List<dynamic> errors = null) where TData : class => new(
             statusCode: HttpStatusCode.InternalServerError,
             isSucceeded: false,
             message: message == null ? ResponseMessages.InternalServerErrorMessage : message,

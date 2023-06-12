@@ -5,7 +5,6 @@ public class CategoryProfile : Profile
     {
         Mapp();
     }
-
     private void Mapp()
     {
         CreateMap<PostCategoryDTO, Category>().ReverseMap();

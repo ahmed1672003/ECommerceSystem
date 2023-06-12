@@ -12,22 +12,27 @@ public class PutCategoryValidator : AbstractValidator<PutCategoryCommand>
     private void ApplyValidatorRules()
     {
         RuleFor(c => c.Id)
-         .NotEmpty().WithMessage("Id can not be not empty")
-         .NotNull().WithMessage("Id can not be not null")
-         .MaximumLength(36).WithMessage("{PropertyName} his length can not be bigger than 36")
-         .MinimumLength(36).WithMessage("{PropertyName} his length can not be less than 36");
+         .NotEmpty().WithMessage(c => $"{nameof(c.Id)} can not be not empty")
+         .NotNull().WithMessage(c => $"{nameof(c.Id)} can not be not null")
+         .MaximumLength(36).WithMessage(c => $"{nameof(c.Id)} his length can not be bigger than {36}")
+         .MinimumLength(36).WithMessage(c => $"{nameof(c.Id)} his length can not be less than {36}");
 
         RuleFor(c => c.CategoryDTO.Name)
-        .NotEmpty().WithMessage("Name can not be not empty")
-        .NotNull().WithMessage("Name can not be not null")
-        .MaximumLength(100).WithMessage("Name his length can not be bigger than 100")
-        .MinimumLength(1).WithMessage("Name his length can not be less than 1");
+        .NotEmpty().WithMessage(c => $"{nameof(c.CategoryDTO.Name)} can not be not empty")
+        .NotNull().WithMessage(c => $"{nameof(c.CategoryDTO.Name)} can not be not null")
+        .MaximumLength(100).WithMessage(c => $"{nameof(c.CategoryDTO.Name)} his length can not be bigger than {100}")
+        .MinimumLength(1).WithMessage(c => $"{nameof(c.CategoryDTO.Name)} his length can not be less than {1}");
     }
     private void ApplyCustomValidatorRules()
     {
-        RuleFor(c => c.Id)
-        .MustAsync(async (id, cancellationToken) =>
-        await _context.Categories.IsExist(c => c.Id.Equals(id), cancellationToken))
-        .WithMessage("Category Id is not exist !");
+        RuleFor(c => c)
+        .MustAsync(async (command, cancellationToken) =>
+        await _context.Categories.IsExist(c => c.Id.Equals(command.Id) && c.Id.Equals(command.CategoryDTO.Id)))
+        .WithMessage(c => $"{nameof(c.Id)} is not exist !");
+
+        RuleFor(c => c)
+            .MustAsync(async (command, cancellationToken) =>
+           await _context.Categories.CanUpdated(command.CategoryDTO.Name, command.Id))
+            .WithMessage(c => $"{nameof(c.CategoryDTO.Name)} is Exist !");
     }
 }
