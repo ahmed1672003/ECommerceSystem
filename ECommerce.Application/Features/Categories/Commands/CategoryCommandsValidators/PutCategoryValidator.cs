@@ -27,14 +27,9 @@ public class PutCategoryValidator : AbstractValidator<PutCategoryCommand>
 
     private void ApplyCustomValidatorRules()
     {
-        RuleFor(c => c.CategoryDTO.Name)
-            .MustAsync(async (Key, CancellationToken) =>
-            await _context.Categories.IsExist(c => !c.Name.Equals(Key)))
-            .WithMessage("Category name is exist !");
-
         RuleFor(c => c.Id)
-            .MustAsync(async (Key, CancellationToken) =>
-            await _context.Categories.IsExist(c => c.Id.Equals(Key)))
-            .WithMessage("Category Id is not exist !");
+        .MustAsync(async (Key, cancellationToken) =>
+        await _context.Categories.IsExist(c => c.Id.Equals(Key), cancellationToken))
+        .WithMessage("Category Id is not exist !");
     }
 }

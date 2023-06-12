@@ -40,7 +40,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
         CancellationToken cancellationToken = default)
     {
         _entities.Remove(entity);
-        return Task.FromCanceled(cancellationToken);
+        return Task.CompletedTask;
     }
     public virtual Task UpdatedRangeAsync(
         IEnumerable<TEntity> entities,
@@ -48,7 +48,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         if (entities is not null)
             _entities.UpdateRange(entities);
-        return Task.FromCanceled(cancellationToken);
+        return Task.CompletedTask;
     }
     public virtual async Task ExecuteUpdateAsync(
         Func<TEntity, object> property,
@@ -115,6 +115,15 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
             return await _entities.FirstOrDefaultAsync(mandatoryFilter, cancellationToken);
         else
             return await _entities.Where(optionalFilter).FirstOrDefaultAsync(mandatoryFilter, cancellationToken);
+    }
+
+    public virtual async Task<int> CountAsync(Expression<Func<TEntity, bool>> filter = null, CancellationToken cancellationToken = default)
+    {
+        if (filter is null)
+            return await _entities.CountAsync(cancellationToken);
+        else
+            return await _entities.CountAsync(filter, cancellationToken);
+
     }
     #endregion
 }

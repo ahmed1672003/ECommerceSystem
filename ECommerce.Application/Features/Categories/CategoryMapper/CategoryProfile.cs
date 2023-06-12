@@ -9,6 +9,6 @@ public class CategoryProfile : Profile
     private void Mapp()
     {
         CreateMap<PostCategoryDTO, Category>().ReverseMap();
-        CreateMap<Category, GetCategoryDTO>().ReverseMap();
+        CreateMap<Category, CategoryDTO>().ReverseMap();
     }
 }

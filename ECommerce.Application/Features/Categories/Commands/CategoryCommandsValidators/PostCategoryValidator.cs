@@ -8,7 +8,6 @@ public class PostCategoryValidator : AbstractValidator<PostCategoryCommand>
         ApplyValidatorRules();
         ApplyCustomValidatorRules();
     }
-
     private void ApplyValidatorRules()
     {
         RuleFor(c => c.CategoryDTO.Name)
@@ -17,13 +16,13 @@ public class PostCategoryValidator : AbstractValidator<PostCategoryCommand>
             .MaximumLength(100).WithMessage("Name his length can not be bigger than 100")
             .MinimumLength(1).WithMessage("Name his length can not be less than 1");
     }
-
     private void ApplyCustomValidatorRules()
     {
-        RuleFor(c => c.CategoryDTO.Name)
-            .MustAsync(async (Key, cancellationToken) =>
-            await _context.Categories.IsExist(c => !c.Name.Equals(Key))
-            ).WithMessage("Category name is exist !");
+        if (!(_context.Categories.CountAsync().Result == 0))
+            RuleFor(c => c.CategoryDTO.Name)
+                .MustAsync(async (name, cancellationToken) =>
+                await _context.Categories.IsExist(c => c.Name.Equals(name), cancellationToken))
+                .WithMessage("Category name is already exist !");
     }
 }
 
