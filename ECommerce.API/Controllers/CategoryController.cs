@@ -34,7 +34,7 @@ public class CategoryController : ECommerceController
     }
 
     [HttpGet, ActionName(nameof(Paginate))]
-    public async Task<IActionResult> Paginate([FromQuery] int? pageNumber, [FromQuery] int? pageSize, CategoryEnum orderBy)
+    public async Task<IActionResult> Paginate([FromQuery] int? pageNumber, [FromQuery] int? pageSize, [FromQuery] CategoryEnum orderBy)
     {
         var response = await Mediator.Send(
             new GetAllCategoriesPaginatedQuery(
