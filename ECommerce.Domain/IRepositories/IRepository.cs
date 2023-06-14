@@ -1,6 +1,4 @@
-﻿
-
-namespace ECommerce.Domain.IRepositories;
+﻿namespace ECommerce.Domain.IRepositories;
 public interface IRepository<TEntity> where TEntity : class
 {
     #region Commands
@@ -27,8 +25,9 @@ public interface IRepository<TEntity> where TEntity : class
         Expression<Func<TEntity, bool>> secondFilter = null,
         Expression<Func<TEntity, object>> orderBy = null,
         OrderByDirection orderByDirection = OrderByDirection.Ascending,
-        int? take = null,
-        int? skip = null,
+        int? pageNumber = null,
+        int? pageSize = null,
+        bool paginationOn = false,
         CancellationToken cancellationToken = default);
     Task<bool> IsExist(Expression<Func<TEntity, bool>> filter = null, CancellationToken cancellationToken = default);
     Task<int> CountAsync(Expression<Func<TEntity, bool>> filter = null, CancellationToken cancellationToken = default);

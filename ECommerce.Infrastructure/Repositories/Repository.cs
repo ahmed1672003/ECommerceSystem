@@ -83,8 +83,9 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
         Expression<Func<TEntity, bool>> secondFilter = null,
         Expression<Func<TEntity, object>> orderBy = null,
         OrderByDirection orderByDirection = OrderByDirection.Ascending,
-        int? take = null,
-        int? skip = null,
+        int? pageNumber = null,
+        int? pageSize = null,
+        bool paginationOn = false,
         CancellationToken cancellationToken = default)
     {
         IQueryable<TEntity> entities = _entities.AsQueryable();
@@ -101,6 +102,13 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
                 entities = entities.OrderBy(orderBy);
             else
                 entities = entities.OrderByDescending(orderBy);
+        }
+
+        if (paginationOn)
+        {
+            pageNumber = pageNumber.HasValue ? pageNumber.Value <= 0 ? 1 : pageNumber.Value : 1;
+            pageSize = pageSize.HasValue ? pageSize.Value <= 0 ? 10 : pageSize.Value : 10;
+            entities = entities.Skip((pageNumber.Value - 1) * pageSize.Value).Take(pageSize.Value);
         }
 
         return await Task.FromResult(entities);
