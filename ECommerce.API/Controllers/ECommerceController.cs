@@ -2,10 +2,6 @@
 
 using ECommerce.Application.Responses.ResponseServices;
 
-using MediatR;
-
-using Microsoft.AspNetCore.Mvc;
-
 namespace ECommerce.API.Controllers;
 [Route("api/[controller]")]
 [ApiController]

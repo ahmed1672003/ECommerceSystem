@@ -1,6 +1,4 @@
-﻿using ECommerce.Application.Features.Categories.Queries.CategoryQueries;
-
-namespace ECommerce.API.Controllers;
+﻿namespace ECommerce.API.Controllers;
 [Route("api/[controller]/[action]")]
 [ApiController]
 public class CategoryController : ECommerceController
@@ -21,7 +19,7 @@ public class CategoryController : ECommerceController
         return NewResult(response);
     }
 
-    [HttpGet("{id}"), ActionName(nameof(RetrieveById))]
+    [HttpGet, ActionName(nameof(RetrieveById))]
     public async Task<IActionResult> RetrieveById([FromQuery] string id)
     {
         var response = await Mediator.Send(new GetCategoryByIdQuery(id));
@@ -35,13 +33,14 @@ public class CategoryController : ECommerceController
         return NewResult(response);
     }
 
-    [HttpGet, ActionName(nameof(RetrieveAllPaginated))]
-    public async Task<IActionResult> RetrieveAllPaginated([FromQuery] int? pageNumber, [FromQuery] int? pageSize)
+    [HttpGet, ActionName(nameof(Paginate))]
+    public async Task<IActionResult> Paginate([FromQuery] int? pageNumber, [FromQuery] int? pageSize, CategoryEnum orderBy)
     {
         var response = await Mediator.Send(
             new GetAllCategoriesPaginatedQuery(
                 pageNumber.HasValue ? pageNumber : 1,
-                pageSize.HasValue ? pageSize : 10));
+                pageSize.HasValue ? pageSize : 10,
+                orderBy));
         return NewResult(response);
     }
 }

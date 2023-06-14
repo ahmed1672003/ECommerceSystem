@@ -1,4 +1,6 @@
-﻿namespace ECommerce.Application.Features.Categories.Queries.CategoryQueriesHandlers;
+﻿using System.Linq.Expressions;
+
+namespace ECommerce.Application.Features.Categories.Queries.CategoryQueriesHandlers;
 
 public class GetAllCategoriesPaginatedQueryHandler :
     PaginationResponseHandler,
@@ -12,9 +14,21 @@ public class GetAllCategoriesPaginatedQueryHandler :
         if (!await Context.Categories.IsExist())
             return NotFound<IEnumerable<CategoryDTO>>();
 
+        Expression<Func<Category, object>> orderBy = (e) => new();
+
+        switch (request.OrderBy)
+        {
+            case CategoryEnum.CategoryName:
+                orderBy = (c) => c.Name;
+                break;
+            default:
+                orderBy = (c) => c.Id;
+                break;
+        }
+
         var result = Mapper.Map<IEnumerable<CategoryDTO>>(
             await Context.Categories.RetrieveAllAsync(
-                orderBy: e => e.Name,
+                orderBy: orderBy,
                 paginationOn: true,
                 pageNumber: request.PageNumber,
                 pageSize: request.PageSize,

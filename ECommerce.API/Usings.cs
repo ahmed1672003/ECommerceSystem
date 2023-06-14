@@ -3,7 +3,8 @@
 global using ECommerce.Application;
 global using ECommerce.Application.Features.Categories.CategoryDTOs;
 global using ECommerce.Application.Features.Categories.Commands.CategoryCommands;
-//global using ECommerce.Application.MiddleWares;
+global using ECommerce.Application.Features.Categories.Queries.CategoryQueries;
+global using ECommerce.Domain.Enums;
 global using ECommerce.Infrastructure;
 
 global using MediatR;
