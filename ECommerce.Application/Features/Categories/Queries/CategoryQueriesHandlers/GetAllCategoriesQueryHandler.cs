@@ -13,7 +13,8 @@ public class GetAllCategoriesQueryHandler :
         if (!await Context.Categories.IsExist(cancellationToken: cancellationToken))
             return NotFound<IEnumerable<CategoryDTO>>();
 
-        var categoriesDTOs = Mapper.Map<IEnumerable<CategoryDTO>>(await Context.Categories.RetrieveAllAsync());
+        var categoriesDTOs = Mapper.Map<IEnumerable<CategoryDTO>>(
+            await Context.Categories.RetrieveAllAsync(orderBy: e => e.Name));
 
         return Success(categoriesDTOs);
     }

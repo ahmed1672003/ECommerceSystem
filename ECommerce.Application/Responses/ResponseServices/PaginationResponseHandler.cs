@@ -14,7 +14,7 @@ public class PaginationResponseHandler : IResponseHandler
        string message = null,
        object errors = null,
        int count = 0,
-       int page = 1,
+       int currentPage = 1,
        int pageSize = 10
         ) where TData : class => new(
            statusCode: HttpStatusCode.OK,
@@ -24,6 +24,25 @@ public class PaginationResponseHandler : IResponseHandler
            errors: errors == null ? ErrorMessages.SuccessErrorsList : errors,
            meta: meta,
            count: count,
-           page: page,
+           currentPage: currentPage,
            pageSize: pageSize);
+
+    public PaginationResponse<TData> NotFound<TData>(
+      TData data = null,
+      dynamic meta = null,
+      string message = null,
+      object errors = null,
+      int count = 0,
+      int currentPage = 1,
+      int pageSize = 10
+       ) where TData : class => new(
+          statusCode: HttpStatusCode.OK,
+          isSucceeded: true,
+          message: message == null ? ResponseMessages.NotFoundMessage : message,
+          data: data,
+          errors: errors == null ? ErrorMessages.NotFoundErrorsList : errors,
+          meta: meta,
+          count: count,
+          currentPage: currentPage,
+          pageSize: pageSize);
 }

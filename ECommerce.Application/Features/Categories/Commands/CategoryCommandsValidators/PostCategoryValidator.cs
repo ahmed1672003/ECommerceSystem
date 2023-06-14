@@ -20,7 +20,7 @@ public class PostCategoryValidator : AbstractValidator<PostCategoryCommand>
     {
         RuleFor(c => c.CategoryDTO)
             .MustAsync(async (categoryDTO, cancellationToken) =>
-            !await _context.Categories.CanCreated(categoryDTO.Name, cancellationToken))
+            !await _context.Categories.CanCreatedAsync(categoryDTO.Name, cancellationToken))
             .WithMessage(c => $"{c.CategoryDTO.Name} is already exist !");
     }
 }

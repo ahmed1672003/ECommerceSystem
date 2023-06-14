@@ -32,7 +32,7 @@ public class PutCategoryValidator : AbstractValidator<PutCategoryCommand>
 
         RuleFor(c => c)
             .MustAsync(async (command, cancellationToken) =>
-           await _context.Categories.CanUpdated(command.CategoryDTO.Name, command.Id))
+           await _context.Categories.CanUpdatedAsync(command.CategoryDTO.Name, command.Id))
             .WithMessage(c => $"{nameof(c.CategoryDTO.Name)} is Exist !");
     }
 }

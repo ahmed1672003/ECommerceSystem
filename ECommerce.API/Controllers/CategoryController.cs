@@ -21,6 +21,13 @@ public class CategoryController : ECommerceController
         return NewResult(response);
     }
 
+    [HttpGet("{id}"), ActionName(nameof(RetrieveById))]
+    public async Task<IActionResult> RetrieveById([FromQuery] string id)
+    {
+        var response = await Mediator.Send(new GetCategoryByIdQuery(id));
+        return NewResult(response);
+    }
+
     [HttpGet, ActionName(nameof(RetrieveAll))]
     public async Task<IActionResult> RetrieveAll()
     {
@@ -28,10 +35,13 @@ public class CategoryController : ECommerceController
         return NewResult(response);
     }
 
-    [HttpGet, ActionName(nameof(RetrieveById))]
-    public async Task<IActionResult> RetrieveById(string id)
+    [HttpGet, ActionName(nameof(RetrieveAllPaginated))]
+    public async Task<IActionResult> RetrieveAllPaginated([FromQuery] int? pageNumber, [FromQuery] int? pageSize)
     {
-        var response = await Mediator.Send(new GetCategoryByIdQuery(id));
+        var response = await Mediator.Send(
+            new GetAllCategoriesPaginatedQuery(
+                pageNumber.HasValue ? pageNumber : 1,
+                pageSize.HasValue ? pageSize : 10));
         return NewResult(response);
     }
 }

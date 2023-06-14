@@ -108,9 +108,8 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
         {
             pageNumber = pageNumber.HasValue ? pageNumber.Value <= 0 ? 1 : pageNumber.Value : 1;
             pageSize = pageSize.HasValue ? pageSize.Value <= 0 ? 10 : pageSize.Value : 10;
-            entities = entities.Skip((pageNumber.Value - 1) * pageSize.Value).Take(pageSize.Value);
+            entities = entities.Skip(((pageNumber.Value - 1) * pageSize.Value)).Take(pageSize.Value);
         }
-
         return await Task.FromResult(entities);
     }
 
