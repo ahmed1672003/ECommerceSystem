@@ -1,8 +1,9 @@
 ﻿namespace ECommerce.Infrastructure.Repositories;
 public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
 {
-    protected readonly ECommerceDbContext _context;
+    private readonly ECommerceDbContext _context;
     protected readonly DbSet<TEntity> _entities;
+
     public Repository(ECommerceDbContext context)
     {
         _context = context;
@@ -52,7 +53,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     }
     public virtual async Task ExecuteUpdateAsync(
         Func<TEntity, object> property,
-        Func<TEntity, object> propertyExpression,
+        Expression<Func<TEntity, object>> propertyExpression,
         Expression<Func<TEntity, bool>> filter = null,
         CancellationToken cancellationToken = default)
     {
@@ -108,7 +109,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
         {
             pageNumber = pageNumber.HasValue ? pageNumber.Value <= 0 ? 1 : pageNumber.Value : 1;
             pageSize = pageSize.HasValue ? pageSize.Value <= 0 ? 10 : pageSize.Value : 10;
-            entities = entities.Skip(((pageNumber.Value - 1) * pageSize.Value)).Take(pageSize.Value);
+            entities = entities.Skip((pageNumber.Value - 1) * pageSize.Value).Take(pageSize.Value);
         }
         return await Task.FromResult(entities);
     }

@@ -1,3 +1,5 @@
+using System.Globalization;
+
 using ECommerce.Application.MiddleWares;
 
 namespace ECommerce.API;
@@ -9,10 +11,14 @@ public class Program
 
         // Add services to the container.
         #region Register Services
-        builder.Services
-            .AddApplicationDependencies()
-            .AddInfrastructureDependencies(builder.Configuration);
 
+        #region Custom Dependencies
+        builder.Services
+         .AddApplicationDependencies()
+         .AddInfrastructureDependencies(builder.Configuration);
+        #endregion
+
+        #region Handel Serialize loop references
         builder.Services
             .AddControllers()
         // Handel Serialize loop references (but this in ASP.NetCore.OpenApi)
@@ -20,8 +26,9 @@ public class Program
             {
                 options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
             });
+        #endregion
 
-        // Allow All Cors
+        #region Allow All Cors Origin
         builder.Services
             .AddCors(options =>
             {
@@ -32,6 +39,34 @@ public class Program
                     builder.AllowAnyOrigin();
                 });
             });
+        #endregion
+
+        #region Add Localization
+        //builder.Services.AddControllersWithViews();
+        builder.Services
+            .AddLocalization(options =>
+            {
+                options.ResourcesPath = string.Empty;
+            });
+
+        builder.Services
+            .Configure<RequestLocalizationOptions>(options =>
+            {
+                IList<CultureInfo> supportedCultures = new List<CultureInfo>
+                {
+                    new ("en-US"),
+                    new ("de-DE"),
+                    new ("fr-FR"),
+                    new ("en-GB"),
+                    new ("ar-EG"),
+                };
+
+                options.DefaultRequestCulture = new("ar-EG");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+            });
+        #endregion
+
         #endregion
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
@@ -55,9 +90,26 @@ public class Program
         app.UseSwaggerUI();
 
         #region Use Services
+
+        #region Use Cors
+
         app.UseCors("ECommerce");
+        #endregion
+
+        #region Validation MaiddleWare
 
         app.UseMiddleware<ErrorHandlerMiddleWare>();
+        #endregion
+
+        #region Use Localization Middle Ware
+        var options = app.Services.GetService<RequestLocalizationOptions>();
+        app.UseRequestLocalization(options =>
+        {
+            // To Do
+        });
+
+        #endregion
+
         #endregion
 
         app.UseHttpsRedirection();

@@ -9,14 +9,11 @@ public class CategoryRepository : Repository<Category>, ICategoryRepository
 
         if (category == null)
             return false;
-
         return true;
     }
-
-
-    public async Task<bool> CanUpdatedAsync(string name, string id)
+    public async Task<bool> CanUpdatedAsync(string name, string id, CancellationToken cancellationToken = default)
     {
-        var category = await _entities.FirstOrDefaultAsync(c => c.Name.Equals(name));
+        var category = await _entities.FirstOrDefaultAsync(c => c.Name.Equals(name), cancellationToken);
         return !(category != null && category.Id != id);
     }
 }
