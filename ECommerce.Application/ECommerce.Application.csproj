@@ -41,13 +41,4 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\Users\Commands\UserCommandsHandlers\" />
-    <Folder Include="Features\Users\Commands\UserCommandsValidators\" />
-    <Folder Include="Features\Users\Commands\UserCommands\" />
-    <Folder Include="Features\Users\Queries\UserQueriesHandlers\" />
-    <Folder Include="Features\Users\Queries\UserQueriesValidators\" />
-    <Folder Include="Features\Users\Queries\UserQueries\" />
-  </ItemGroup>
-
 </Project>

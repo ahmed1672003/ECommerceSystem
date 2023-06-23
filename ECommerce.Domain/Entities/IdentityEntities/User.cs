@@ -1,5 +1,8 @@
 ﻿namespace ECommerce.Domain.Entities.IdentityEntities;
-[Table("Users"), PrimaryKey(nameof(Id))]
+[Table("Users"),
+    PrimaryKey(nameof(Id)),
+    Index(nameof(Email), IsUnique = true),
+    Index(nameof(UserName))]
 public class User : IdentityUser<string>
 {
     #region Properties
@@ -21,7 +24,6 @@ public class User : IdentityUser<string>
     #endregion
 
     #region Behaviors
-
     public override bool Equals(object? obj)
     {
         return base.Equals(obj);

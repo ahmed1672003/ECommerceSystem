@@ -8,9 +8,9 @@ public static class InfrastructureDependencies
         services.AddIdentity<User, Role>(options =>
         {
             #region Email Options
-            options.SignIn.RequireConfirmedEmail = true;
-            options.SignIn.RequireConfirmedPhoneNumber = true;
-            options.SignIn.RequireConfirmedAccount = true;
+            //options.SignIn.RequireConfirmedEmail = true;
+            //options.SignIn.RequireConfirmedPhoneNumber = true;
+            //options.SignIn.RequireConfirmedAccount = true;
             #endregion
 
             #region Stores Options

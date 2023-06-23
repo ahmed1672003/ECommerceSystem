@@ -13,7 +13,7 @@ public class CategoryController : ECommerceController
     }
 
     [HttpPut, ActionName(nameof(Put))]
-    public async Task<IActionResult> Put([FromHeader] string id, [FromBody] CategoryDTO dto)
+    public async Task<IActionResult> Put([FromQuery] string id, [FromBody] CategoryDTO dto)
     {
         var response = await Mediator.Send(new PutCategoryCommand(id, dto));
         return NewResult(response);

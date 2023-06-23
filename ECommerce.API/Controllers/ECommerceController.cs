@@ -26,13 +26,13 @@ public class ECommerceController : ControllerBase
             case HttpStatusCode.Unauthorized:
                 return new UnauthorizedObjectResult(response);
 
-            case HttpStatusCode.InternalServerError:
+            case HttpStatusCode.BadRequest:
+                return new BadRequestObjectResult(response);
+            default:
                 return new ObjectResult(response)
                 {
                     StatusCode = Convert.ToInt32(HttpStatusCode.InternalServerError),
                 };
-            default:
-                return new BadRequestObjectResult(response);
         }
     }
     #endregion
