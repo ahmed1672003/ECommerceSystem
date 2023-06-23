@@ -30,11 +30,10 @@ public class Program
         builder.Services
             .AddCors(options =>
             {
-                options.AddPolicy("AllowAll", builder =>
+                options.AddPolicy("ECommerce", builder =>
                 {
                     builder.AllowAnyHeader();
                     builder.AllowAnyMethod();
-                    ;
                     builder.AllowAnyOrigin();
                 });
             });
@@ -78,7 +77,7 @@ public class Program
         builder.Services.AddAuthorization(options =>
         {
             // By default, all incoming requests will be authorized according to the default policy.
-            options.FallbackPolicy = options.DefaultPolicy;
+            //options.FallbackPolicy = options.DefaultPolicy;
         });
 
         var app = builder.Build();
@@ -91,12 +90,10 @@ public class Program
         #region Use Services
 
         #region Use Cors
-
-        app.UseCors("AllowAll");
+        app.UseCors("ECommerce");
         #endregion
 
         #region Validation MaiddleWare
-
         app.UseMiddleware<ErrorHandlerMiddleWare>();
         #endregion
 

@@ -8,9 +8,9 @@ public static class InfrastructureDependencies
         services.AddIdentity<User, Role>(options =>
         {
             #region Email Options
-            //options.SignIn.RequireConfirmedEmail = true;
-            //options.SignIn.RequireConfirmedPhoneNumber = true;
-            //options.SignIn.RequireConfirmedAccount = true;
+            options.SignIn.RequireConfirmedEmail = true;
+            options.SignIn.RequireConfirmedPhoneNumber = true;
+            options.SignIn.RequireConfirmedAccount = true;
             #endregion
 
             #region Stores Options
@@ -19,21 +19,21 @@ public static class InfrastructureDependencies
             #endregion
 
             #region Password Options
-            //options.Password.RequireNonAlphanumeric = true;
-            //options.Password.RequireLowercase = true;
-            //options.Password.RequireUppercase = true;
-            //options.Password.RequireDigit = true;
-            //options.Password.RequiredLength = 10;
+            options.Password.RequireNonAlphanumeric = true;
+            options.Password.RequireLowercase = true;
+            options.Password.RequireUppercase = true;
+            options.Password.RequireDigit = true;
+            options.Password.RequiredLength = 10;
             #endregion
 
             #region User Options
-            //options.User.RequireUniqueEmail = true;
+            options.User.RequireUniqueEmail = true;
             #endregion
 
             #region Lock Out Options
-            //options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromSeconds(30);
-            //options.Lockout.MaxFailedAccessAttempts = 5;
-            //options.Lockout.AllowedForNewUsers = true;
+            options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromSeconds(30);
+            options.Lockout.MaxFailedAccessAttempts = 5;
+            options.Lockout.AllowedForNewUsers = true;
             #endregion
 
             #region Claims Options

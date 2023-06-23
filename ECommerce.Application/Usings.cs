@@ -7,10 +7,12 @@ global using AutoMapper;
 global using ECommerce.Application.Features.Categories.CategoryDTOs;
 global using ECommerce.Application.Features.Categories.Commands.CategoryCommands;
 global using ECommerce.Application.Features.Categories.Queries.CategoryQueries;
+global using ECommerce.Application.Features.Users.UserDTOs;
 global using ECommerce.Application.Responses.Constants;
 global using ECommerce.Application.Responses.IResponseServices;
 global using ECommerce.Application.Responses.ResponseServices;
 global using ECommerce.Domain.Entities;
+global using ECommerce.Domain.Entities.IdentityEntities;
 global using ECommerce.Domain.Enums;
 global using ECommerce.Domain.IRepositories;
 
