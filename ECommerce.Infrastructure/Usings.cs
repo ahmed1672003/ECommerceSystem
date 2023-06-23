@@ -9,6 +9,7 @@ global using ECommerce.Infrastructure.Context;
 global using ECommerce.Infrastructure.Context.Configurations;
 global using ECommerce.Infrastructure.Repositories;
 
+global using Microsoft.AspNetCore.Identity;
 global using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;

@@ -12,6 +12,7 @@ public static class ApplicationDependencies
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddTransient(typeof(IResponseHandler), typeof(ResponseHandler));
+        services.AddTransient(typeof(IResponseHandler), typeof(PaginationResponseHandler));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         return services;
     }

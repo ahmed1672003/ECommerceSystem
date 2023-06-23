@@ -1,5 +1,3 @@
-using System.Globalization;
-
 using ECommerce.Application.MiddleWares;
 
 namespace ECommerce.API;
@@ -32,10 +30,11 @@ public class Program
         builder.Services
             .AddCors(options =>
             {
-                options.AddPolicy("ECommerce", builder =>
+                options.AddPolicy("AllowAll", builder =>
                 {
                     builder.AllowAnyHeader();
                     builder.AllowAnyMethod();
+                    ;
                     builder.AllowAnyOrigin();
                 });
             });
@@ -93,7 +92,7 @@ public class Program
 
         #region Use Cors
 
-        app.UseCors("ECommerce");
+        app.UseCors("AllowAll");
         #endregion
 
         #region Validation MaiddleWare
@@ -102,15 +101,17 @@ public class Program
         #endregion
 
         #region Use Localization Middle Ware
-        var options = app.Services.GetService<RequestLocalizationOptions>();
-        app.UseRequestLocalization(options =>
-        {
-            // To Do
-        });
+        //var options = app.Services.GetService<RequestLocalizationOptions>();
+        //app.UseRequestLocalization(options =>
+        //{
+        //    // To Do
+        //});
 
         #endregion
 
         #endregion
+
+        app.UseAuthentication();
 
         app.UseHttpsRedirection();
 
