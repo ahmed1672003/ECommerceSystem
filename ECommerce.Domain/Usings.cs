@@ -6,6 +6,7 @@ global using ECommerce.Domain.BaseEntity;
 global using ECommerce.Domain.Entities;
 global using ECommerce.Domain.Enums;
 
+global using Microsoft.AspNetCore.Identity;
 global using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Domain;

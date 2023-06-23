@@ -1,5 +1,5 @@
 ﻿namespace ECommerce.Infrastructure.Context;
-public class ECommerceDbContext : DbContext
+public class ECommerceDbContext : IdentityDbContext
 {
     public ECommerceDbContext(DbContextOptions<ECommerceDbContext> options) : base(options) { }
 

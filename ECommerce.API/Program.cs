@@ -43,28 +43,28 @@ public class Program
 
         #region Add Localization
         //builder.Services.AddControllersWithViews();
-        builder.Services
-            .AddLocalization(options =>
-            {
-                options.ResourcesPath = string.Empty;
-            });
+        //builder.Services
+        //    .AddLocalization(options =>
+        //    {
+        //        options.ResourcesPath = string.Empty;
+        //    });
 
-        builder.Services
-            .Configure<RequestLocalizationOptions>(options =>
-            {
-                IList<CultureInfo> supportedCultures = new List<CultureInfo>
-                {
-                    new ("en-US"),
-                    new ("de-DE"),
-                    new ("fr-FR"),
-                    new ("en-GB"),
-                    new ("ar-EG"),
-                };
+        //builder.Services
+        //    .Configure<RequestLocalizationOptions>(options =>
+        //    {
+        //        IList<CultureInfo> supportedCultures = new List<CultureInfo>
+        //        {
+        //            new ("en-US"),
+        //            new ("de-DE"),
+        //            new ("fr-FR"),
+        //            new ("en-GB"),
+        //            new ("ar-EG"),
+        //        };
 
-                options.DefaultRequestCulture = new("ar-EG");
-                options.SupportedCultures = supportedCultures;
-                options.SupportedUICultures = supportedCultures;
-            });
+        //        options.DefaultRequestCulture = new("ar-EG");
+        //        options.SupportedCultures = supportedCultures;
+        //        options.SupportedUICultures = supportedCultures;
+        //    });
         #endregion
 
         #endregion
