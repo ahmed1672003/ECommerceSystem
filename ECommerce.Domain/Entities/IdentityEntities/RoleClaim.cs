@@ -1,8 +1,6 @@
-﻿
-using System.Security.Claims;
-
+﻿using System.Security.Claims;
 namespace ECommerce.Domain.Entities.IdentityEntities;
-
+[Table("RoleClaims"), PrimaryKey(nameof(Id))]
 public class RoleClaim : IdentityRoleClaim<string>
 {
     #region Properties
@@ -36,6 +34,6 @@ public class RoleClaim : IdentityRoleClaim<string>
     public override string? ToString()
     {
         return base.ToString();
-    } 
+    }
     #endregion
 }

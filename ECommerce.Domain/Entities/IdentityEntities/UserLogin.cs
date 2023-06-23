@@ -1,5 +1,5 @@
 ﻿namespace ECommerce.Domain.Entities.IdentityEntities;
-
+[Table("UserLogins"), PrimaryKey(nameof(UserId))]
 public class UserLogin : IdentityUserLogin<string>
 {
     #region Properties

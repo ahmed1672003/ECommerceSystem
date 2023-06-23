@@ -1,11 +1,11 @@
-﻿
-using System.Security.Claims;
-
+﻿using System.Security.Claims;
 namespace ECommerce.Domain.Entities.IdentityEntities;
-
+[Table("UserClaims"), PrimaryKey(nameof(Id))]
 public class UserClaim : IdentityUserClaim<string>
 {
     #region Properties
+
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public override int Id { get => base.Id; set => base.Id = value; }
     public override string UserId { get => base.UserId; set => base.UserId = value; }
     public override string? ClaimType { get => base.ClaimType; set => base.ClaimType = value; }

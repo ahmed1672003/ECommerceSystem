@@ -1,9 +1,9 @@
 ﻿namespace ECommerce.Domain.Entities.IdentityEntities;
+[Table("Users"), PrimaryKey(nameof(Id))]
 public class User : IdentityUser<string>
 {
-
     #region Properties
-    public override string Id { get => base.Id; set => base.Id = value; } = Guid.NewGuid().ToString();
+    public override string Id { get; set; } = Guid.NewGuid().ToString();
     public override string? UserName { get => base.UserName; set => base.UserName = value; }
     public override string? NormalizedUserName { get => base.NormalizedUserName; set => base.NormalizedUserName = value; }
     public override string? Email { get => base.Email; set => base.Email = value; }

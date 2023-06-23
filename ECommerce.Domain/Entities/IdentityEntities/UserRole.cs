@@ -1,5 +1,5 @@
 ﻿namespace ECommerce.Domain.Entities.IdentityEntities;
-
+[Table("UserRoles"), PrimaryKey(nameof(UserId), nameof(RoleId))]
 public class UserRole : IdentityUserRole<string>
 {
     #region Properties

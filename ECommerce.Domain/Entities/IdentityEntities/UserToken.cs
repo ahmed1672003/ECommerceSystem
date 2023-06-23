@@ -1,5 +1,5 @@
 ﻿namespace ECommerce.Domain.Entities.IdentityEntities;
-
+[Table("UserTokens"), PrimaryKey(nameof(UserId))]
 public class UserToken : IdentityUserToken<string>
 {
     #region Properties
