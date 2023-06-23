@@ -7,7 +7,7 @@ public class Category : Entity<string>, IEquatable<Category>
     public string Name { get; set; }
     #endregion
 
-    #region Constructor
+    #region Constructors
     public Category() =>
     Id = Guid.NewGuid().ToString();
     #endregion
