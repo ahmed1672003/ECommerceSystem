@@ -1,4 +1,6 @@
-﻿namespace ECommerce.Infrastructure.Repositories;
+﻿using ECommerce.Domain.IRepositories.IIdentityRepositories;
+
+namespace ECommerce.Infrastructure.Repositories;
 public class UnitOfWork : IUnitOfWork
 {
     private readonly ECommerceDbContext _context;
@@ -9,9 +11,13 @@ public class UnitOfWork : IUnitOfWork
         Categories = new CategoryRepository(_context);
     }
     public ICategoryRepository Categories { get; private set; }
-
+    public IRoleClaimRepository RoleClaims { get; private set; }
+    public IRoleRepository Roles { get; private set; }
+    public IUserClaimRepository UserClaims { get; private set; }
+    public IUserLoginRepository UserLogins { get; private set; }
+    public IUserRepository Users { get; private set; }
+    public IUserRoleRepository UserRoles { get; private set; }
+    public IUserTokenRepository UserTokens { get; private set; }
     public async ValueTask DisposeAsync() => await _context.DisposeAsync();
-
     public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) => await _context.SaveChangesAsync(cancellationToken);
-
 }

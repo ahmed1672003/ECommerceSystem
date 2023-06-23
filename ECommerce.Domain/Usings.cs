@@ -4,6 +4,7 @@ global using System.Linq.Expressions;
 
 global using ECommerce.Domain.BaseEntity;
 global using ECommerce.Domain.Entities;
+global using ECommerce.Domain.Entities.IdentityEntities;
 global using ECommerce.Domain.Enums;
 
 global using Microsoft.AspNetCore.Identity;
