@@ -1,5 +1,7 @@
-﻿namespace ECommerce.Services.Interfaces;
+﻿
+
+namespace ECommerce.Services.Interfaces;
 public interface IAuthenticationServices
 {
-    Task<string> GetnerateJWTToken();
+    Task<string> GenerateJWTToken(User user);
 }

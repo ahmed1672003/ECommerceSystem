@@ -3,7 +3,7 @@ using ECommerce.Application.Features.Users.Queries.UserQueries;
 using ECommerce.Application.Features.Users.UserDTOs;
 
 namespace ECommerce.API.Controllers;
-[Route("api/[controller]/[action]")]
+[Route("api/V1/[controller]/[action]")]
 [ApiController]
 public class UserController : ECommerceController
 {

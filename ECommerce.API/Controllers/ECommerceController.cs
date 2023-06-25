@@ -3,7 +3,7 @@
 using ECommerce.Application.Responses.ResponseServices;
 
 namespace ECommerce.API.Controllers;
-[Route("api/[controller]")]
+[Route("api/V1/[controller]")]
 [ApiController]
 public class ECommerceController : ControllerBase
 {

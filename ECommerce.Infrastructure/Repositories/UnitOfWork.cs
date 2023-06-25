@@ -1,6 +1,4 @@
 ﻿using ECommerce.Infrastructure.Repositories.IdentityRepositories;
-
-using Microsoft.AspNetCore.Identity;
 namespace ECommerce.Infrastructure.Repositories;
 public class UnitOfWork : IUnitOfWork
 {
@@ -8,13 +6,14 @@ public class UnitOfWork : IUnitOfWork
     public UnitOfWork(
         ECommerceDbContext context,
         RoleManager<Role> roleManager,
-        UserManager<User> userManager)
+        UserManager<User> userManager,
+        SignInManager<User> singInManager)
     {
         _context = context;
         Categories = new CategoryRepository(_context);
         RoleClaims = new RoleClaimRepository(_context);
         Roles = new RoleRepository(_context, roleManager);
-        Users = new UserRepository(_context, userManager);
+        Users = new UserRepository(_context, userManager, singInManager);
         UserClaims = new UserClaimRepository(_context);
         UserLogins = new UserLoginRepository(_context);
         UserRoles = new UserRoleRepository(_context);

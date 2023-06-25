@@ -1,5 +1,5 @@
 ﻿namespace ECommerce.API.Controllers;
-[Route("api/[controller]/[action]")]
+[Route("api/V1/[controller]/[action]")]
 [ApiController]
 public class CategoryController : ECommerceController
 {

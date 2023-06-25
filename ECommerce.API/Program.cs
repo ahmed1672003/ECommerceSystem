@@ -1,4 +1,5 @@
 using ECommerce.Application.MiddleWares;
+using ECommerce.Services;
 
 namespace ECommerce.API;
 public class Program
@@ -13,7 +14,8 @@ public class Program
         #region Custom Dependencies
         builder.Services
          .AddApplicationDependencies()
-         .AddInfrastructureDependencies(builder.Configuration);
+         .AddInfrastructureDependencies(builder.Configuration)
+         .AddServicesDependencies(builder.Configuration);
         #endregion
 
         #region Handel Serialize loop references
