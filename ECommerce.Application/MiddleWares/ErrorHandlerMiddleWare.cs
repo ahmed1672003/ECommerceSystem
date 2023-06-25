@@ -2,6 +2,8 @@
 
 using ECommerce.Application.Constants;
 
+using ValidationException = FluentValidation.ValidationException;
+
 namespace ECommerce.Application.MiddleWares;
 public class ErrorHandlerMiddleWare
 {

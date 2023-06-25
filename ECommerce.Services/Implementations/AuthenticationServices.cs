@@ -15,7 +15,7 @@ public class AuthenticationServices : IAuthenticationServices
     {
         _jwtSettings = jwtSettings;
     }
-    public async Task<string> GenerateJWTToken(User user)
+    public async Task<string> GenerateJWTTokenAsync(User user)
     {
         var claims = new List<Claim>()
         {

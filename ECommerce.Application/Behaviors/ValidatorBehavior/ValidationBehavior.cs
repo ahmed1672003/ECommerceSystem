@@ -1,4 +1,7 @@
-﻿namespace ECommerce.Application.Behaviors.ValidatorBehavior;
+﻿
+using ValidationException = FluentValidation.ValidationException;
+
+namespace ECommerce.Application.Behaviors.ValidatorBehavior;
 public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : class
 {

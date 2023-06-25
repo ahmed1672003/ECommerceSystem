@@ -1,8 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-using ECommerce.Application.Features.Authentication.Commands.AuthenticationCommands;
-
-namespace ECommerce.Application.Features.Authentication.Commands.AuthenticationCommandsValidators;
+﻿namespace ECommerce.Application.Features.Authentication.Commands.AuthenticationCommandsValidators;
 public class SignInCommandValidator : AbstractValidator<SignInCommand>
 {
     private readonly IUnitOfWork _context;
@@ -36,7 +32,7 @@ public class SignInCommandValidator : AbstractValidator<SignInCommand>
             .MustAsync(async (emailOrUserName, cancellationToken) =>
             await _context.Users.IsExist(
                 c => new EmailAddressAttribute().IsValid(emailOrUserName) ?
-                c.Email.Equals(emailOrUserName) : 
+                c.Email.Equals(emailOrUserName) :
                 c.UserName.Equals(emailOrUserName), cancellationToken)
           ).WithMessage(c => $"{nameof(c.DTO.EmailOrUserName)} is not exist !");
     }

@@ -1,10 +1,12 @@
-﻿global using System.Net;
+﻿global using System.ComponentModel.DataAnnotations;
+global using System.Net;
 global using System.Reflection;
 global using System.Text.Json;
 
 global using AutoMapper;
 
 global using ECommerce.Application.Features.Authentication.AuthenticationDTOs;
+global using ECommerce.Application.Features.Authentication.Commands.AuthenticationCommands;
 global using ECommerce.Application.Features.Categories.CategoryDTOs;
 global using ECommerce.Application.Features.Categories.Commands.CategoryCommands;
 global using ECommerce.Application.Features.Categories.Queries.CategoryQueries;
@@ -16,6 +18,7 @@ global using ECommerce.Domain.Entities;
 global using ECommerce.Domain.Entities.IdentityEntities;
 global using ECommerce.Domain.Enums;
 global using ECommerce.Domain.IRepositories;
+global using ECommerce.Services.Interfaces;
 
 global using FluentValidation;
 
