@@ -10,6 +10,7 @@ public class PostUserCommandHandler :
     public async Task<Response<UserDTO>>
         Handle(PostUserCommand request, CancellationToken cancellationToken)
     {
+
         var model = Mapper.Map<User>(request.DTO);
         var state = await Context.Users.Manager.CreateAsync(model, request.DTO.Password);
 

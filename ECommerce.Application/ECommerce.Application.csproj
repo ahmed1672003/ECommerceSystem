@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ECommerce.Infrastructure\ECommerce.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.5.2" />
     <PackageReference Include="MediatR" Version="12.0.1" />
@@ -39,6 +35,17 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>SharedResources.English.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Features\Authentication\AuthenticationMapper\" />
+    <Folder Include="Features\Authentication\Queries\AuthenticationQueriesHandlers\" />
+    <Folder Include="Features\Authentication\Queries\AuthenticationQueriesValidators\" />
+    <Folder Include="Features\Authentication\Queries\AuthenticationQueries\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ECommerce.Services\ECommerce.Services.csproj" />
   </ItemGroup>
 
 </Project>

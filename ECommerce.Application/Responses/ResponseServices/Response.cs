@@ -16,7 +16,6 @@ public class Response<TData> where TData : class
         Message = message;
         Errors = errors;
     }
-
     public HttpStatusCode StatusCode { get; set; }
     public bool IsSucceeded { get; set; }
     public string Message { get; set; }
