@@ -14,7 +14,7 @@ public class GetAllUsersQueryHandler :
         if (!await Context.Users.IsExist())
             return NotFound<IEnumerable<UserViewModel>>();
 
-        var dtos = Mapper.Map<IEnumerable<UserViewModel>>(await Context.Users.RetrieveAllAsync());
-        return Success(dtos);
+        var models = Mapper.Map<IEnumerable<UserViewModel>>(await Context.Users.RetrieveAllAsync());
+        return Success(models);
     }
 }

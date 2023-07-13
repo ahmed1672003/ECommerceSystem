@@ -15,9 +15,9 @@ public class GetAllCategoriesQueryHandler :
         if (!await Context.Categories.IsExist(cancellationToken: cancellationToken))
             return NotFound<IEnumerable<CategoryViewModel>>();
 
-        var categoriesDTOs = Mapper.Map<IEnumerable<CategoryViewModel>>(
+        var categoriesmodels = Mapper.Map<IEnumerable<CategoryViewModel>>(
             await Context.Categories.RetrieveAllAsync(orderBy: e => e.Name));
 
-        return Success(categoriesDTOs);
+        return Success(categoriesmodels);
     }
 }

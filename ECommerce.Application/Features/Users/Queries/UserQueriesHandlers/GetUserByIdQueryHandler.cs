@@ -15,8 +15,8 @@ public class GetUserByIdQueryHandler :
 
         var model = await Context.Users.Manager.FindByIdAsync(request.Id);
 
-        var dto = Mapper.Map<UserViewModel>(model);
+        var viewModel = Mapper.Map<UserViewModel>(model);
 
-        return Success(dto);
+        return Success(viewModel);
     }
 }

@@ -8,14 +8,14 @@ public class CategoryController : ECommerceController
     public CategoryController(IMediator mediator) : base(mediator) { }
 
     [HttpPost, ActionName(nameof(Post))]
-    public async Task<IActionResult> Post([FromBody] PostCategoryViewModel dto) =>
-      NewResult(await Mediator.Send(new PostCategoryCommand(dto)));
+    public async Task<IActionResult> Post([FromBody] PostCategoryViewModel model) =>
+      NewResult(await Mediator.Send(new PostCategoryCommand(model)));
 
 
     [HttpPut, ActionName(nameof(Put))]
-    public async Task<IActionResult> Put([FromQuery] string id, [FromBody] CategoryViewModel dto) =>
+    public async Task<IActionResult> Put([FromQuery] string id, [FromBody] CategoryViewModel model) =>
 
-         NewResult(await Mediator.Send(new PutCategoryCommand(id, dto)));
+         NewResult(await Mediator.Send(new PutCategoryCommand(id, model)));
 
 
     [HttpGet, ActionName(nameof(RetrieveById))]

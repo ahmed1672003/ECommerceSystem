@@ -6,8 +6,8 @@ public class UserController : ECommerceController
     public UserController(IMediator mediator) : base(mediator) { }
 
     [HttpPost, ActionName(nameof(Post))]
-    public async Task<IActionResult> Post(PostUserViewModel dto) =>
-         NewResult(await Mediator.Send(new PostUserCommand(dto)));
+    public async Task<IActionResult> Post(PostUserViewModel model) =>
+         NewResult(await Mediator.Send(new PostUserCommand(model)));
 
 
     [HttpGet, ActionName(nameof(GetUserById))]

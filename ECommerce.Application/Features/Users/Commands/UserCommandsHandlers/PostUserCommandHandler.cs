@@ -12,8 +12,8 @@ public class PostUserCommandHandler :
         Handle(PostUserCommand request, CancellationToken cancellationToken)
     {
 
-        var model = Mapper.Map<User>(request.DTO);
-        var state = await Context.Users.Manager.CreateAsync(model, request.DTO.Password);
+        var model = Mapper.Map<User>(request.model);
+        var state = await Context.Users.Manager.CreateAsync(model, request.model.Password);
 
         if (!state.Succeeded)
             return BadRequest<UserViewModel>(errors: state.Errors);

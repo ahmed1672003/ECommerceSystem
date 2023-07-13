@@ -13,27 +13,27 @@ public class SignInCommandValidator : AbstractValidator<SignInCommand>
 
     void ApplyValidatorRules()
     {
-        RuleFor(c => c.DTO)
-            .NotNull().WithMessage(c => $"{nameof(c.DTO)} can not be null")
-            .NotEmpty().WithMessage(c => $"{nameof(c.DTO)} can not be empty");
+        RuleFor(c => c.model)
+            .NotNull().WithMessage(c => $"{nameof(c.model)} can not be null")
+            .NotEmpty().WithMessage(c => $"{nameof(c.model)} can not be empty");
 
-        RuleFor(c => c.DTO.EmailOrUserName)
-            .NotNull().WithMessage(c => $"{nameof(c.DTO.EmailOrUserName)} can not be null")
-            .NotEmpty().WithMessage(c => $"{nameof(c.DTO.EmailOrUserName)} can not be empty");
+        RuleFor(c => c.model.EmailOrUserName)
+            .NotNull().WithMessage(c => $"{nameof(c.model.EmailOrUserName)} can not be null")
+            .NotEmpty().WithMessage(c => $"{nameof(c.model.EmailOrUserName)} can not be empty");
 
-        RuleFor(c => c.DTO.Password)
-            .NotNull().WithMessage(c => $"{nameof(c.DTO.Password)} can not be null")
-            .NotEmpty().WithMessage(c => $"{nameof(c.DTO.Password)} can not be empty");
+        RuleFor(c => c.model.Password)
+            .NotNull().WithMessage(c => $"{nameof(c.model.Password)} can not be null")
+            .NotEmpty().WithMessage(c => $"{nameof(c.model.Password)} can not be empty");
     }
 
     void ApplyCustomValidatorRules()
     {
-        RuleFor(c => c.DTO.EmailOrUserName)
+        RuleFor(c => c.model.EmailOrUserName)
             .MustAsync(async (emailOrUserName, cancellationToken) =>
             await _context.Users.IsExist(
                 c => new EmailAddressAttribute().IsValid(emailOrUserName) ?
                 c.Email.Equals(emailOrUserName) :
                 c.UserName.Equals(emailOrUserName), cancellationToken)
-          ).WithMessage(c => $"{nameof(c.DTO.EmailOrUserName)} is not exist !");
+          ).WithMessage(c => $"{nameof(c.model.EmailOrUserName)} is not exist !");
     }
 }

@@ -15,16 +15,16 @@ public class SignInCommandHandler :
         var user = await Context.Users.RetrieveAsync(u =>
 
         // if emailOrUserName is valid search by email otherWise userName
-        new EmailAddressAttribute().IsValid(request.DTO.EmailOrUserName) ?
+        new EmailAddressAttribute().IsValid(request.model.EmailOrUserName) ?
 
-        u.Email.Equals(request.DTO.EmailOrUserName) :
+        u.Email.Equals(request.model.EmailOrUserName) :
 
-        u.UserName.Equals(request.DTO.EmailOrUserName));
+        u.UserName.Equals(request.model.EmailOrUserName));
 
         // check sign in success 
         var result =
             await Context.Users.SignInManager
-            .CheckPasswordSignInAsync(user, request.DTO.Password, false);
+            .CheckPasswordSignInAsync(user, request.model.Password, false);
 
         // sign in not success
         if (!result.Succeeded)
