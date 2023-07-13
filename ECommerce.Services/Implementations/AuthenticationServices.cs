@@ -1,12 +1,5 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+﻿namespace ECommerce.Services.Implementations;
 
-using ECommerce.Services.Helpers.AuthenticationHelpers;
-
-using Microsoft.IdentityModel.Tokens;
-
-namespace ECommerce.Services.Implementations;
 public class AuthenticationServices : IAuthenticationServices
 {
     private readonly JwtSettings _jwtSettings;
@@ -15,7 +8,7 @@ public class AuthenticationServices : IAuthenticationServices
     {
         _jwtSettings = jwtSettings;
     }
-    public async Task<string> GenerateJWTTokenAsync(User user)
+    public async Task<string> GetJWTTokenAsync(User user)
     {
         var claims = new List<Claim>()
         {
@@ -33,6 +26,7 @@ public class AuthenticationServices : IAuthenticationServices
                 new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_jwtSettings.Secret)),
                 SecurityAlgorithms.HmacSha256Signature));
         var accessToken = new JwtSecurityTokenHandler().WriteToken(token);
+
         return await Task.FromResult(accessToken);
     }
 }

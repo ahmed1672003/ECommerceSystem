@@ -31,7 +31,7 @@ public class SignInCommandHandler :
             return BadRequest<string>(message: "password is wrong !");
 
         // generate new token
-        var token = await authenticationServices.GenerateJWTTokenAsync(user);
+        var token = await authenticationServices.GetJWTTokenAsync(user);
 
         // return token
         return Success(token);

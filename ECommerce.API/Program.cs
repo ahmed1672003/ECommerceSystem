@@ -115,7 +115,6 @@ public class Program
 
         app.UseAuthorization();
 
-
         app.MapControllers();
 
         app.Run();
