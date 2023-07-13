@@ -9,9 +9,6 @@ public class AuthenticationController : ECommerceController
     public AuthenticationController(IMediator mediator) : base(mediator) { }
 
     [HttpPost, ActionName(nameof(SignIn))]
-    public async Task<IActionResult> SignIn([FromBody] SignInViewModel dto)
-    {
-        var response = await Mediator.Send(new SignInCommand(dto));
-        return NewResult(response);
-    }
+    public async Task<IActionResult> SignIn([FromBody] SignInViewModel dto) =>
+         NewResult(await Mediator.Send(new SignInCommand(dto)));
 }
