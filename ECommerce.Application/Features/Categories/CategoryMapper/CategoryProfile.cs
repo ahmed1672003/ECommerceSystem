@@ -1,4 +1,6 @@
-﻿namespace ECommerce.Application.Features.Categories.CategoryMapper;
+﻿using ECommerce.ViewModels.ViewModels.CategoryViewModels;
+
+namespace ECommerce.Application.Features.Categories.CategoryMapper;
 public class CategoryProfile : Profile
 {
     public CategoryProfile()
@@ -7,7 +9,7 @@ public class CategoryProfile : Profile
     }
     private void Mapp()
     {
-        CreateMap<PostCategoryDTO, Category>().ReverseMap();
-        CreateMap<Category, CategoryDTO>().ReverseMap();
+        CreateMap<PostCategoryViewModel, Category>().ReverseMap();
+        CreateMap<Category, CategoryViewModel>().ReverseMap();
     }
 }

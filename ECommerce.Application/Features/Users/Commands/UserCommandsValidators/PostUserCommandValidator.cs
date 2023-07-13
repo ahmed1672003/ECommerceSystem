@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-using ECommerce.Application.Features.Users.Commands.UserCommands;
+﻿using ECommerce.Application.Features.Users.Commands.UserCommands;
 
 namespace ECommerce.Application.Features.Users.Commands.UserCommandsValidators;
 public class PostUserCommandValidator : AbstractValidator<PostUserCommand>

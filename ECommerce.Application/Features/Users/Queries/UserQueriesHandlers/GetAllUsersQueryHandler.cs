@@ -1,19 +1,20 @@
 ﻿using ECommerce.Application.Features.Users.Queries.UserQueries;
+using ECommerce.ViewModels.ViewModels.UserViewModels;
 
 namespace ECommerce.Application.Features.Users.Queries.UserQueriesHandlers;
 public class GetAllUsersQueryHandler :
     ResponseHandler,
-    IRequestHandler<GetAllUsersQuery, Response<IEnumerable<UserDTO>>>
+    IRequestHandler<GetAllUsersQuery, Response<IEnumerable<UserViewModel>>>
 {
     public GetAllUsersQueryHandler(IUnitOfWork context, IMapper mapper) : base(context, mapper) { }
 
-    public async Task<Response<IEnumerable<UserDTO>>>
+    public async Task<Response<IEnumerable<UserViewModel>>>
         Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
     {
         if (!await Context.Users.IsExist())
-            return NotFound<IEnumerable<UserDTO>>();
+            return NotFound<IEnumerable<UserViewModel>>();
 
-        var dtos = Mapper.Map<IEnumerable<UserDTO>>(await Context.Users.RetrieveAllAsync());
+        var dtos = Mapper.Map<IEnumerable<UserViewModel>>(await Context.Users.RetrieveAllAsync());
         return Success(dtos);
     }
 }

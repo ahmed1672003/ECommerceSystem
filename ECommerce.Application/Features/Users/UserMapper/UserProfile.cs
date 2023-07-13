@@ -1,5 +1,7 @@
 ﻿
 
+using ECommerce.ViewModels.ViewModels.UserViewModels;
+
 namespace ECommerce.Application.Features.Users.UserMapper;
 public class UserProfile : Profile
 {
@@ -9,8 +11,8 @@ public class UserProfile : Profile
     }
     void Mapp()
     {
-        CreateMap<PostUserDTO, User>();
+        CreateMap<PostUserViewModel, User>();
 
-        CreateMap<User, UserDTO>();
+        CreateMap<User, UserViewModel>();
     }
 }

@@ -1,5 +1,5 @@
-﻿namespace ECommerce.Application.Features.Users.UserDTOs;
-public class UserDTO
+﻿namespace ECommerce.ViewModels.ViewModels.UserViewModels;
+public class UserViewModel
 {
     public string Id { get; set; }
     public string? UserName { get; set; }

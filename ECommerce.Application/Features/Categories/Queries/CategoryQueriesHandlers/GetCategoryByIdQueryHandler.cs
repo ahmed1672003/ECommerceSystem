@@ -1,16 +1,18 @@
-﻿namespace ECommerce.Application.Features.Categories.Queries.CategoryQueriesHandlers;
+﻿using ECommerce.ViewModels.ViewModels.CategoryViewModels;
+
+namespace ECommerce.Application.Features.Categories.Queries.CategoryQueriesHandlers;
 public class GetCategoryByIdQueryHandler :
     ResponseHandler,
-    IRequestHandler<GetCategoryByIdQuery, Response<CategoryDTO>>
+    IRequestHandler<GetCategoryByIdQuery, Response<CategoryViewModel>>
 {
     public GetCategoryByIdQueryHandler(IUnitOfWork context, IMapper mapper) : base(context, mapper) { }
 
-    public async Task<Response<CategoryDTO>>
+    public async Task<Response<CategoryViewModel>>
         Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
     {
-        var categoryDTO = Mapper.Map<CategoryDTO>(
+        var CategoryViewModel = Mapper.Map<CategoryViewModel>(
             await Context.Categories.RetrieveAsync(c => c.Id.Equals(request.Id)));
 
-        return Success(categoryDTO);
+        return Success(CategoryViewModel);
     }
 }

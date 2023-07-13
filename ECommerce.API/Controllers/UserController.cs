@@ -1,8 +1,4 @@
-﻿using ECommerce.Application.Features.Users.Commands.UserCommands;
-using ECommerce.Application.Features.Users.Queries.UserQueries;
-using ECommerce.Application.Features.Users.UserDTOs;
-
-namespace ECommerce.API.Controllers;
+﻿namespace ECommerce.API.Controllers;
 [Route("api/V1/[controller]/[action]")]
 [ApiController]
 public class UserController : ECommerceController
@@ -10,7 +6,7 @@ public class UserController : ECommerceController
     public UserController(IMediator mediator) : base(mediator) { }
 
     [HttpPost, ActionName(nameof(Post))]
-    public async Task<IActionResult> Post(PostUserDTO dto)
+    public async Task<IActionResult> Post(PostUserViewModel dto)
     {
         var response = await Mediator.Send(new PostUserCommand(dto));
         return NewResult(response);

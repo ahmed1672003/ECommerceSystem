@@ -1,13 +1,15 @@
-﻿namespace ECommerce.Application.Features.Categories.Commands.CategoryCommandsHandlers;
+﻿using ECommerce.ViewModels.ViewModels.CategoryViewModels;
+
+namespace ECommerce.Application.Features.Categories.Commands.CategoryCommandsHandlers;
 public class PostCategoryCommandHandler :
     ResponseHandler,
-    IRequestHandler<PostCategoryCommand, Response<CategoryDTO>>
+    IRequestHandler<PostCategoryCommand, Response<CategoryViewModel>>
 {
     public PostCategoryCommandHandler(IUnitOfWork context, IMapper mapper) : base(context, mapper) { }
-    public async Task<Response<CategoryDTO>>
+    public async Task<Response<CategoryViewModel>>
         Handle(PostCategoryCommand request, CancellationToken cancellationToken)
     {
-        var response = Mapper.Map<Category>(request.CategoryDTO);
+        var response = Mapper.Map<Category>(request.CategoryViewModel);
         try
         {
             await Context.Categories.CreateAsync(response, cancellationToken);
@@ -15,9 +17,9 @@ public class PostCategoryCommandHandler :
         }
         catch (Exception)
         {
-            return InternalServerError<CategoryDTO>();
+            return InternalServerError<CategoryViewModel>();
         }
 
-        return Success<CategoryDTO>();
+        return Success<CategoryViewModel>();
     }
 }

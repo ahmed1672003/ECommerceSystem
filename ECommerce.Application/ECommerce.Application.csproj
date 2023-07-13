@@ -46,6 +46,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ECommerce.Services\ECommerce.Services.csproj" />
+    <ProjectReference Include="..\ECommerce.ViewModels\ECommerce.ViewModels.csproj" />
   </ItemGroup>
 
 </Project>

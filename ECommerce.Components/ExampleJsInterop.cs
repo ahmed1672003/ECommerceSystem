@@ -1,6 +1,6 @@
 using Microsoft.JSInterop;
 
-namespace Components;
+namespace ECommerce.Components;
 // This class provides an example of how JavaScript functionality can be wrapped
 // in a .NET class for easy consumption. The associated JavaScript module is
 // loaded on demand when first needed.
@@ -15,7 +15,7 @@ public class ExampleJsInterop : IAsyncDisposable
     public ExampleJsInterop(IJSRuntime jsRuntime)
     {
         moduleTask = new(() => jsRuntime.InvokeAsync<IJSObjectReference>(
-            "import", "./_content/Components/exampleJsInterop.js").AsTask());
+            "import", "./_content/ECommerce.Components/exampleJsInterop.js").AsTask());
     }
 
     public async ValueTask<string> Prompt(string message)

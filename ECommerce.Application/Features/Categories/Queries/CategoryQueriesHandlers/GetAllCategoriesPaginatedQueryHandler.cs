@@ -1,18 +1,20 @@
 ﻿using System.Linq.Expressions;
 
+using ECommerce.ViewModels.ViewModels.CategoryViewModels;
+
 namespace ECommerce.Application.Features.Categories.Queries.CategoryQueriesHandlers;
 
 public class GetAllCategoriesPaginatedQueryHandler :
     PaginationResponseHandler,
-    IRequestHandler<GetAllCategoriesPaginatedQuery, PaginationResponse<IEnumerable<CategoryDTO>>>
+    IRequestHandler<GetAllCategoriesPaginatedQuery, PaginationResponse<IEnumerable<CategoryViewModel>>>
 {
     public GetAllCategoriesPaginatedQueryHandler(IUnitOfWork context, IMapper mapper) : base(context, mapper) { }
 
-    public async Task<PaginationResponse<IEnumerable<CategoryDTO>>>
+    public async Task<PaginationResponse<IEnumerable<CategoryViewModel>>>
         Handle(GetAllCategoriesPaginatedQuery request, CancellationToken cancellationToken)
     {
         if (!await Context.Categories.IsExist())
-            return NotFound<IEnumerable<CategoryDTO>>();
+            return NotFound<IEnumerable<CategoryViewModel>>();
 
         Expression<Func<Category, object>> orderBy = (e) => new();
 
@@ -26,7 +28,7 @@ public class GetAllCategoriesPaginatedQueryHandler :
                 break;
         }
 
-        var result = Mapper.Map<IEnumerable<CategoryDTO>>(
+        var result = Mapper.Map<IEnumerable<CategoryViewModel>>(
             await Context.Categories.RetrieveAllAsync(
                 orderBy: orderBy,
                 paginationOn: true,

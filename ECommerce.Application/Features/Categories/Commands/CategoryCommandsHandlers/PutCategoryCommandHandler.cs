@@ -1,14 +1,16 @@
-﻿namespace ECommerce.Application.Features.Categories.Commands.CategoryCommandsHandlers;
+﻿using ECommerce.ViewModels.ViewModels.CategoryViewModels;
+
+namespace ECommerce.Application.Features.Categories.Commands.CategoryCommandsHandlers;
 public class PutCategoryCommandHandler :
     ResponseHandler,
-    IRequestHandler<PutCategoryCommand, Response<CategoryDTO>>
+    IRequestHandler<PutCategoryCommand, Response<CategoryViewModel>>
 {
     public PutCategoryCommandHandler(IUnitOfWork context, IMapper mapper) : base(context, mapper) { }
 
-    public async Task<Response<CategoryDTO>>
+    public async Task<Response<CategoryViewModel>>
         Handle(PutCategoryCommand request, CancellationToken cancellationToken)
     {
-        var category = Mapper.Map<Category>(request.CategoryDTO);
+        var category = Mapper.Map<Category>(request.CategoryViewModel);
 
         try
         {
@@ -17,8 +19,8 @@ public class PutCategoryCommandHandler :
         }
         catch (Exception)
         {
-            return InternalServerError<CategoryDTO>();
+            return InternalServerError<CategoryViewModel>();
         }
-        return Success<CategoryDTO>();
+        return Success<CategoryViewModel>();
     }
 }

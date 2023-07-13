@@ -1,4 +1,6 @@
-﻿namespace ECommerce.API.Controllers;
+﻿using ECommerce.ViewModels.ViewModels.CategoryViewModels;
+
+namespace ECommerce.API.Controllers;
 [Route("api/V1/[controller]/[action]")]
 [ApiController]
 public class CategoryController : ECommerceController
@@ -6,14 +8,14 @@ public class CategoryController : ECommerceController
     public CategoryController(IMediator mediator) : base(mediator) { }
 
     [HttpPost, ActionName(nameof(Post))]
-    public async Task<IActionResult> Post([FromBody] PostCategoryDTO dto)
+    public async Task<IActionResult> Post([FromBody] PostCategoryViewModel dto)
     {
         var response = await Mediator.Send(new PostCategoryCommand(dto));
         return NewResult(response);
     }
 
     [HttpPut, ActionName(nameof(Put))]
-    public async Task<IActionResult> Put([FromQuery] string id, [FromBody] CategoryDTO dto)
+    public async Task<IActionResult> Put([FromQuery] string id, [FromBody] CategoryViewModel dto)
     {
         var response = await Mediator.Send(new PutCategoryCommand(id, dto));
         return NewResult(response);
