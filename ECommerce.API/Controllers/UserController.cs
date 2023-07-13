@@ -18,5 +18,4 @@ public class UserController : ECommerceController
     [HttpGet, ActionName(nameof(GetAllUsers))]
     public async Task<IActionResult> GetAllUsers() =>
          NewResult(await Mediator.Send(new GetAllUsersQuery()));
-
 }
