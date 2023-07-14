@@ -2,7 +2,7 @@
 using ECommerce.ViewModels.ViewModels.AuthenticationViewModels;
 
 namespace ECommerce.API.Controllers;
-[Route("api/V1/[controller]/[action]")]
+[Route("api/v1/[controller]/[action]")]
 [ApiController]
 public class AuthenticationController : ECommerceController
 {

@@ -1,5 +1,5 @@
 ﻿namespace ECommerce.Services.Interfaces;
 public interface IAuthenticationServices
 {
-    Task<string> GetJWTTokenAsync(User user);
+    Task<AuthenticationViewModel> GetJWTTokenAsync(User user);
 }
