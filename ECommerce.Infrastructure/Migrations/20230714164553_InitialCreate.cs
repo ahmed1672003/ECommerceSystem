@@ -129,13 +129,12 @@ namespace ECommerce.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    IsRevoked = table.Column<bool>(type: "bit", nullable: false),
                     AccessToken = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    JwtId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ExpireAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AccessTokenExpireAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    RefreshTokenExpireAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsAccessTokenActive = table.Column<bool>(type: "bit", nullable: false),
+                    IsRefreshTokenActive = table.Column<bool>(type: "bit", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>

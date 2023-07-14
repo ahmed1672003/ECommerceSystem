@@ -9,6 +9,7 @@ public class CategoryController : ECommerceController
 {
     public CategoryController(IMediator mediator) : base(mediator) { }
 
+
     [HttpPost, ActionName(nameof(Post))]
     public async Task<IActionResult> Post([FromBody] PostCategoryViewModel model) =>
       NewResult(await Mediator.Send(new PostCategoryCommand(model)));
@@ -19,11 +20,9 @@ public class CategoryController : ECommerceController
 
          NewResult(await Mediator.Send(new PutCategoryCommand(id, model)));
 
-
     [HttpGet, ActionName(nameof(RetrieveById))]
     public async Task<IActionResult> RetrieveById([FromQuery] string id) =>
          NewResult(await Mediator.Send(new GetCategoryByIdQuery(id)));
-
 
     [HttpGet, ActionName(nameof(RetrieveAll))]
     public async Task<IActionResult> RetrieveAll() =>

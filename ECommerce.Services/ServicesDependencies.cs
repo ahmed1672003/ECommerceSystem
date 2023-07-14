@@ -6,7 +6,6 @@ public static class ServicesDependencies
     public static IServiceCollection AddServicesDependencies(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddTransient(typeof(IAuthenticationServices), typeof(AuthenticationServices));
-        services.AddTransient<ConcurrentDictionary<string, RefreshTokenViewModel>>();
 
         #region JWT Services
         // JWT Setting

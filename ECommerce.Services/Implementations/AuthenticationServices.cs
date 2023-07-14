@@ -1,38 +1,51 @@
 ﻿using ECommerce.Domain.IRepositories;
 
+using Microsoft.EntityFrameworkCore;
+
 namespace ECommerce.Services.Implementations;
 public class AuthenticationServices : IAuthenticationServices
 {
     private readonly JwtSettings _jwtSettings;
-    private readonly ConcurrentDictionary<string, RefreshTokenViewModel> _userRefreshToken;
     private readonly IUnitOfWork _context;
     public AuthenticationServices(
         JwtSettings jwtSettings,
-        ConcurrentDictionary<string,
-        RefreshTokenViewModel> userRefreshToken,
         IUnitOfWork context)
     {
         _jwtSettings = jwtSettings;
-        _userRefreshToken = userRefreshToken;
         _context = context;
     }
-    private RefreshTokenViewModel this[string userName, string email]
+
+    #region Helper Indexes
+    private RefreshTokenViewModel this[string userName, string email, DateTime refreshTokenExpireData]
     {
         get
         {
             var refreshToken = new RefreshTokenViewModel
             {
-                ExpireAt = DateTime.UtcNow.AddMinutes(_jwtSettings.RefreshTokenExpireDate),
+                ExpireAt = refreshTokenExpireData,
                 UserName = userName,
                 Email = userName,
                 NewToken = this[64],
             };
-            _userRefreshToken.AddOrUpdate(
-           refreshToken.NewToken, refreshToken,
-           (newToken, token) => refreshToken);
             return refreshToken;
         }
     }
+    private AuthenticationViewModel this[User user, string accessToken] =>
+        new()
+        {
+            AccessToken = accessToken,
+            RefreshTokenViewModel = this[
+                user.UserName,
+                user.Email,
+        DateTime.UtcNow.AddMinutes(_jwtSettings.RefreshTokenExpireDate)]
+        };
+    private IEnumerable<Claim> this[User user] => new List<Claim>()
+        {
+            new Claim (nameof(UserClaimViewModel.UserId) , user.Id),
+            new (nameof(UserClaimViewModel.UserName) , user.UserName),
+            new (nameof(UserClaimViewModel.Email) , user.Email),
+            new (nameof(UserClaimViewModel.PhoneNumber) , user.PhoneNumber),
+        };
     private string this[int length]
     {
         get
@@ -43,55 +56,67 @@ public class AuthenticationServices : IAuthenticationServices
             return Convert.ToBase64String(randomNumbers);
         }
     }
-    private IEnumerable<Claim> this[User user] => new List<Claim>()
-        {
-            new Claim (nameof(UserClaimServiceModel.Id) , user.Id),
-            new (nameof(UserClaimServiceModel.UserName) , user.UserName),
-            new (nameof(UserClaimServiceModel.Email) , user.Email),
-            new (nameof(UserClaimServiceModel.PhoneNumber) , user.PhoneNumber),
-        };
-    public async Task<AuthenticationViewModel> GetJWTTokenAsync(User user)
+    private (JwtSecurityToken Token, string AccessToken) this[User user, DateTime accessTokenExpireDate]
     {
-        var claims = this[user];
-
-        var token = new JwtSecurityToken(
-            issuer: _jwtSettings.Issuer,
-            audience: _jwtSettings.Audience,
-            claims: claims,
-            //notBefore: DateTime.UtcNow,
-            expires: DateTime.UtcNow.AddMinutes(_jwtSettings.AccessTokenExpireDate),
-            signingCredentials: new(
-                new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_jwtSettings.Secret)),
-                SecurityAlgorithms.HmacSha256Signature));
-
-        var accessToken = new JwtSecurityTokenHandler().WriteToken(token);
-
-        var authenticationResult = new AuthenticationViewModel
+        get
         {
-            AccessToken = accessToken,
-            RefreshTokenViewModel = this[user.UserName, user.Email]
-        };
+            var token = new JwtSecurityToken(
+             issuer: _jwtSettings.Issuer, audience: _jwtSettings.Audience,
+             claims: this[user],
+             //notBefore: DateTime.UtcNow,
+             expires: accessTokenExpireDate,
+             signingCredentials: new(
+                 new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_jwtSettings.Secret)),
+                 SecurityAlgorithms.HmacSha256Signature));
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+
+            return (token, tokenString);
+        }
+    }
+    #endregion
+
+    #region Functions
+
+    public async Task<AuthenticationViewModel>
+        GetJWTTokenAsync(User user)
+    {
+        var tokenTuple =
+            this[user, DateTime.UtcNow.AddMonths(_jwtSettings.AccessTokenExpireDate)];
+
+        var authenticationViewModel = this[user, tokenTuple.AccessToken];
 
         var userRefreshToken = new UserRefreshToken
         {
-
-            AccessToken = accessToken,
-            ExpireAt = authenticationResult.RefreshTokenViewModel.ExpireAt,
-            JwtId = token.Id,
-            RefreshToken = authenticationResult.RefreshTokenViewModel.NewToken,
-            CreatedAt = DateTime.UtcNow,
             UserId = user.Id,
+            AccessToken = tokenTuple.AccessToken,
+            RefreshToken = authenticationViewModel.RefreshTokenViewModel.NewToken,
+            RefreshTokenExpireAt = authenticationViewModel.RefreshTokenViewModel.ExpireAt,
+            AccessTokenExpireAt = tokenTuple.Token.ValidTo,
         };
 
         await _context.UserRefreshTokens.CreateAsync(userRefreshToken);
+
         try
         {
             await _context.SaveChangesAsync();
-            return await Task.FromResult(authenticationResult);
+            return await Task.FromResult(authenticationViewModel);
         }
         catch (Exception)
         {
-            throw;
+            throw new DbUpdateException();
         }
     }
+
+    public Task<AuthenticationViewModel>
+        GetRefreshTokenAsync(string accessToken, string refreshToken)
+    {
+        // Decode Token and read it To Get Claims
+
+
+        // Get User 
+        // Validation Token , RefreshToken
+        // Generate RefreshToken
+        throw new NotImplementedException();
+    }
+    #endregion
 }

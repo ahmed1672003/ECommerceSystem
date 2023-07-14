@@ -3,7 +3,6 @@ public class SignInCommandValidator : AbstractValidator<SignInCommand>
 {
     private readonly IUnitOfWork _context;
 
-
     public SignInCommandValidator(IUnitOfWork context)
     {
         _context = context;

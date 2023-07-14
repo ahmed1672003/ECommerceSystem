@@ -219,24 +219,21 @@ namespace ECommerce.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("AccessTokenExpireAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("ExpireAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
+                    b.Property<bool>("IsAccessTokenActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsRevoked")
+                    b.Property<bool>("IsRefreshTokenActive")
                         .HasColumnType("bit");
-
-                    b.Property<string>("JwtId")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RefreshToken")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RefreshTokenExpireAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
                         .IsRequired()

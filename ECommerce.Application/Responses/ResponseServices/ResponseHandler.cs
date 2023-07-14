@@ -6,6 +6,7 @@ public class ResponseHandler : IResponseHandler
         Context = context;
         Mapper = mapper;
     }
+
     public IUnitOfWork Context { get; private set; }
     public IMapper Mapper { get; private set; }
     public Response<TData> Success<TData>(
