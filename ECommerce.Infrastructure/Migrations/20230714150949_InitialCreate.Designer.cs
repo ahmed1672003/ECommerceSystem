@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECommerce.Infrastructure.Migrations
 {
     [DbContext(typeof(ECommerceDbContext))]
-    [Migration("20230623040329_AlterIdentityTablesName")]
-    partial class AlterIdentityTablesName
+    [Migration("20230714150949_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -149,6 +149,10 @@ namespace ECommerce.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email")
+                        .IsUnique()
+                        .HasFilter("[Email] IS NOT NULL");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -156,6 +160,8 @@ namespace ECommerce.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("UserName");
 
                     b.ToTable("Users", (string)null);
                 });
@@ -205,6 +211,45 @@ namespace ECommerce.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserLogins", (string)null);
+                });
+
+            modelBuilder.Entity("ECommerce.Domain.Entities.IdentityEntities.UserRefreshToken", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AccessToken")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ExpireAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsRevoked")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("JwtId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RefreshToken")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserRefreshTokens");
                 });
 
             modelBuilder.Entity("ECommerce.Domain.Entities.IdentityEntities.UserRole", b =>
@@ -268,6 +313,17 @@ namespace ECommerce.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ECommerce.Domain.Entities.IdentityEntities.UserRefreshToken", b =>
+                {
+                    b.HasOne("ECommerce.Domain.Entities.IdentityEntities.User", "User")
+                        .WithMany("UserRefreshTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("ECommerce.Domain.Entities.IdentityEntities.UserRole", b =>
                 {
                     b.HasOne("ECommerce.Domain.Entities.IdentityEntities.Role", null)
@@ -290,6 +346,11 @@ namespace ECommerce.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ECommerce.Domain.Entities.IdentityEntities.User", b =>
+                {
+                    b.Navigation("UserRefreshTokens");
                 });
 #pragma warning restore 612, 618
         }

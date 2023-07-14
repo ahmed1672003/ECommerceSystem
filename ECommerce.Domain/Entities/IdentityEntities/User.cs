@@ -21,6 +21,10 @@ public class User : IdentityUser<string>
     public override DateTimeOffset? LockoutEnd { get => base.LockoutEnd; set => base.LockoutEnd = value; }
     public override bool LockoutEnabled { get => base.LockoutEnabled; set => base.LockoutEnabled = value; }
     public override int AccessFailedCount { get => base.AccessFailedCount; set => base.AccessFailedCount = value; }
+
+    [InverseProperty(nameof(UserRefreshToken.User))]
+    public ICollection<UserRefreshToken> UserRefreshTokens { get; set; }
+
     #endregion
 
     #region Behaviors
@@ -39,4 +43,7 @@ public class User : IdentityUser<string>
         return base.ToString();
     }
     #endregion
+
+    public User() =>
+        UserRefreshTokens = new HashSet<UserRefreshToken>();
 }

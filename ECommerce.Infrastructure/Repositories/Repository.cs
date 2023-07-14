@@ -131,7 +131,6 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
             return await _entities.CountAsync(cancellationToken);
         else
             return await _entities.CountAsync(filter, cancellationToken);
-
     }
     #endregion
 }

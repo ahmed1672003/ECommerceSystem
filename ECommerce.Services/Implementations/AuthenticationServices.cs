@@ -1,15 +1,20 @@
-﻿namespace ECommerce.Services.Implementations;
+﻿using ECommerce.Domain.IRepositories;
+
+namespace ECommerce.Services.Implementations;
 public class AuthenticationServices : IAuthenticationServices
 {
     private readonly JwtSettings _jwtSettings;
     private readonly ConcurrentDictionary<string, RefreshTokenViewModel> _userRefreshToken;
+    private readonly IUnitOfWork _context;
     public AuthenticationServices(
         JwtSettings jwtSettings,
         ConcurrentDictionary<string,
-        RefreshTokenViewModel> userRefreshToken)
+        RefreshTokenViewModel> userRefreshToken,
+        IUnitOfWork context)
     {
         _jwtSettings = jwtSettings;
         _userRefreshToken = userRefreshToken;
+        _context = context;
     }
     private RefreshTokenViewModel this[string userName, string email]
     {
@@ -45,7 +50,7 @@ public class AuthenticationServices : IAuthenticationServices
             new (nameof(UserClaimServiceModel.Email) , user.Email),
             new (nameof(UserClaimServiceModel.PhoneNumber) , user.PhoneNumber),
         };
-    public Task<AuthenticationViewModel> GetJWTTokenAsync(User user)
+    public async Task<AuthenticationViewModel> GetJWTTokenAsync(User user)
     {
         var claims = this[user];
 
@@ -58,12 +63,35 @@ public class AuthenticationServices : IAuthenticationServices
             signingCredentials: new(
                 new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_jwtSettings.Secret)),
                 SecurityAlgorithms.HmacSha256Signature));
+
         var accessToken = new JwtSecurityTokenHandler().WriteToken(token);
 
-        return Task.FromResult(new AuthenticationViewModel
+        var authenticationResult = new AuthenticationViewModel
         {
             AccessToken = accessToken,
             RefreshTokenViewModel = this[user.UserName, user.Email]
-        });
+        };
+
+        var userRefreshToken = new UserRefreshToken
+        {
+
+            AccessToken = accessToken,
+            ExpireAt = authenticationResult.RefreshTokenViewModel.ExpireAt,
+            JwtId = token.Id,
+            RefreshToken = authenticationResult.RefreshTokenViewModel.NewToken,
+            CreatedAt = DateTime.UtcNow,
+            UserId = user.Id,
+        };
+
+        await _context.UserRefreshTokens.CreateAsync(userRefreshToken);
+        try
+        {
+            await _context.SaveChangesAsync();
+            return await Task.FromResult(authenticationResult);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
 }

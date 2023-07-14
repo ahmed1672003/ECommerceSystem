@@ -6,7 +6,9 @@ public class SignInCommandHandler :
     IRequestHandler<SignInCommand, Response<AuthenticationViewModel>>
 {
     private readonly IAuthenticationServices authenticationServices;
-    public SignInCommandHandler(IUnitOfWork context, IMapper mapper, IAuthenticationServices authenticationServices) : base(context, mapper)
+    public SignInCommandHandler(
+        IUnitOfWork context, IMapper mapper,
+        IAuthenticationServices authenticationServices) : base(context, mapper)
     {
         this.authenticationServices = authenticationServices;
     }
@@ -34,6 +36,7 @@ public class SignInCommandHandler :
 
         // generate new token
         var authenticationResult = await authenticationServices.GetJWTTokenAsync(user);
+
 
 
         // return token
