@@ -37,7 +37,7 @@ public class AuthenticationServices : IAuthenticationServices
             RefreshTokenViewModel = this[
                 user.UserName,
                 user.Email,
-        DateTime.UtcNow.AddMinutes(_jwtSettings.RefreshTokenExpireDate)]
+        DateTime.UtcNow.AddMonths(_jwtSettings.RefreshTokenExpireDate)]
         };
     private IEnumerable<Claim> this[User user] => new List<Claim>()
         {
@@ -103,20 +103,81 @@ public class AuthenticationServices : IAuthenticationServices
         }
         catch (Exception)
         {
-            throw new DbUpdateException();
+            throw new DbUpdateException("Save changes exception !");
         }
     }
 
-    public Task<AuthenticationViewModel>
+    public async Task<AuthenticationViewModel>
         GetRefreshTokenAsync(string accessToken, string refreshToken)
     {
         // Decode Token and read it To Get Claims
+        var handler = new JwtSecurityTokenHandler();
+        var jwtToken = await ReadJwtTokenAsync(accessToken);
 
+        // Check Validate Algorithm
+        if (jwtToken == null || !jwtToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256Signature))
+            throw new SecurityTokenException("Algorithm not valid !");
 
-        // Get User 
+        var userIdFromJwtToken = jwtToken.Claims.FirstOrDefault(t => t.Type == nameof(UserClaimViewModel.UserId)).Value;
+
+        // Get UserRefreshToken 
+        if (!await _context.UserRefreshTokens.IsExist(e =>
+        e.UserId.Equals(userIdFromJwtToken) &&
+        e.AccessToken.Equals(accessToken) &&
+        e.RefreshToken.Equals(refreshToken)))
+            throw new ArgumentNullException("User refresh token not found !");
+
+        var userRefreshToken = await _context.UserRefreshTokens
+            .RetrieveAsync(ut => ut.UserId.Equals(userIdFromJwtToken));
+
         // Validation Token , RefreshToken
+        if (!await ValidateTokenAsync(accessToken))
+            throw new SecurityTokenException("Token is not valid !");
+
+        if (userRefreshToken.IsAccessTokenActive)
+            throw new SecurityTokenException("Token is not expired !");
+
+        if (!userRefreshToken.IsRefreshTokenActive)
+            throw new SecurityTokenException("Refresh is expired !");
+
+        // Get User To Get New Token
+        var user = await _context.Users.RetrieveAsync(u => u.Id.Equals(userIdFromJwtToken));
+
         // Generate RefreshToken
-        throw new NotImplementedException();
+        var authenticationViewModel = await GetJWTTokenAsync(user);
+        return authenticationViewModel;
+    }
+
+    public async Task<bool> ValidateTokenAsync(string accessToken)
+    {
+        var handler = new JwtSecurityTokenHandler();
+
+        var parameters = new TokenValidationParameters()
+        {
+            ValidateIssuer = _jwtSettings.ValidateIssuer,
+            ValidIssuers = new[] { _jwtSettings.Issuer },
+            ValidateIssuerSigningKey = _jwtSettings.ValidateIssuerSigningKey,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_jwtSettings.Secret)),
+            ValidAudience = _jwtSettings.Audience,
+            ValidateAudience = _jwtSettings.ValidateAudience,
+            ValidateLifetime = _jwtSettings.ValidateLifeTime
+        };
+
+        var validator = await handler.ValidateTokenAsync(accessToken, parameters);
+
+        return validator.IsValid;
+    }
+
+    public Task<JwtSecurityToken> ReadJwtTokenAsync(string accessToken)
+    {
+        if (string.IsNullOrEmpty(accessToken))
+            throw new ArgumentNullException(nameof(accessToken));
+
+        var handler = new JwtSecurityTokenHandler();
+
+        var response = handler.ReadJwtToken(accessToken);
+
+        return Task.FromResult(response);
     }
     #endregion
 }

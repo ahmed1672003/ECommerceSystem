@@ -133,8 +133,6 @@ namespace ECommerce.Infrastructure.Migrations
                     RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AccessTokenExpireAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     RefreshTokenExpireAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsAccessTokenActive = table.Column<bool>(type: "bit", nullable: false),
-                    IsRefreshTokenActive = table.Column<bool>(type: "bit", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>

@@ -222,12 +222,6 @@ namespace ECommerce.Infrastructure.Migrations
                     b.Property<DateTime>("AccessTokenExpireAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsAccessTokenActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsRefreshTokenActive")
-                        .HasColumnType("bit");
-
                     b.Property<string>("RefreshToken")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

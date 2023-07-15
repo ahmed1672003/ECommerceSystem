@@ -10,13 +10,11 @@ public class UserRefreshToken
     public DateTime RefreshTokenExpireAt { get; set; }
     public bool IsAccessTokenActive
     {
-        get => DateTime.UtcNow > AccessTokenExpireAt;
-        set => value = DateTime.UtcNow < AccessTokenExpireAt;
+        get => DateTime.UtcNow < AccessTokenExpireAt;
     }
     public bool IsRefreshTokenActive
     {
-        get => DateTime.UtcNow > RefreshTokenExpireAt;
-        set => value = DateTime.UtcNow < RefreshTokenExpireAt;
+        get => DateTime.UtcNow < RefreshTokenExpireAt;
     }
     public string UserId { get; set; }
 

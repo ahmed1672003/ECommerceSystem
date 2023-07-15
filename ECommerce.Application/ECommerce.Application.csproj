@@ -39,10 +39,6 @@
 
   <ItemGroup>
     <Folder Include="Extensions\" />
-    <Folder Include="Features\Authentication\AuthenticationMapper\" />
-    <Folder Include="Features\Authentication\Queries\AuthenticationQueriesHandlers\" />
-    <Folder Include="Features\Authentication\Queries\AuthenticationQueriesValidators\" />
-    <Folder Include="Features\Authentication\Queries\AuthenticationQueries\" />
   </ItemGroup>
 
   <ItemGroup>

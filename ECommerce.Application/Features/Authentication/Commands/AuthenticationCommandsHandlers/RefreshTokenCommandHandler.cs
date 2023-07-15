@@ -5,11 +5,18 @@ public class RefreshTokenCommandHandler :
     ResponseHandler,
     IRequestHandler<RefreshTokenCommand, Response<AuthenticationViewModel>>
 {
-    public RefreshTokenCommandHandler(IUnitOfWork context, IMapper mapper) : base(context, mapper) { }
+    private readonly IAuthenticationServices _authenticationServices;
+    public RefreshTokenCommandHandler(IUnitOfWork context, IMapper mapper, IAuthenticationServices authenticationServices) : base(context, mapper)
+    {
+        _authenticationServices = authenticationServices;
+    }
 
-    public Task<Response<AuthenticationViewModel>>
+    public async Task<Response<AuthenticationViewModel>>
         Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var response =
+            await _authenticationServices.GetRefreshTokenAsync(request.AccessToken, request.RefreshToken);
+
+        return Success(response);
     }
 }

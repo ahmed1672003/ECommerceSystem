@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECommerce.Infrastructure.Migrations
 {
     [DbContext(typeof(ECommerceDbContext))]
-    [Migration("20230714164553_InitialCreate")]
+    [Migration("20230715011725_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -224,12 +224,6 @@ namespace ECommerce.Infrastructure.Migrations
 
                     b.Property<DateTime>("AccessTokenExpireAt")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsAccessTokenActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsRefreshTokenActive")
-                        .HasColumnType("bit");
 
                     b.Property<string>("RefreshToken")
                         .IsRequired()
