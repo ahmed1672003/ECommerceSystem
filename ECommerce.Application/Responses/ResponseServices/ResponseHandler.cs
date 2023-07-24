@@ -1,4 +1,6 @@
-﻿namespace ECommerce.Application.Responses.ResponseServices;
+﻿using ECommerce.Application.Constants;
+
+namespace ECommerce.Application.Responses.ResponseServices;
 public class ResponseHandler : IResponseHandler
 {
     public ResponseHandler(IUnitOfWork context, IMapper mapper)

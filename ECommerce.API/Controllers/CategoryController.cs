@@ -1,6 +1,7 @@
-﻿using ECommerce.ViewModels.ViewModels.CategoryViewModels;
+﻿using ECommerce.Models.Category;
 
 using Microsoft.AspNetCore.Authorization;
+
 namespace ECommerce.API.Controllers;
 [Route("api/v1/[controller]/[action]")]
 [ApiController]
@@ -11,12 +12,12 @@ public class CategoryController : ECommerceController
 
 
     [HttpPost, ActionName(nameof(Post))]
-    public async Task<IActionResult> Post([FromBody] PostCategoryViewModel model) =>
+    public async Task<IActionResult> Post([FromBody] PostCategoryModel model) =>
       NewResult(await Mediator.Send(new PostCategoryCommand(model)));
 
 
     [HttpPut, ActionName(nameof(Put))]
-    public async Task<IActionResult> Put([FromQuery] string id, [FromBody] CategoryViewModel model) =>
+    public async Task<IActionResult> Put([FromQuery] string id, [FromBody] CategoryModel model) =>
 
          NewResult(await Mediator.Send(new PutCategoryCommand(id, model)));
 

@@ -1,6 +1,5 @@
-﻿
-
-using ECommerce.ViewModels.ViewModels.UserViewModels;
+﻿using ECommerce.Domain.Entities.IdentityEntities;
+using ECommerce.Models.User;
 
 namespace ECommerce.Application.Features.Users.UserMapper;
 public class UserProfile : Profile
@@ -9,10 +8,10 @@ public class UserProfile : Profile
     {
         Mapp();
     }
-    void Mapp()
-    {
-        CreateMap<PostUserViewModel, User>();
 
-        CreateMap<User, UserViewModel>();
+    private void Mapp()
+    {
+        CreateMap<PostUserModel, User>();
+        CreateMap<User, UserModel>();
     }
 }

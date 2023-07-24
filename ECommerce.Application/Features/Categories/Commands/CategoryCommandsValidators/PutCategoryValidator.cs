@@ -21,29 +21,29 @@ public class PutCategoryValidator : AbstractValidator<PutCategoryCommand>
          .MinimumLength(36).WithMessage(
             c => $"{nameof(c.Id)} his length can not be less than {36}");
 
-        RuleFor(c => c.CategoryViewModel.Name)
+        RuleFor(c => c.CategoryModel.Name)
         .NotEmpty().WithMessage(
-            c => $"{nameof(c.CategoryViewModel.Name)} can not be not empty")
+            c => $"{nameof(c.CategoryModel.Name)} can not be not empty")
         .NotNull().WithMessage(
-            c => $"{nameof(c.CategoryViewModel.Name)} can not be not null")
+            c => $"{nameof(c.CategoryModel.Name)} can not be not null")
         .MaximumLength(100).WithMessage(
-            c => $"{nameof(c.CategoryViewModel.Name)} his length can not be bigger than {100}")
+            c => $"{nameof(c.CategoryModel.Name)} his length can not be bigger than {100}")
         .MinimumLength(1).WithMessage(
-            c => $"{nameof(c.CategoryViewModel.Name)} his length can not be less than {1}");
+            c => $"{nameof(c.CategoryModel.Name)} his length can not be less than {1}");
     }
     private void ApplyCustomValidatorRules()
     {
         RuleFor(c => c)
         .MustAsync(async (command, cancellationToken) =>
         await _context.Categories.IsExist(
-            c => c.Id.Equals(command.Id) && c.Id.Equals(command.CategoryViewModel.Id)))
+            c => c.Id.Equals(command.Id) && c.Id.Equals(command.CategoryModel.Id)))
         .WithMessage(
             c => $"{nameof(c.Id)} is not exist !");
 
         RuleFor(c => c)
             .MustAsync(async (command, cancellationToken) =>
-           await _context.Categories.CanUpdatedAsync(command.CategoryViewModel.Name, command.Id))
+           await _context.Categories.CanUpdatedAsync(command.CategoryModel.Name, command.Id))
             .WithMessage(
-            c => $"{nameof(c.CategoryViewModel.Name)} is Exist !");
+            c => $"{nameof(c.CategoryModel.Name)} is Exist !");
     }
 }

@@ -25,6 +25,7 @@ public class User : IdentityUser<string>
     [InverseProperty(nameof(UserRefreshToken.User))]
     public ICollection<UserRefreshToken> UserRefreshTokens { get; set; }
 
+    public ICollection<RefreshToken> RefreshTokens { get; set; }
     #endregion
 
     #region Behaviors
@@ -44,6 +45,9 @@ public class User : IdentityUser<string>
     }
     #endregion
 
-    public User() =>
+    public User()
+    {
         UserRefreshTokens = new HashSet<UserRefreshToken>();
+        RefreshTokens = new HashSet<RefreshToken>();
+    }
 }

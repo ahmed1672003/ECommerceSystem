@@ -1,4 +1,4 @@
-﻿using ECommerce.ViewModels.ViewModels.CategoryViewModels;
+﻿using ECommerce.Models.Category;
 
 namespace ECommerce.Application.Features.Categories.CategoryMapper;
 public class CategoryProfile : Profile
@@ -9,7 +9,7 @@ public class CategoryProfile : Profile
     }
     private void Mapp()
     {
-        CreateMap<PostCategoryViewModel, Category>().ReverseMap();
-        CreateMap<Category, CategoryViewModel>().ReverseMap();
+        CreateMap<PostCategoryModel, Category>().ReverseMap();
+        CreateMap<Category, CategoryModel>().ReverseMap();
     }
 }

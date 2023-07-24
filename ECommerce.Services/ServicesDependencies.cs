@@ -5,35 +5,35 @@ public static class ServicesDependencies
 {
     public static IServiceCollection AddServicesDependencies(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddTransient(typeof(IAuthenticationServices), typeof(AuthenticationServices));
-
         #region JWT Services
         // JWT Setting
-        var jwtSettings = new JwtSettings();
-        services.AddSingleton(jwtSettings);
-        configuration.GetSection(nameof(jwtSettings)).Bind(jwtSettings);
-
-        services
-            .AddAuthentication(cfg =>
+        services.AddSingleton(typeof(JWT));
+        services.Configure<JWT>(configuration.GetSection(nameof(JWT)));
+        services.AddAuthentication(options =>
         {
-            cfg.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            cfg.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         })
-            .AddJwtBearer(cfg =>
-        {
-            cfg.RequireHttpsMetadata = false;
-            cfg.SaveToken = true;
-            cfg.TokenValidationParameters = new()
+            .AddJwtBearer(options =>
             {
-                ValidateIssuer = jwtSettings.ValidateIssuer,
-                ValidIssuers = new[] { jwtSettings.Issuer },
-                ValidateIssuerSigningKey = jwtSettings.ValidateIssuerSigningKey,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret)),
-                ValidAudience = jwtSettings.Audience,
-                ValidateAudience = jwtSettings.ValidateAudience,
-                ValidateLifetime = jwtSettings.ValidateLifeTime
-            };
-        });
+
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = false;
+                options.TokenValidationParameters = new()
+                {
+                    ValidateIssuerSigningKey = true,
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidIssuer = configuration.GetValue<string>($"{nameof(JWT)}:{nameof(JWT.Issuer)}"),
+                    ValidAudience = configuration.GetValue<string>($"{nameof(JWT)}:{nameof(JWT.Audience)}"),
+                    IssuerSigningKey =
+                    new SymmetricSecurityKey(
+                    Encoding.UTF8.
+                    GetBytes(configuration.GetValue<string>($"{nameof(JWT)}:{nameof(JWT.Key)}"))
+                    ),
+                };
+            });
 
         services.AddSwaggerGen(options =>
         {
@@ -62,6 +62,7 @@ public static class ServicesDependencies
                 }
             });
         });
+        services.AddScoped<IAuthService, AuthService>();
         #endregion  
 
         return services;

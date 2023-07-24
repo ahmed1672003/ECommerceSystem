@@ -39,11 +39,13 @@
 
   <ItemGroup>
     <Folder Include="Extensions\" />
+    <Folder Include="Features\Users\Queries\UserQueriesHandlers\" />
+    <Folder Include="Features\Users\Queries\UserQueriesValidators\" />
+    <Folder Include="Features\Users\Queries\UserQueries\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ECommerce.Services\ECommerce.Services.csproj" />
-    <ProjectReference Include="..\ECommerce.ViewModels\ECommerce.ViewModels.csproj" />
   </ItemGroup>
 
 </Project>
