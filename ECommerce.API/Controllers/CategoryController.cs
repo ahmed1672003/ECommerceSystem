@@ -29,7 +29,7 @@ public class CategoryController : ECommerceController
     public async Task<IActionResult> RetrieveAll() =>
          NewResult(await Mediator.Send(new GetAllCategoriesQuery()));
 
-    [AllowAnonymous]
+    [Authorize(Roles = "User")]
     [HttpGet, ActionName(nameof(Paginate))]
     public async Task<IActionResult> Paginate(
         [FromQuery] int? pageNumber, [FromQuery] int? pageSize, [FromQuery] CategoryEnum orderBy) =>

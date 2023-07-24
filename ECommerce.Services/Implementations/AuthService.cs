@@ -3,7 +3,7 @@ using System.Security.Claims;
 
 using ECommerce.Domain.Entities.IdentityEntities;
 using ECommerce.Domain.IRepositories;
-using ECommerce.Models.User.Auth;
+
 using Microsoft.Extensions.Options;
 
 namespace ECommerce.Services.Implementations;
@@ -37,7 +37,7 @@ public class AuthService : IAuthService
             new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
-            new Claim("uid", user.Id)
+            new Claim("userId", user.Id)
         }
         .Union(userClaims)
         .Union(roleClaims);
@@ -53,14 +53,5 @@ public class AuthService : IAuthService
 
         return jwtSecurityToken;
     }
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="model">login model</param>
-    /// <returns>Task of AuthModel</returns>
-    /// <exception cref="NotImplementedException"></exception>
-    public Task<AuthModel> GetTokenAsync(TokenRequestModel model)
-    {
-        throw new NotImplementedException();
-    }
+
 }
