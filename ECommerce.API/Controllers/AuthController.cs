@@ -13,7 +13,7 @@ public class AuthController : ECommerceController
     [HttpPost, ActionName(nameof(Register))]
     public async Task<IActionResult> Register([FromBody] PostUserModel model) =>
         NewResult(await Mediator.Send(new RegisterUserCommand(model)));
-
+        
     [HttpPost, ActionName(nameof(Login))]
     public async Task<IActionResult> Login(TokenRequestModel model)
     {

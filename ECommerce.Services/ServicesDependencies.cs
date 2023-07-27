@@ -9,6 +9,7 @@ public static class ServicesDependencies
         // JWT Setting
         services.AddSingleton(typeof(JWT));
         services.Configure<JWT>(configuration.GetSection(nameof(JWT)));
+
         services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

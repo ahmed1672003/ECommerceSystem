@@ -12,9 +12,14 @@ public class LoginUserCommandHandler :
     IRequestHandler<LoginUserCommand, Response<AuthModel>>
 {
     private readonly IAuthService _authService;
-    public LoginUserCommandHandler(IUnitOfWork context, IMapper mapper, IAuthService authService) : base(context, mapper)
+    private readonly EmailAddressAttribute _emailAddressAttribute;
+    public LoginUserCommandHandler(IUnitOfWork context,
+        IMapper mapper, 
+        IAuthService authService,
+        EmailAddressAttribute emailAddressAttribute) : base(context, mapper)
     {
         _authService = authService;
+        _emailAddressAttribute = emailAddressAttribute;
     }
 
     public async Task<Response<AuthModel>>
@@ -22,7 +27,7 @@ public class LoginUserCommandHandler :
     {
         // check user is founded or not
         var isFounded = await Context.Users.IsExist(
-            u => new EmailAddressAttribute().IsValid(request.Model.EmailOrUserName) ?
+            u => _emailAddressAttribute.IsValid(request.Model.EmailOrUserName) ?
             u.Email.Equals(request.Model.EmailOrUserName) :
             u.UserName.Equals(request.Model.EmailOrUserName)
             );
