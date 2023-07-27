@@ -25,6 +25,7 @@ public static class ServicesDependencies
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero,
                     ValidIssuer = configuration.GetValue<string>($"{nameof(JWT)}:{nameof(JWT.Issuer)}"),
                     ValidAudience = configuration.GetValue<string>($"{nameof(JWT)}:{nameof(JWT.Audience)}"),
                     IssuerSigningKey =

@@ -36,7 +36,7 @@ public class RegisterUserCommandHandler :
         var authModel = new AuthModel()
         {
             Email = user.Email,
-            ExpiresOn = jwtSecurityToken.ValidTo,
+            //ExpiresOn = jwtSecurityToken.ValidTo,
             IsAuthenticated = true,
             UserName = user.UserName,
             Roles = await Context.Users.Manager.GetRolesAsync(user),

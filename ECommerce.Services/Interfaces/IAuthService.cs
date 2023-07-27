@@ -7,5 +7,6 @@ namespace ECommerce.Services.Interfaces
     public interface IAuthService
     {
         Task<JwtSecurityToken> CreateJwtTokenAsync(User user);
+        Task<UserRefreshToken> GenerateRefreshTokenAsync();
     }
 }

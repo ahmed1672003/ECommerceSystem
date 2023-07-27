@@ -19,6 +19,7 @@ public interface IRepository<TEntity> where TEntity : class
     Task<TEntity> RetrieveAsync(
         Expression<Func<TEntity, bool>> mandatoryFilter,
         Expression<Func<TEntity, bool>> optionalFilter = null,
+        string[] includes = null,
         CancellationToken cancellationToken = default);
     Task<IQueryable<TEntity>> RetrieveAllAsync(
         Expression<Func<TEntity, bool>> firstFilter = null,
@@ -28,6 +29,7 @@ public interface IRepository<TEntity> where TEntity : class
         int? pageNumber = null,
         int? pageSize = null,
         bool paginationOn = false,
+        string[] includes = null,
         CancellationToken cancellationToken = default);
     Task<bool> IsExist(Expression<Func<TEntity, bool>> filter = null, CancellationToken cancellationToken = default);
     Task<int> CountAsync(Expression<Func<TEntity, bool>> filter = null, CancellationToken cancellationToken = default);

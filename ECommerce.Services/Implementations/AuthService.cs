@@ -1,5 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 
 using ECommerce.Domain.Entities.IdentityEntities;
 using ECommerce.Domain.IRepositories;
@@ -48,10 +49,25 @@ public class AuthService : IAuthService
             issuer: _jwt.Issuer,
             audience: _jwt.Audience,
             claims: claims,
-            expires: DateTime.Now.AddDays(_jwt.DurationInDays),
+            expires: DateTime.UtcNow.AddDays(_jwt.DurationInDays),
             signingCredentials: signingCredentials);
 
         return jwtSecurityToken;
     }
 
+    public async Task<UserRefreshToken> GenerateRefreshTokenAsync()
+    {
+        var randomNumber = new byte[64];
+
+        using var generator = new RNGCryptoServiceProvider();
+
+        generator.GetBytes(randomNumber);
+
+        return await Task.FromResult(new UserRefreshToken()
+        {
+            CreatedOn = DateTime.UtcNow,
+            ExpiresOn = DateTime.UtcNow.AddDays(_jwt.DurationInDays),
+            Token = Convert.ToBase64String(randomNumber),
+        });
+    }
 }

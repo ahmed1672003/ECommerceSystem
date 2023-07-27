@@ -1,24 +1,18 @@
 ﻿namespace ECommerce.Domain.Entities.IdentityEntities;
-
-[Table("UserRefreshTokens"), PrimaryKey(nameof(Id))]
+[Owned, Table("UserRefreshTokens")]
 public class UserRefreshToken
 {
-    public string Id { get; set; }
-    public string AccessToken { get; set; }
-    public string RefreshToken { get; set; }
-    public DateTime AccessTokenExpireAt { get; set; }
-    public DateTime RefreshTokenExpireAt { get; set; }
-    public bool IsAccessTokenActive
-    {
-        get => DateTime.UtcNow < AccessTokenExpireAt;
-    }
-    public bool IsRefreshTokenActive
-    {
-        get => DateTime.UtcNow < RefreshTokenExpireAt;
-    }
-    public string UserId { get; set; }
+    //public string Id { get; set; }
+    public string Token { get; set; }
+    public DateTime ExpiresOn { get; set; }
+    public bool IsTokenExpired => DateTime.UtcNow > ExpiresOn;
+    public DateTime CreatedOn { get; set; }
+    public DateTime? RevokedOn { get; set; }
+    public bool IsActive => RevokedOn == null && !IsTokenExpired;
+    //public string UserId { get; set; }
 
-    [ForeignKey(nameof(UserId))]
-    public User User { get; set; }
-    public UserRefreshToken() => Id = Guid.NewGuid().ToString();
+    //[ForeignKey(nameof(UserId))]
+    //public User User { get; set; }
+    //public UserRefreshTokens() =>
+    //    UserId = Guid.NewGuid().ToString();
 }

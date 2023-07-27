@@ -13,6 +13,7 @@ public class ECommerceDbContext :
     {
         base.OnModelCreating(modelBuilder);
         new CategoryConfigurations().Configure(modelBuilder.Entity<Category>());
+        new RoleConfigurations().Configure(modelBuilder.Entity<Role>());
         new UserConfigurations().Configure(modelBuilder.Entity<User>());
         new RoleClaimConfigurations().Configure(modelBuilder.Entity<RoleClaim>());
         new UserClaimConfigurations().Configure(modelBuilder.Entity<UserClaim>());
@@ -33,6 +34,6 @@ public class ECommerceDbContext :
     public DbSet<UserLogin> UserLogins { get; set; }
     public DbSet<UserRole> UserRoles { get; set; }
     public DbSet<UserToken> UserTokens { get; set; }
-    public DbSet<RefreshToken> RefreshTokens { get; set; }
+
     #endregion
 }

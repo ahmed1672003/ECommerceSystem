@@ -11,22 +11,26 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     }
 
     #region Commands
-    public virtual async Task CreateAsync(
+    public virtual async Task
+        CreateAsync(
         TEntity entity,
         CancellationToken cancellationToken = default) =>
        await _entities.AddAsync(entity, cancellationToken);
 
-    public virtual async Task CreateRangeAsync(
+    public virtual async Task
+        CreateRangeAsync(
         IEnumerable<TEntity> entities,
         CancellationToken cancellationToken = default) =>
         await _entities.AddRangeAsync(entities, cancellationToken);
 
-    public virtual async Task DeleteAsync(
+    public virtual async Task
+        DeleteAsync(
         TEntity entity,
         CancellationToken cancellationToken = default) =>
         await Task.FromResult(_entities.Remove(entity));
 
-    public virtual async Task ExecuteDeleteAsync(
+    public virtual async
+        Task ExecuteDeleteAsync(
         Expression<Func<TEntity, bool>> filter = null,
         CancellationToken cancellationToken = default)
     {
@@ -36,14 +40,16 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
             await _entities.Where(filter).ExecuteDeleteAsync(cancellationToken);
     }
 
-    public virtual Task UpdateAsync(
+    public virtual Task
+        UpdateAsync(
         TEntity entity,
         CancellationToken cancellationToken = default)
     {
         _entities.Update(entity);
         return Task.CompletedTask;
     }
-    public virtual Task UpdatedRangeAsync(
+    public virtual Task
+        UpdatedRangeAsync(
         IEnumerable<TEntity> entities,
         CancellationToken cancellationToken = default)
     {
@@ -51,7 +57,9 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
             _entities.UpdateRange(entities);
         return Task.CompletedTask;
     }
-    public virtual async Task ExecuteUpdateAsync(
+
+    public virtual async Task
+        ExecuteUpdateAsync(
         Func<TEntity, object> property,
         Expression<Func<TEntity, object>> propertyExpression,
         Expression<Func<TEntity, bool>> filter = null,
@@ -70,7 +78,8 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     #endregion
 
     #region Queries
-    public virtual async Task<bool> IsExist(
+    public virtual async Task<bool>
+        IsExist(
         Expression<Func<TEntity, bool>> filter = null,
         CancellationToken cancellationToken = default)
     {
@@ -79,7 +88,9 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
         else
             return await _entities.AnyAsync(filter, cancellationToken);
     }
-    public virtual async Task<IQueryable<TEntity>> RetrieveAllAsync(
+
+    public virtual async Task<IQueryable<TEntity>>
+        RetrieveAllAsync(
         Expression<Func<TEntity, bool>> firstFilter = null,
         Expression<Func<TEntity, bool>> secondFilter = null,
         Expression<Func<TEntity, object>> orderBy = null,
@@ -87,6 +98,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
         int? pageNumber = null,
         int? pageSize = null,
         bool paginationOn = false,
+        string[] includes = null,
         CancellationToken cancellationToken = default)
     {
         IQueryable<TEntity> entities = _entities.AsQueryable();
@@ -111,21 +123,39 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
             pageSize = pageSize.HasValue ? pageSize.Value <= 0 ? 10 : pageSize.Value : 10;
             entities = entities.Skip((pageNumber.Value - 1) * pageSize.Value).Take(pageSize.Value);
         }
+
+        if (includes is not null)
+            foreach (var include in includes)
+                entities = entities.Include(include);
+
         return await Task.FromResult(entities);
     }
 
-    public virtual async Task<TEntity> RetrieveAsync(
+    public virtual async Task<TEntity>
+        RetrieveAsync(
         Expression<Func<TEntity, bool>> mandatoryFilter,
         Expression<Func<TEntity, bool>> optionalFilter = null,
+        string[] includes = null,
         CancellationToken cancellationToken = default)
     {
+        IQueryable<TEntity> entities = _entities.AsQueryable();
+
         if (optionalFilter is null)
-            return await _entities.FirstOrDefaultAsync(mandatoryFilter, cancellationToken);
+            entities = entities.Where(mandatoryFilter);
         else
-            return await _entities.Where(optionalFilter).FirstOrDefaultAsync(mandatoryFilter, cancellationToken);
+            entities = entities.Where(optionalFilter).Where(optionalFilter);
+
+        if (includes is not null)
+            foreach (var include in includes)
+                entities = entities.Include(include);
+
+        return await entities.FirstOrDefaultAsync();
     }
 
-    public virtual async Task<int> CountAsync(Expression<Func<TEntity, bool>> filter = null, CancellationToken cancellationToken = default)
+    public virtual async Task<int>
+        CountAsync(
+        Expression<Func<TEntity, bool>> filter = null,
+        CancellationToken cancellationToken = default)
     {
         if (filter is null)
             return await _entities.CountAsync(cancellationToken);
