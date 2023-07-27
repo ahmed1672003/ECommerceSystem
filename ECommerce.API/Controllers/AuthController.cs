@@ -30,6 +30,19 @@ public class AuthController : ECommerceController
     public async Task<IActionResult> AddUserToRole(AddUserToRoleModel model) =>
         NewResult(await Mediator.Send(new AddUserToRoleCommand(model)));
 
+    [HttpGet , ActionName(nameof(RefreshToken))]
+    public async Task<IActionResult> RefreshToken()
+    {
+        var refreshToken = Request.Cookies["refreshToken"];
+        var response = await Mediator.Send(new RefreshTokenCommand(refreshToken));
+
+        // update 
+        if (!string.IsNullOrEmpty(response.Data.RefreshToken))
+            SetRefreshTokenInCookie(response.Data.RefreshToken, response.Data.RefreshTokenExpiration);
+
+        return NewResult(response);
+    }
+
     private void SetRefreshTokenInCookie(string refreshToken, DateTime expires)
     {
         // save refresh token in cookie

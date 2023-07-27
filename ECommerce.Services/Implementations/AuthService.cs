@@ -2,9 +2,13 @@
 using System.Security.Claims;
 using System.Security.Cryptography;
 
+using Azure;
+
 using ECommerce.Domain.Entities.IdentityEntities;
 using ECommerce.Domain.IRepositories;
+using ECommerce.Models.User.Auth;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 
 namespace ECommerce.Services.Implementations;
@@ -69,5 +73,63 @@ public class AuthService : IAuthService
             ExpiresOn = DateTime.UtcNow.AddDays(_jwt.DurationInDays),
             Token = Convert.ToBase64String(randomNumber),
         });
+    }
+
+    public async Task<AuthModel> RefreshTokenAsync(string token)
+    {
+        var user = await _context.Users.RetrieveAsync(
+            u => u.UserRefreshTokens.Any(t => t.Token.Equals(token)));
+
+
+
+        // check is user with specific token founded
+        if (user == null)
+            return new()
+            {
+                Message = "Invalid Token"
+            };
+
+        var refreshToken = user.UserRefreshTokens.Single(t => t.Token.Equals(token));
+
+        if (!refreshToken.IsActive)
+            return new()
+            {
+                Message = "In active Token"
+            };
+
+        // revoke refresh Token 
+        refreshToken.RevokedOn = DateTime.UtcNow;
+
+        // generate new user refresh token
+        var newUserRefreshToken = await GenerateRefreshTokenAsync();
+
+        // add new refresh token to user
+        user.UserRefreshTokens.Add(newUserRefreshToken);
+
+        try
+        {
+            // update user 
+            await _context.Users.Manager.UpdateAsync(user);
+        }
+        catch 
+        {
+            return new ()
+            {
+                Message = "Internal server error",
+            };
+        }
+
+        // generate new jwt token
+        var jwtToken = await CreateJwtTokenAsync(user);
+        return new()
+        {
+            IsAuthenticated = true,
+            Email = user.Email,
+            UserName = user.UserName,
+            Token = new JwtSecurityTokenHandler().WriteToken(jwtToken),
+            Roles = await _context.Users.Manager.GetRolesAsync(user),
+            RefreshToken = newUserRefreshToken.Token,
+            RefreshTokenExpiration = newUserRefreshToken.ExpiresOn
+        };
     }
 }

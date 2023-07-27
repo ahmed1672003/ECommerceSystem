@@ -1,4 +1,6 @@
-﻿using ECommerce.Application.Behaviors.ValidatorBehavior;
+﻿using System.ComponentModel.DataAnnotations;
+
+using ECommerce.Application.Behaviors.ValidatorBehavior;
 
 namespace ECommerce.Application;
 public static class ApplicationDependencies
@@ -14,6 +16,7 @@ public static class ApplicationDependencies
         services.AddTransient(typeof(IResponseHandler), typeof(ResponseHandler));
         services.AddTransient(typeof(IResponseHandler), typeof(PaginationResponseHandler));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        services.AddTransient<EmailAddressAttribute>();
         return services;
     }
 }
