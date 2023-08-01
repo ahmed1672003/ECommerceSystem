@@ -1,4 +1,4 @@
-﻿using ECommerce.Models.User.Auth;
+﻿using ECommerce.Models.User.Authentication;
 
 namespace ECommerce.Application.Features.Users.Commands.UserCommands;
-public record RefreshTokenCommand(string RefreshToken) : IRequest<Response<AuthModel>>;
+public record RefreshTokenCommand(RefreshTokenRequestModel RefreshTokenRequestModel) : IRequest<Response<AuthenticationModel>>;

@@ -13,30 +13,30 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
 
     void ApplyValidatorRules()
     {
-        RuleFor(c => c.model.Email)
-            .NotNull().WithMessage(e => $"{nameof(e.model.Email)} is required !")
-            .NotEmpty().WithMessage(e => $"{nameof(e.model.Email)} can not be null !")
-            .EmailAddress().WithMessage(e => $"{nameof(e.model.Email)} not valid !");
+        RuleFor(c => c.Model.Email)
+            .NotNull().WithMessage(e => $"{nameof(e.Model.Email)} is required !")
+            .NotEmpty().WithMessage(e => $"{nameof(e.Model.Email)} can not be null !")
+            .EmailAddress().WithMessage(e => $"{nameof(e.Model.Email)} not valid !");
 
-        RuleFor(c => c.model.UserName)
-           .NotNull().WithMessage(e => $"{nameof(e.model.Email)} is required !")
-           .NotEmpty().WithMessage(e => $"{nameof(e.model.Email)} can not be null !");
+        RuleFor(c => c.Model.UserName)
+           .NotNull().WithMessage(e => $"{nameof(e.Model.Email)} is required !")
+           .NotEmpty().WithMessage(e => $"{nameof(e.Model.Email)} can not be null !");
 
 
-        RuleFor(c => c.model)
-            .Must((model) =>
-            model.Password.Equals(model.ConfirmedPassword))
+        RuleFor(c => c.Model)
+            .Must((Model) =>
+            Model.Password.Equals(Model.ConfirmedPassword))
             .WithMessage("password & confirmedPassword are not equals !");
     }
 
     void ApplyCustomValidatorRules()
     {
-        RuleFor(c => c.model)
-            .MustAsync(async (model, cancellationToken) =>
+        RuleFor(c => c.Model)
+            .MustAsync(async (Model, cancellationToken) =>
             !
-           ((await _context.Users.IsExist(u => u.Email.Equals(model.Email))
+           ((await _context.Users.IsExist(u => u.Email.Equals(Model.Email))
             ||
-            (await _context.Users.IsExist(u => u.UserName.Equals(model.UserName)))
+            (await _context.Users.IsExist(u => u.UserName.Equals(Model.UserName)))
            ))).WithMessage("email or user name is exist!");
     }
 }

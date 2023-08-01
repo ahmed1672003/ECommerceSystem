@@ -1,14 +1,19 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.OpenApi.Models;
 
 namespace ECommerce.Services;
 public static class ServicesDependencies
 {
     public static IServiceCollection AddServicesDependencies(this IServiceCollection services, IConfiguration configuration)
     {
+        services
+            .AddHttpContextAccessor()
+            .AddSingleton(typeof(JWT))
+            .AddScoped<IAuthService, AuthService>()
+            .AddScoped<IAuthenticationService, AuthenticationService>()
+            .AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+
         #region JWT Services
-        // JWT Setting
-        services.AddSingleton(typeof(JWT));
-        services.Configure<JWT>(configuration.GetSection(nameof(JWT)));
 
         services.AddAuthentication(options =>
         {
@@ -64,8 +69,11 @@ public static class ServicesDependencies
                 }
             });
         });
-        services.AddScoped<IAuthService, AuthService>();
-        #endregion  
+
+        services
+            .Configure<JWT>(configuration.GetSection(nameof(JWT)))
+            .Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
+        #endregion
 
         return services;
     }

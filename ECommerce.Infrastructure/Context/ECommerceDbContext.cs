@@ -1,4 +1,4 @@
-﻿using ECommerce.Infrastructure.Context.Configurations.IdentityConfigurations;
+﻿using System.Reflection;
 
 namespace ECommerce.Infrastructure.Context;
 public class ECommerceDbContext :
@@ -12,15 +12,7 @@ public class ECommerceDbContext :
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        new CategoryConfigurations().Configure(modelBuilder.Entity<Category>());
-        new RoleConfigurations().Configure(modelBuilder.Entity<Role>());
-        new UserConfigurations().Configure(modelBuilder.Entity<User>());
-        new RoleClaimConfigurations().Configure(modelBuilder.Entity<RoleClaim>());
-        new UserClaimConfigurations().Configure(modelBuilder.Entity<UserClaim>());
-        new UserRoleConfigurations().Configure(modelBuilder.Entity<UserRole>());
-        new UserLoginConfigurations().Configure(modelBuilder.Entity<UserLogin>());
-        new RoleClaimConfigurations().Configure(modelBuilder.Entity<RoleClaim>());
-        new UserTokenConfigurations().Configure(modelBuilder.Entity<UserToken>());
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 
     #endregion
@@ -34,6 +26,9 @@ public class ECommerceDbContext :
     public DbSet<UserLogin> UserLogins { get; set; }
     public DbSet<UserRole> UserRoles { get; set; }
     public DbSet<UserToken> UserTokens { get; set; }
+    public DbSet<UserJWT> UserJWTs { get; set; }
+
+
 
     #endregion
 }

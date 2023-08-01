@@ -11,6 +11,6 @@ public interface IUnitOfWork : IAsyncDisposable
     IUserRepository Users { get; }
     IUserRoleRepository UserRoles { get; }
     IUserTokenRepository UserTokens { get; }
-    IUserRefreshTokenRepository UserRefreshTokens { get; }
+    IUserJWTRepository UserJWTs { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

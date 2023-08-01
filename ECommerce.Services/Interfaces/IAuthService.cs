@@ -11,7 +11,7 @@ namespace ECommerce.Services.Interfaces
     {
         Task<JwtSecurityToken> CreateJwtTokenAsync(User user);
         Task<UserRefreshToken> GenerateRefreshTokenAsync();
-
         Task<AuthModel> RefreshTokenAsync(string token);
+        Task<bool> RevokeTokenAsync(string token);
     }
 }

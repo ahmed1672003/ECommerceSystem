@@ -1,11 +1,10 @@
-﻿using ECommerce.Models.Category;
+﻿using System.Net;
 
-using Microsoft.AspNetCore.Authorization;
+using ECommerce.Models.Category;
 
 namespace ECommerce.API.Controllers;
 [Route("api/v1/[controller]/[action]")]
 [ApiController]
-[Authorize]
 public class CategoryController : ECommerceController
 {
     public CategoryController(IMediator mediator) : base(mediator) { }
@@ -26,8 +25,20 @@ public class CategoryController : ECommerceController
          NewResult(await Mediator.Send(new GetCategoryByIdQuery(id)));
 
     [HttpGet, ActionName(nameof(RetrieveAll))]
-    public async Task<IActionResult> RetrieveAll() =>
-         NewResult(await Mediator.Send(new GetAllCategoriesQuery()));
+    public async Task<IActionResult> RetrieveAll()
+    {
+        #region Ip Address
+        var hostName = Dns.GetHostName();
+
+        var ips = await Dns.GetHostAddressesAsync(hostName);
+        Console.WriteLine(ips[1]);
+        #endregion
+
+        var host = await Dns.GetHostEntryAsync(Dns.GetHostName());
+
+
+        return NewResult(await Mediator.Send(new GetAllCategoriesQuery()));
+    }
 
     [HttpGet, ActionName(nameof(Paginate))]
     public async Task<IActionResult> Paginate(
@@ -38,4 +49,6 @@ public class CategoryController : ECommerceController
                 pageNumber.HasValue ? pageNumber : 1,
                 pageSize.HasValue ? pageSize : 10,
                 orderBy)));
+
+
 }

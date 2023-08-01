@@ -2,13 +2,10 @@
 using System.Security.Claims;
 using System.Security.Cryptography;
 
-using Azure;
-
 using ECommerce.Domain.Entities.IdentityEntities;
 using ECommerce.Domain.IRepositories;
 using ECommerce.Models.User.Auth;
 
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 
 namespace ECommerce.Services.Implementations;
@@ -81,7 +78,6 @@ public class AuthService : IAuthService
             u => u.UserRefreshTokens.Any(t => t.Token.Equals(token)));
 
 
-
         // check is user with specific token founded
         if (user == null)
             return new()
@@ -111,9 +107,9 @@ public class AuthService : IAuthService
             // update user 
             await _context.Users.Manager.UpdateAsync(user);
         }
-        catch 
+        catch
         {
-            return new ()
+            return new()
             {
                 Message = "Internal server error",
             };
@@ -131,5 +127,35 @@ public class AuthService : IAuthService
             RefreshToken = newUserRefreshToken.Token,
             RefreshTokenExpiration = newUserRefreshToken.ExpiresOn
         };
+    }
+
+    public async Task<bool> RevokeTokenAsync(string token)
+    {
+        var user = await _context.Users.RetrieveAsync(
+        u => u.UserRefreshTokens.Any(t => t.Token.Equals(token)));
+
+        // check is user with specific token founded
+        if (user == null)
+            return false;
+
+        var refreshToken = user.UserRefreshTokens.Single(t => t.Token.Equals(token));
+
+        if (!refreshToken.IsActive)
+            return false;
+
+        // revoke refresh Token 
+        refreshToken.RevokedOn = DateTime.UtcNow;
+
+        try
+        {
+            // update user 
+            await _context.Users.Manager.UpdateAsync(user);
+        }
+        catch
+        {
+            return false;
+        }
+
+        return true;
     }
 }

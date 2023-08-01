@@ -1,5 +1,5 @@
-﻿namespace ECommerce.Models.User.Auth;
-public class TokenRequestModel
+﻿namespace ECommerce.Models.User.Authentication;
+public class LoginModel
 {
     public string EmailOrUserName { get; set; }
     public string Password { get; set; }

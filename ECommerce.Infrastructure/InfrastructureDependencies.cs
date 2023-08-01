@@ -1,4 +1,6 @@
 ﻿
+using ECommerce.Infrastructure.Repositories.IdentityRepositories;
+
 namespace ECommerce.Infrastructure;
 public static class InfrastructureDependencies
 {
@@ -52,7 +54,21 @@ public static class InfrastructureDependencies
         {
             options.UseSqlServer(configuration.GetConnectionString("ECommerceConnection"));
         });
-        services.AddTransient(typeof(IUnitOfWork), typeof(UnitOfWork));
+        services
+            .AddScoped<ECommerceDbContext>()
+            .AddScoped<ICategoryRepository, CategoryRepository>()
+            .AddScoped<IUserJWTRepository, UserJWTRepository>()
+            .AddScoped<IUserLoginRepository, UserLoginRepository>()
+            .AddScoped<IUserRoleRepository, UserRoleRepository>()
+            .AddScoped<IUserRepository, UserRepository>()
+            .AddScoped<IUserTokenRepository, UserTokenRepository>()
+            .AddScoped<IUserClaimRepository, UserClaimRepository>()
+            .AddScoped<IRoleClaimRepository, RoleClaimRepository>()
+            .AddScoped<IRoleRepository, RoleRepository>()
+            .AddScoped<IUnitOfWork, UnitOfWork>()
+            .AddScoped<UserManager<User>>()
+            .AddScoped<SignInManager<User>>()
+            .AddScoped<RoleManager<Role>>();
         return services;
     }
 }

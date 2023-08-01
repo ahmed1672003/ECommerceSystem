@@ -1,6 +1,7 @@
 ﻿using ECommerce.Application.Features.Users.Commands.UserCommands;
 using ECommerce.Models.User;
 using ECommerce.Models.User.Auth;
+using ECommerce.Models.User.Authentication;
 
 namespace ECommerce.API.Controllers;
 
@@ -11,17 +12,21 @@ public class AuthController : ECommerceController
     public AuthController(IMediator mediator) : base(mediator) { }
 
     [HttpPost, ActionName(nameof(Register))]
-    public async Task<IActionResult> Register([FromBody] PostUserModel model) =>
-        NewResult(await Mediator.Send(new RegisterUserCommand(model)));
-        
+    public async Task<IActionResult> Register([FromBody] PostUserModel model)
+    {
+        var response = await Mediator.Send(new RegisterUserCommand(model));
+        //await SetRefreshTokenInCookie(response.Data.RefreshToken, response.Data.RefreshTokenExpiration);
+        return NewResult(response);
+    }
+
     [HttpPost, ActionName(nameof(Login))]
-    public async Task<IActionResult> Login(TokenRequestModel model)
+    public async Task<IActionResult> Login(LoginModel model)
     {
         var response = await Mediator.Send(new LoginUserCommand(model));
 
-        // set refresh token in cookies
-        if (!string.IsNullOrEmpty(response.Data.RefreshToken))
-            SetRefreshTokenInCookie(response.Data.RefreshToken, response.Data.RefreshTokenExpiration);
+        //// set refresh token in cookies
+        //if (!string.IsNullOrEmpty(response.Data.RefreshToken))
+        //    await SetRefreshTokenInCookie(response.Data.RefreshToken, response.Data.RefreshTokenExpiration);
 
         return NewResult(response);
     }
@@ -30,20 +35,33 @@ public class AuthController : ECommerceController
     public async Task<IActionResult> AddUserToRole(AddUserToRoleModel model) =>
         NewResult(await Mediator.Send(new AddUserToRoleCommand(model)));
 
-    [HttpGet , ActionName(nameof(RefreshToken))]
-    public async Task<IActionResult> RefreshToken()
+    [HttpPut, ActionName(nameof(RefreshToken))]
+    public async Task<IActionResult> RefreshToken(RefreshTokenRequestModel model)
     {
-        var refreshToken = Request.Cookies["refreshToken"];
-        var response = await Mediator.Send(new RefreshTokenCommand(refreshToken));
+        //var refreshToken = Request.Cookies["refreshToken"];
+        var response = await Mediator.Send(new RefreshTokenCommand(model));
 
-        // update 
-        if (!string.IsNullOrEmpty(response.Data.RefreshToken))
-            SetRefreshTokenInCookie(response.Data.RefreshToken, response.Data.RefreshTokenExpiration);
+        //// update refresh token in cookies
+        //if (!string.IsNullOrEmpty(response.Data.RefreshToken))
+        //   await SetRefreshTokenInCookie(response.Data.RefreshToken, response.Data.RefreshTokenExpiration);
 
         return NewResult(response);
     }
 
-    private void SetRefreshTokenInCookie(string refreshToken, DateTime expires)
+
+    [HttpPut, ActionName(nameof(RevokeToken))]
+    public async Task<IActionResult> RevokeToken()
+    {
+        var refreshToken = Request.Cookies["refreshToken"];
+        var response = await Mediator.Send(new RevokeTokenCommand(refreshToken));
+
+        if (response.Data.IsRevoked)
+            Response.Cookies.Delete("refreshToken");
+
+        return NewResult(response);
+    }
+
+    private Task SetRefreshTokenInCookie(string refreshToken, DateTime expires)
     {
         // save refresh token in cookie
         var cookieOptions = new CookieOptions()
@@ -52,6 +70,7 @@ public class AuthController : ECommerceController
             Expires = expires,
         };
         Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
+        return Task.CompletedTask;
     }
 }
 

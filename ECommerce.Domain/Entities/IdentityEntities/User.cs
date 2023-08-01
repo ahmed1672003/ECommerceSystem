@@ -24,6 +24,10 @@ public class User : IdentityUser<string>
 
 
     public ICollection<UserRefreshToken>? UserRefreshTokens { get; set; }
+
+    public ICollection<UserJWT> UserJWTs { get; set; }
+
+
     #endregion
 
     #region Behaviors
@@ -46,5 +50,6 @@ public class User : IdentityUser<string>
     public User()
     {
         UserRefreshTokens = new HashSet<UserRefreshToken>();
+        UserJWTs = new HashSet<UserJWT>();
     }
 }
