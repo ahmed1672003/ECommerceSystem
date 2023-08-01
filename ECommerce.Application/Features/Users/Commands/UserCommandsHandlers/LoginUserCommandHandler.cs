@@ -11,14 +11,14 @@ public class LoginUserCommandHandler :
     IRequestHandler<LoginUserCommand, Response<AuthenticationModel>>
 {
     private readonly EmailAddressAttribute _emailAddressAttribute;
-    private readonly IAuthenticationService _authenticationService;
+    private readonly IUnitOfServices _services;
     public LoginUserCommandHandler(IUnitOfWork context,
         EmailAddressAttribute emailAddressAttribute,
         IMapper mapper,
-        IAuthenticationService authenticationService) : base(context, mapper)
+        IUnitOfServices services) : base(context, mapper)
     {
         _emailAddressAttribute = emailAddressAttribute;
-        _authenticationService = authenticationService;
+        _services = services;
     }
 
     public async Task<Response<AuthenticationModel>>
@@ -49,7 +49,7 @@ public class LoginUserCommandHandler :
             return BadRequest<AuthenticationModel>(message: "make sure from email or user name or password !");
 
         // create new token
-        var authenticationModel = await _authenticationService.GetJWTAsync(user);
+        var authenticationModel = await _services.AuthServices.GetJWTAsync(user);
 
         return Success(authenticationModel);
     }

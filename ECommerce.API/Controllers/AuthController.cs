@@ -49,7 +49,7 @@ public class AuthController : ECommerceController
     }
 
 
-    [HttpPut, ActionName(nameof(RevokeToken))]
+    [HttpPatch, ActionName(nameof(RevokeToken))]
     public async Task<IActionResult> RevokeToken()
     {
         var refreshToken = Request.Cookies["refreshToken"];

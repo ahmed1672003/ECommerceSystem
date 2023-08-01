@@ -1,7 +1,4 @@
-﻿using ECommerce.Services.IServices;
-using ECommerce.Services.Services;
-
-using Microsoft.AspNetCore.Mvc.Infrastructure;
+﻿using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.OpenApi.Models;
 
 namespace ECommerce.Services;
@@ -9,16 +6,19 @@ public static class ServicesDependencies
 {
     public static IServiceCollection AddServicesDependencies(this IServiceCollection services, IConfiguration configuration)
     {
+        #region Register Service
         services
             .AddHttpContextAccessor()
-            .AddSingleton(typeof(JWT))
-            .AddScoped<IAuthService, AuthService>()
             .AddScoped<IAuthenticationService, AuthenticationService>()
+            .AddScoped<ICookieService, CookieService>()
+            .AddScoped<IIPInfoService, IPInfoService>()
+            .AddScoped<IUnitOfServices, UnitOfServices>()
             .AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+        #endregion
 
         #region JWT Services
-
-        services.AddAuthentication(options =>
+        services
+            .AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -35,12 +35,12 @@ public static class ServicesDependencies
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ClockSkew = TimeSpan.Zero,
-                    ValidIssuer = configuration.GetValue<string>($"{nameof(JWT)}:{nameof(JWT.Issuer)}"),
-                    ValidAudience = configuration.GetValue<string>($"{nameof(JWT)}:{nameof(JWT.Audience)}"),
+                    ValidIssuer = configuration.GetValue<string>($"{nameof(JwtSettings)}:{nameof(JwtSettings.Issuer)}"),
+                    ValidAudience = configuration.GetValue<string>($"{nameof(JwtSettings)}:{nameof(JwtSettings.Audience)}"),
                     IssuerSigningKey =
                     new SymmetricSecurityKey(
                     Encoding.UTF8.
-                    GetBytes(configuration.GetValue<string>($"{nameof(JWT)}:{nameof(JWT.Key)}"))
+                    GetBytes(configuration.GetValue<string>($"{nameof(JwtSettings)}:{nameof(JwtSettings.Secret)}"))
                     ),
                 };
             });
@@ -74,7 +74,6 @@ public static class ServicesDependencies
         });
 
         services
-            .Configure<JWT>(configuration.GetSection(nameof(JWT)))
             .Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
         #endregion
 

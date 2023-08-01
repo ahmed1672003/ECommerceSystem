@@ -2,13 +2,15 @@
 
 using ECommerce.Models.Category;
 
+using Microsoft.AspNetCore.Authorization;
 namespace ECommerce.API.Controllers;
+
 [Route("api/v1/[controller]/[action]")]
+[Authorize]
 [ApiController]
 public class CategoryController : ECommerceController
 {
     public CategoryController(IMediator mediator) : base(mediator) { }
-
 
     [HttpPost, ActionName(nameof(Post))]
     public async Task<IActionResult> Post([FromBody] PostCategoryModel model) =>

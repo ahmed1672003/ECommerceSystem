@@ -1,5 +1,5 @@
 ﻿namespace ECommerce.Services.Services;
-public class IPInfoService
+public class IPInfoService : IIPInfoService
 {
 
 }

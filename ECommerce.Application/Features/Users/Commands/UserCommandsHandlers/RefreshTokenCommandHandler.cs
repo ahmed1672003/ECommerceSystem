@@ -8,13 +8,15 @@ public class RefreshTokenCommandHandler :
     ResponseHandler,
     IRequestHandler<RefreshTokenCommand, Response<AuthenticationModel>>
 {
-    private readonly IAuthenticationService _authenticationService;
+    private readonly IUnitOfServices _services;
+
     public RefreshTokenCommandHandler(
         IUnitOfWork context,
         IMapper mapper,
-        IAuthenticationService authenticationService) : base(context, mapper)
+        IAuthenticationService authenticationService,
+        IUnitOfServices services) : base(context, mapper)
     {
-        _authenticationService = authenticationService;
+        _services = services;
     }
 
     public async Task<Response<AuthenticationModel>>
@@ -27,9 +29,9 @@ public class RefreshTokenCommandHandler :
             return NotFound<AuthenticationModel>();
 
         var jwtSecurityToken =
-            await _authenticationService.ReadJWTAsync(request.RefreshTokenRequestModel.JWT);
+            await _services.AuthServices.ReadJWTAsync(request.RefreshTokenRequestModel.JWT);
 
-        var isJWTValid = await _authenticationService
+        var isJWTValid = await _services.AuthServices
             .IsJWTValid.Invoke(request.RefreshTokenRequestModel.JWT, jwtSecurityToken);
 
         if (!isJWTValid)
@@ -44,7 +46,7 @@ public class RefreshTokenCommandHandler :
         if (userJWT.User is null)
             return NotFound<AuthenticationModel>();
 
-        var authenticationModel = await _authenticationService.RefreshJWTAsync(userJWT.User);
+        var authenticationModel = await _services.AuthServices.RefreshJWTAsync(userJWT.User);
 
         if (authenticationModel is null)
             return UnAuthorized<AuthenticationModel>(message: "jwt not active");

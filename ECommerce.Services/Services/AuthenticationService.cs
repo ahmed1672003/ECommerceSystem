@@ -5,7 +5,6 @@ using System.Security.Cryptography;
 using ECommerce.Domain.Entities.IdentityEntities;
 using ECommerce.Domain.IRepositories;
 using ECommerce.Models.User.Authentication;
-using ECommerce.Services.IServices;
 
 using Microsoft.Extensions.Options;
 
@@ -217,7 +216,7 @@ public class AuthenticationService : IAuthenticationService
     /// <summary>
     /// [ Refresh For given user ] 
     /// [1] step one: Get user jwt
-    /// [2] step two: If refreshJWT is not active will retrun <see cref="null"/>
+    /// [2] step two: If user jwt is null <see cref="null"/>
     /// [3] step three: Revoke Old refreshJWT
     /// [4 , 5] step four: Generate new JWT & Generate new RefreshJWT 
     /// [6] step five: Create new UserJWT instance and add save it in data base & if saving in data base is fail , will return <see cref="null"/> 
