@@ -20,7 +20,11 @@ public class RefreshTokenCommandHandler :
     public async Task<Response<AuthenticationModel>>
         Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
     {
-        // To Do: validate request JWT & RefreshJWT
+        if (!await Context.UserJWTs.IsExist(uj =>
+        uj.JWT.Equals(request.RefreshTokenRequestModel.JWT) &&
+        uj.RefreshJWT.Equals(request.RefreshTokenRequestModel.RefreshJWT) &&
+        uj.IsRefreshJWTUsed))
+            return NotFound<AuthenticationModel>();
 
         var jwtSecurityToken =
             await _authenticationService.ReadJWTAsync(request.RefreshTokenRequestModel.JWT);
@@ -28,45 +32,23 @@ public class RefreshTokenCommandHandler :
         var isJWTValid = await _authenticationService
             .IsJWTValid.Invoke(request.RefreshTokenRequestModel.JWT, jwtSecurityToken);
 
-
         if (!isJWTValid)
             return UnAuthorized<AuthenticationModel>(message: "jwt not valid");
 
-        var user = await Context.Users.RetrieveAsync(u =>
-                    u.UserJWTs.Any(uj =>
-                                    uj.JWT.Equals(request.RefreshTokenRequestModel.JWT) &&
-                                    uj.RefreshJWT.Equals(request.RefreshTokenRequestModel.RefreshJWT) &&
-                                    uj.IsRefreshJWTUsed && uj.IsRefreshJWTActive),
-                                    includes: new string[] { nameof(User.UserJWTs) });
+        var userJWT = await Context.UserJWTs.RetrieveAsync(uj =>
+        uj.JWT.Equals(request.RefreshTokenRequestModel.JWT) &&
+        uj.RefreshJWT.Equals(request.RefreshTokenRequestModel.RefreshJWT) &&
+        uj.IsRefreshJWTUsed,
+        includes: new string[] { nameof(UserJWT.User) });
 
-        if (user == null)
+        if (userJWT.User is null)
             return NotFound<AuthenticationModel>();
 
-        var authenticationModel = await _authenticationService.RefreshJWTAsync(user);
+        var authenticationModel = await _authenticationService.RefreshJWTAsync(userJWT.User);
 
         if (authenticationModel is null)
-            return BadRequest<AuthenticationModel>();
+            return UnAuthorized<AuthenticationModel>(message: "jwt not active");
 
         return Success(authenticationModel);
     }
-    #region MyRegion
-
-    //public async Task<Response<AuthModel>> 
-    //    Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
-    //{
-    //    if(string.IsNullOrEmpty(request.RefreshToken) || string.IsNullOrWhiteSpace(request.RefreshToken))
-    //         return BadRequest(new AuthModel());
-
-    //    var authModel = await _authService.RefreshTokenAsync(request.RefreshToken);
-
-    //    if (!authModel.IsAuthenticated)
-    //        return BadRequest(authModel);
-
-    //    return Success(authModel);
-    //} 
-    #endregion
-
-
-
-
 }

@@ -8,10 +8,8 @@ namespace ECommerce.API.Controllers;
 public class ECommerceController : ControllerBase
 {
     public IMediator Mediator { get; set; }
-    public ECommerceController(IMediator mediator)
-    {
-        Mediator = mediator;
-    }
+    public ECommerceController(IMediator mediator) => Mediator = mediator;
+
     #region Results 
     public IActionResult NewResult<TData>(Response<TData> response) where TData : class
     {
@@ -28,6 +26,10 @@ public class ECommerceController : ControllerBase
 
             case HttpStatusCode.BadRequest:
                 return new BadRequestObjectResult(response);
+
+            case HttpStatusCode.Conflict:
+                return new ConflictObjectResult(response);
+
             default:
                 return new ObjectResult(response)
                 {
