@@ -17,7 +17,6 @@ public class RegisterUserCommandHandler :
     {
         _services = services;
     }
-
     public async Task<Response<AuthenticationModel>>
         Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
