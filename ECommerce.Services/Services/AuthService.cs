@@ -5,10 +5,11 @@ using System.Security.Cryptography;
 using ECommerce.Domain.Entities.IdentityEntities;
 using ECommerce.Domain.IRepositories;
 using ECommerce.Models.User.Auth;
+using ECommerce.Services.IServices;
 
 using Microsoft.Extensions.Options;
 
-namespace ECommerce.Services.Implementations;
+namespace ECommerce.Services.Services;
 public class AuthService : IAuthService
 {
     private readonly IUnitOfWork _context;

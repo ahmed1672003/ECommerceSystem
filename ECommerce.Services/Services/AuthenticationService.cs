@@ -5,10 +5,11 @@ using System.Security.Cryptography;
 using ECommerce.Domain.Entities.IdentityEntities;
 using ECommerce.Domain.IRepositories;
 using ECommerce.Models.User.Authentication;
+using ECommerce.Services.IServices;
 
 using Microsoft.Extensions.Options;
 
-namespace ECommerce.Services.Implementations;
+namespace ECommerce.Services.Services;
 public class AuthenticationService : IAuthenticationService
 {
     private readonly IUnitOfWork _context;
@@ -25,7 +26,7 @@ public class AuthenticationService : IAuthenticationService
     /// </summary>
     public Func<string, JwtSecurityToken, Task<bool>> IsJWTValid
         => async (jwt, jwtSecurityToken) =>
-        ((await IsJWTParametersValidAsync(jwt)) && (await IsJWTAlgorithmValidAsync(jwtSecurityToken)));
+        await IsJWTParametersValidAsync(jwt) && await IsJWTAlgorithmValidAsync(jwtSecurityToken);
 
 
     /// <summary>

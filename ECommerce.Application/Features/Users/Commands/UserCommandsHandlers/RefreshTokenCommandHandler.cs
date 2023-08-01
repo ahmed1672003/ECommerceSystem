@@ -1,7 +1,7 @@
 ﻿using ECommerce.Application.Features.Users.Commands.UserCommands;
 using ECommerce.Domain.Entities.IdentityEntities;
 using ECommerce.Models.User.Authentication;
-using ECommerce.Services.Interfaces;
+using ECommerce.Services.IServices;
 
 namespace ECommerce.Application.Features.Users.Commands.UserCommandsHandlers;
 public class RefreshTokenCommandHandler :

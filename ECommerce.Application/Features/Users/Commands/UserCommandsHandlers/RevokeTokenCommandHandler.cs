@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using ECommerce.Application.Features.Users.Commands.UserCommands;
 using ECommerce.Models.User.Auth;
-using ECommerce.Services.Interfaces;
+using ECommerce.Services.IServices;
 
 namespace ECommerce.Application.Features.Users.Commands.UserCommandsHandlers;
 public class RevokeTokenCommandHandler :

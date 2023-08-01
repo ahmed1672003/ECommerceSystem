@@ -3,7 +3,7 @@
 using ECommerce.Domain.Entities.IdentityEntities;
 using ECommerce.Models.User.Authentication;
 
-namespace ECommerce.Services.Interfaces;
+namespace ECommerce.Services.IServices;
 public interface IAuthenticationService
 {
     Func<string, JwtSecurityToken, Task<bool>> IsJWTValid { get; }
