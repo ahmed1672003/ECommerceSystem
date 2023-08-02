@@ -54,26 +54,4 @@ public class CategoryController : ECommerceController
                 pageNumber.HasValue ? pageNumber : 1,
                 pageSize.HasValue ? pageSize : 10,
                 orderBy)));
-
-    [HttpGet, ActionName(nameof(AddToCookeie))]
-    public async Task<IActionResult> AddToCookeie()
-    {
-        await _services.CookieServices.AddAsync("Age", "Ahmed");
-        return Ok();
-    }
-
-
-    [HttpGet, ActionName(nameof(DeleteFromCookie))]
-    public async Task<IActionResult> DeleteFromCookie(string key)
-    {
-        await _services.CookieServices.DeleteAsync(key);
-        return Ok();
-    }
-
-
-    [HttpGet, ActionName(nameof(RetrieveFromCookie))]
-    public async Task<IActionResult> RetrieveFromCookie(string key)
-    {
-        return Ok(await _services.CookieServices.RetrieveAsync(key));
-    }
 }

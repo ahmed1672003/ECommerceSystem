@@ -13,6 +13,7 @@ public static class ServicesDependencies
             .AddScoped<ICookieService, CookieService>()
             .AddScoped<IIPInfoService, IPInfoService>()
             .AddScoped<IUnitOfServices, UnitOfServices>()
+            .AddScoped<ISessionService, SessionService>()
             .AddSingleton<IActionContextAccessor, ActionContextAccessor>();
         #endregion
 
