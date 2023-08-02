@@ -1,16 +1,19 @@
 ﻿using System.Net;
 
 using ECommerce.Models.Category;
+using ECommerce.Services.IServices;
 
-using Microsoft.AspNetCore.Authorization;
 namespace ECommerce.API.Controllers;
 
 [Route("api/v1/[controller]/[action]")]
-[Authorize]
 [ApiController]
 public class CategoryController : ECommerceController
 {
-    public CategoryController(IMediator mediator) : base(mediator) { }
+    private readonly IUnitOfServices _services;
+    public CategoryController(IMediator mediator, IUnitOfServices services) : base(mediator)
+    {
+        _services = services;
+    }
 
     [HttpPost, ActionName(nameof(Post))]
     public async Task<IActionResult> Post([FromBody] PostCategoryModel model) =>
@@ -52,5 +55,25 @@ public class CategoryController : ECommerceController
                 pageSize.HasValue ? pageSize : 10,
                 orderBy)));
 
+    [HttpGet, ActionName(nameof(AddToCookeie))]
+    public async Task<IActionResult> AddToCookeie()
+    {
+        await _services.CookieServices.AddAsync("Age", "Ahmed");
+        return Ok();
+    }
 
+
+    [HttpGet, ActionName(nameof(DeleteFromCookie))]
+    public async Task<IActionResult> DeleteFromCookie(string key)
+    {
+        await _services.CookieServices.DeleteAsync(key);
+        return Ok();
+    }
+
+
+    [HttpGet, ActionName(nameof(RetrieveFromCookie))]
+    public async Task<IActionResult> RetrieveFromCookie(string key)
+    {
+        return Ok(await _services.CookieServices.RetrieveAsync(key));
+    }
 }

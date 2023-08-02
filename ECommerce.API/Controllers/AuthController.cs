@@ -38,7 +38,7 @@ public class AuthController : ECommerceController
     [HttpPut, ActionName(nameof(RefreshToken))]
     public async Task<IActionResult> RefreshToken(RefreshTokenRequestModel model)
     {
-        //var refreshToken = Request.Cookies["refreshToken"];
+        // var refreshToken = Request.Cookies["refreshToken"];
         var response = await Mediator.Send(new RefreshTokenCommand(model));
 
         //// update refresh token in cookies
@@ -47,7 +47,6 @@ public class AuthController : ECommerceController
 
         return NewResult(response);
     }
-
 
     [HttpPatch, ActionName(nameof(RevokeToken))]
     public async Task<IActionResult> RevokeToken()
