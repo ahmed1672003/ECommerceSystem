@@ -22,7 +22,7 @@ public class RefreshTokenCommandHandler :
     public async Task<Response<AuthenticationModel>>
         Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
     {
-        if (!await Context.UserJWTs.IsExist(uj =>
+        if (!await Context.UserJWTs.IsExistAsync(uj =>
         uj.JWT.Equals(request.RefreshTokenRequestModel.JWT) &&
         uj.RefreshJWT.Equals(request.RefreshTokenRequestModel.RefreshJWT) &&
         uj.IsRefreshJWTUsed))

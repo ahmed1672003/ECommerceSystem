@@ -35,7 +35,7 @@ public class PutCategoryValidator : AbstractValidator<PutCategoryCommand>
     {
         RuleFor(c => c)
         .MustAsync(async (command, cancellationToken) =>
-        await _context.Categories.IsExist(
+        await _context.Categories.IsExistAsync(
             c => c.Id.Equals(command.Id) && c.Id.Equals(command.CategoryModel.Id)))
         .WithMessage(
             c => $"{nameof(c.Id)} is not exist !");

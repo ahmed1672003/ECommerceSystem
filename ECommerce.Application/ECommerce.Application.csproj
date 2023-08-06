@@ -39,6 +39,9 @@
 
   <ItemGroup>
     <Folder Include="Extensions\" />
+    <Folder Include="Features\Roles\Queries\RoleQueriesHandlers\" />
+    <Folder Include="Features\Roles\Queries\RoleQueriesValidators\" />
+    <Folder Include="Features\Roles\Queries\RoleQueries\" />
     <Folder Include="Features\Users\Queries\UserQueriesHandlers\" />
     <Folder Include="Features\Users\Queries\UserQueriesValidators\" />
     <Folder Include="Features\Users\Queries\UserQueries\" />

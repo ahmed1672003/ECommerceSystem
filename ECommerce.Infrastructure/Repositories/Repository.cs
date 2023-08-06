@@ -11,13 +11,12 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     }
 
     #region Commands
-
     /// <summary>
-    /// 
+    /// Create Given Model
     /// </summary>
-    /// <param name="entity"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
+    /// <param name="entity">Specififc Entity To Create<typeparamref name="TEntity"/></param>
+    /// <param name="cancellationToken">Cancellation Token</param>
+    /// <returns>Task</returns>
     public virtual async Task
         CreateAsync(
         TEntity entity,
@@ -25,11 +24,11 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
        await _entities.AddAsync(entity, cancellationToken);
 
     /// <summary>
-    /// 
+    /// Create Given Models
     /// </summary>
-    /// <param name="entities"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
+    /// <param name="entities">Specififc Entities To Create <typeparamref name="TEntity"/></param>
+    /// <param name="cancellationToken">Cancellation Token</param>
+    /// <returns>Task</returns>
     public virtual async Task
         CreateRangeAsync(
         IEnumerable<TEntity> entities,
@@ -37,11 +36,11 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
         await _entities.AddRangeAsync(entities, cancellationToken);
 
     /// <summary>
-    /// 
+    /// Delete Given Model
     /// </summary>
-    /// <param name="entity"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
+    /// <param name="entity">Specififc Entity To Remove/param>
+    /// <param name="cancellationToken">Cancellation Token</param>
+    /// <returns>Task</returns>
     public virtual async Task
         DeleteAsync(
         TEntity entity,
@@ -49,11 +48,11 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
         await Task.FromResult(_entities.Remove(entity));
 
     /// <summary>
-    /// 
+    /// Delete All Models That Apply Filter
     /// </summary>
-    /// <param name="filter"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
+    /// <param name="filter">Filter</param>
+    /// <param name="cancellationToken">Cancellation Token</param>
+    /// <returns>Task</returns>
     public virtual async
         Task ExecuteDeleteAsync(
         Expression<Func<TEntity, bool>> filter = null,
@@ -66,11 +65,11 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     }
 
     /// <summary>
-    /// 
+    /// Update Given Model
     /// </summary>
-    /// <param name="entity"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
+    /// <param name="entity">Specific Entity To Update<typeparamref name="TEntity"/></param>
+    /// <param name="cancellationToken">Cancellation Token</param>
+    /// <returns>Task</returns>
     public virtual Task
         UpdateAsync(
         TEntity entity,
@@ -81,11 +80,11 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     }
 
     /// <summary>
-    /// 
+    /// Uodate Models
     /// </summary>
-    /// <param name="entities"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
+    /// <param name="entities">Specific Entities To Update</param>
+    /// <param name="cancellationToken">Cancellation Token</param>
+    /// <returns>Task</returns>
     public virtual Task
         UpdatedRangeAsync(
         IEnumerable<TEntity> entities,
@@ -97,13 +96,13 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     }
 
     /// <summary>
-    /// 
+    /// Update All Models That Apply Filter
     /// </summary>
     /// <param name="property"></param>
     /// <param name="propertyExpression"></param>
     /// <param name="filter"></param>
     /// <param name="cancellationToken"></param>
-    /// <returns></returns>
+    /// <returns>Task</returns>
     public virtual async Task
         ExecuteUpdateAsync(
         Func<TEntity, object> property,
@@ -131,7 +130,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     public virtual async Task<bool>
-        IsExist(
+        IsExistAsync(
         Expression<Func<TEntity, bool>> filter = null,
         CancellationToken cancellationToken = default)
     {
@@ -142,19 +141,21 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     }
 
     /// <summary>
-    /// 
+    /// Retrieve All Models That Apply FirstFilter And SecondFilter, 
+    /// Order Data By OrderBy And OrderByDirection, 
+    /// Can Run Pagination If Needed With PageSize & PageNumber,
+    /// Can Include Data By Navigation Properties By Filling Includes Array,
     /// </summary>
-    /// <param name="firstFilter"></param>
-    /// <param name="secondFilter"></param>
-    /// <param name="orderBy"></param>
-    /// <param name="orderByDirection"></param>
-    /// <param name="pageNumber"></param>
-    /// <param name="pageSize"></param>
-    /// <param name="paginationOn"></param>
-    /// <param name="includes"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-
+    /// <param name="firstFilter">FirstFilter <typeparamref name="TEntity"/></param>
+    /// <param name="secondFilter">SecondFilter <typeparamref name="TEntity"/></param>
+    /// <param name="orderBy">OrderBy <typeparamref name="TEntity"/></param>
+    /// <param name="orderByDirection">OrderByDirection <typeparamref name="TEntity"/></param>
+    /// <param name="pageNumber">PageNumber <typeparamref name="TEntity"/></param>
+    /// <param name="pageSize">PageSize <typeparamref name="TEntity"/></param>
+    /// <param name="paginationOn">PaginationOn <typeparamref name="TEntity"/></param>
+    /// <param name="includes">Includes <typeparamref name="TEntity"/></param>
+    /// <param name="cancellationToken">Cancellation Token</param>
+    /// <returns>Task Of IQueryable Of TEntity</returns>
     public virtual async Task<IQueryable<TEntity>>
         RetrieveAllAsync(
         Expression<Func<TEntity, bool>> firstFilter = null,
@@ -198,14 +199,14 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     }
 
     /// <summary>
-    /// 
+    /// Retrieve Model That Apply MandatoryFilter And OPtionalFilter, 
+    /// Can Include Data By Navigation Properties By Filling Includes Array,
     /// </summary>
-    /// <param name="mandatoryFilter"></param>
-    /// <param name="optionalFilter"></param>
-    /// <param name="includes"></param>
+    /// <param name="mandatoryFilter">MandatoryFilter</param>
+    /// <param name="optionalFilter">OPtionalFilter</param>
+    /// <param name="includes">Includes</param>
     /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-
+    /// <returns>Task Of Entity</returns>
     public virtual async Task<TEntity>
         RetrieveAsync(
         Expression<Func<TEntity, bool>> mandatoryFilter,
@@ -228,11 +229,11 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     }
 
     /// <summary>
-    /// 
+    /// Get Count Of Entities That Apply Filter
     /// </summary>
-    /// <param name="filter"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
+    /// <param name="filter">Filter</param>
+    /// <param name="cancellationToken">Cancellation Token</param>
+    /// <returns>Task Of Int23</returns>
     public virtual async Task<int>
         CountAsync(
         Expression<Func<TEntity, bool>> filter = null,

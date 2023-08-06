@@ -11,7 +11,7 @@ public class GetAllCategoriesPaginatedQueryHandler :
     public async Task<PaginationResponse<IEnumerable<CategoryModel>>>
         Handle(GetAllCategoriesPaginatedQuery request, CancellationToken cancellationToken)
     {
-        if (!await Context.Categories.IsExist())
+        if (!await Context.Categories.IsExistAsync())
             return NotFound<IEnumerable<CategoryModel>>();
 
         Expression<Func<Category, object>> orderBy = (e) => new();

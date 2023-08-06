@@ -34,9 +34,9 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
         RuleFor(c => c.Model)
             .MustAsync(async (Model, cancellationToken) =>
             !
-           ((await _context.Users.IsExist(u => u.Email.Equals(Model.Email))
+           ((await _context.Users.IsExistAsync(u => u.Email.Equals(Model.Email))
             ||
-            (await _context.Users.IsExist(u => u.UserName.Equals(Model.UserName)))
+            (await _context.Users.IsExistAsync(u => u.UserName.Equals(Model.UserName)))
            ))).WithMessage("email or user name is exist!");
     }
 }

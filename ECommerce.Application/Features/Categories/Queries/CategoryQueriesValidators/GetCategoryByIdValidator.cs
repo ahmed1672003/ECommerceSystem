@@ -21,7 +21,7 @@ public class GetCategoryByIdValidator : AbstractValidator<GetCategoryByIdQuery>
     {
         RuleFor(c => c.Id)
             .MustAsync(async (id, cancellationToken) =>
-            await _context.Categories.IsExist(c => c.Id.Equals(id), cancellationToken))
+            await _context.Categories.IsExistAsync(c => c.Id.Equals(id), cancellationToken))
             .WithMessage(c => $"{nameof(c.Id)}: {c.Id} is not found !");
     }
 }

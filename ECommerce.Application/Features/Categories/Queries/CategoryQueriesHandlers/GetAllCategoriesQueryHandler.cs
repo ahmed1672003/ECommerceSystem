@@ -9,7 +9,7 @@ public class GetAllCategoriesQueryHandler :
     public async Task<Response<IEnumerable<CategoryModel>>>
         Handle(GetAllCategoriesQuery request, CancellationToken cancellationToken)
     {
-        if (!await Context.Categories.IsExist(cancellationToken: cancellationToken))
+        if (!await Context.Categories.IsExistAsync(cancellationToken: cancellationToken))
             return NotFound<IEnumerable<CategoryModel>>();
 
         var categoriesmodels = Mapper.Map<IEnumerable<CategoryModel>>(

@@ -25,7 +25,7 @@ public class LoginUserCommandHandler :
         Handle(LoginUserCommand request, CancellationToken cancellationToken)
     {
         // check user is founded or not
-        var isFounded = await Context.Users.IsExist(
+        var isFounded = await Context.Users.IsExistAsync(
            u => _emailAddressAttribute.IsValid(request.Model.EmailOrUserName) ?
            u.Email.Equals(request.Model.EmailOrUserName) :
            u.UserName.Equals(request.Model.EmailOrUserName)

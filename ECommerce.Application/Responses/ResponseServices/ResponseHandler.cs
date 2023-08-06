@@ -71,4 +71,16 @@ public class ResponseHandler : IResponseHandler
             data: data,
             errors: errors == null ? ErrorMessages.InternalServerErrorsList : errors,
             meta: meta);
+
+    public Response<TData> Conflict<TData>(
+        TData data = null,
+        dynamic meta = null,
+        string message = null,
+        List<dynamic> errors = null) where TData : class => new(
+            statusCode: HttpStatusCode.Conflict,
+            isSucceeded: false,
+            message: message == null ? ResponseMessages.ConflictErrorMessage : message,
+            data: data,
+            errors: errors == null ? ErrorMessages.ConflictErrorList : errors,
+            meta: meta);
 }

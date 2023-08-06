@@ -6,4 +6,5 @@ public class ResponseMessages
     public const string BadRequestMessage = "The request was not completed successfully & Make sure the data is correct !";
     public const string UnAuthorizedMessage = "User un authorized to send this request !";
     public const string InternalServerErrorMessage = "The request was unsuccessful because of an error saving changes !";
+    public const string ConflictErrorMessage = "The request was not completed successfully beacuse issue in data base";
 }

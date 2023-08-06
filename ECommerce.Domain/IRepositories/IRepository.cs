@@ -31,7 +31,7 @@ public interface IRepository<TEntity> where TEntity : class
         bool paginationOn = false,
         string[] includes = null,
         CancellationToken cancellationToken = default);
-    Task<bool> IsExist(Expression<Func<TEntity, bool>> filter = null, CancellationToken cancellationToken = default);
+    Task<bool> IsExistAsync(Expression<Func<TEntity, bool>> filter = null, CancellationToken cancellationToken = default);
     Task<int> CountAsync(Expression<Func<TEntity, bool>> filter = null, CancellationToken cancellationToken = default);
     #endregion
 }

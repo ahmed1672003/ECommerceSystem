@@ -41,7 +41,6 @@ public class CategoryController : ECommerceController
 
         var host = await Dns.GetHostEntryAsync(Dns.GetHostName());
 
-
         return NewResult(await Mediator.Send(new GetAllCategoriesQuery()));
     }
 
