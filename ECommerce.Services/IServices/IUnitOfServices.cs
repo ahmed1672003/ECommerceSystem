@@ -5,4 +5,5 @@ public interface IUnitOfServices
     ICookieService CookieServices { get; }
     IIPInfoService IPInfoService { get; }
     ISessionService SessionServices { get; }
+    IEmailService EmailServices { get; }
 }

@@ -3,7 +3,7 @@ using ECommerce.Domain.Entities.IdentityEntities;
 using ECommerce.Models.Role;
 
 namespace ECommerce.Application.Features.Roles.Commands.RoleCommandsHandlers;
-public class RoleCommandsHandler :
+public class RoleCommandsHandlers :
     ResponseHandler,
     IRequestHandler<PostRoleCommand, Response<RoleModel>>
 {
@@ -12,7 +12,7 @@ public class RoleCommandsHandler :
     #endregion
 
     #region CTORs
-    public RoleCommandsHandler(IUnitOfWork context, IMapper mapper) : base(context, mapper) { }
+    public RoleCommandsHandlers(IUnitOfWork context, IMapper mapper) : base(context, mapper) { }
 
     #endregion
 
@@ -22,23 +22,22 @@ public class RoleCommandsHandler :
     public async Task<Response<RoleModel>>
         Handle(PostRoleCommand request, CancellationToken cancellationToken)
     {
-        if (await Context.Roles.Manager.RoleExistsAsync(request.Model.Name))
-            return BadRequest<RoleModel>();
-
         var role = Mapper.Map<Role>(request.Model);
-
         try
         {
-            await Context.Roles.Manager.CreateAsync(role);
+            var result = await Context.Roles.Manager.CreateAsync(role);
+
+            if (!result.Succeeded)
+                return BadRequest<RoleModel>(message: "role is exist", errors: result.Errors);
         }
         catch
         {
             return Conflict<RoleModel>();
         }
-
         var roleModel = Mapper.Map<RoleModel>(role);
         return Success(roleModel);
     }
     #endregion
+
     #endregion
 }

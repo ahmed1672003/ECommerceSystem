@@ -14,5 +14,4 @@ public class RoleController : ECommerceController
         var response = await Mediator.Send(new PostRoleCommand(model));
         return NewResult(response);
     }
-
 }

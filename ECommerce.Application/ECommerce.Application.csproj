@@ -39,6 +39,8 @@
 
   <ItemGroup>
     <Folder Include="Extensions\" />
+    <Folder Include="Features\Emails\EmailMapper\" />
+    <Folder Include="Features\Emails\Queries\" />
     <Folder Include="Features\Roles\Queries\RoleQueriesHandlers\" />
     <Folder Include="Features\Roles\Queries\RoleQueriesValidators\" />
     <Folder Include="Features\Roles\Queries\RoleQueries\" />

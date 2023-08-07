@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.Infrastructure;
+﻿using ECommerce.Services.Helpers;
+
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.OpenApi.Models;
 
 namespace ECommerce.Services;
@@ -10,11 +12,14 @@ public static class ServicesDependencies
         services
             .AddHttpContextAccessor()
             .AddScoped<IAuthenticationService, AuthenticationService>()
+            .AddScoped<IUnitOfServices, UnitOfServices>()
+            .AddScoped<IEmailService, EmailService>()
             .AddScoped<ICookieService, CookieService>()
             .AddScoped<IIPInfoService, IPInfoService>()
-            .AddScoped<IUnitOfServices, UnitOfServices>()
             .AddScoped<ISessionService, SessionService>()
-            .AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+            .AddSingleton<IActionContextAccessor, ActionContextAccessor>()
+            .Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)))
+            .Configure<EmailSettings>(configuration.GetSection(nameof(EmailSettings)));
         #endregion
 
         #region JWT Services
@@ -45,7 +50,6 @@ public static class ServicesDependencies
                     ),
                 };
             });
-
         services.AddSwaggerGen(options =>
         {
             options.SwaggerDoc("v1", new() { Title = "E~Commerce", Version = "v1" });
@@ -73,9 +77,6 @@ public static class ServicesDependencies
                 }
             });
         });
-
-        services
-            .Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
         #endregion
 
         return services;
