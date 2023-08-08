@@ -3,13 +3,13 @@ using ECommerce.Models.Email;
 using ECommerce.Services.IServices;
 
 namespace ECommerce.Application.Features.Emails.Commands.EmailCommandsHandlers;
-public class EmailCommandsHandlers :
+public class EmailCommandsHandler :
     ResponseHandler,
     IRequestHandler<SendEmailCommand, Response<EmailModel>>,
     IRequestHandler<ConfirmEmailCommand, Response<ConfirmEmailResponseModel>>
 {
     private readonly IUnitOfServices _services;
-    public EmailCommandsHandlers(
+    public EmailCommandsHandler(
         IUnitOfWork context,
         IMapper mapper,
         IUnitOfServices services) : base(context, mapper)

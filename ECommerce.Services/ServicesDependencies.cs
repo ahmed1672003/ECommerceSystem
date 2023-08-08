@@ -11,12 +11,12 @@ public static class ServicesDependencies
         #region Register Service
         services
             .AddHttpContextAccessor()
-            .AddScoped<IAuthenticationService, AuthenticationService>()
-            .AddScoped<IUnitOfServices, UnitOfServices>()
-            .AddScoped<IEmailService, EmailService>()
-            .AddScoped<ICookieService, CookieService>()
-            .AddScoped<IIPInfoService, IPInfoService>()
-            .AddScoped<ISessionService, SessionService>()
+            .AddTransient<IAuthenticationService, AuthenticationService>()
+            .AddTransient<IUnitOfServices, UnitOfServices>()
+            .AddTransient<IEmailService, EmailService>()
+            .AddTransient<ICookieService, CookieService>()
+            .AddTransient<IIPInfoService, IPInfoService>()
+            .AddTransient<ISessionService, SessionService>()
             .AddTransient<IActionContextAccessor, ActionContextAccessor>()
             .Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)))
             .Configure<EmailSettings>(configuration.GetSection(nameof(EmailSettings)));

@@ -9,8 +9,9 @@ public static class ApplicationDependencies
     {
         services.AddMediatR(cfg =>
         {
-            cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+            cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly());
         });
+
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddScoped<IResponseHandler, ResponseHandler>();
