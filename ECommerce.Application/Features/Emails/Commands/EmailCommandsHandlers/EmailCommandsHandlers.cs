@@ -5,7 +5,8 @@ using ECommerce.Services.IServices;
 namespace ECommerce.Application.Features.Emails.Commands.EmailCommandsHandlers;
 public class EmailCommandsHandlers :
     ResponseHandler,
-    IRequestHandler<SendEmailCommand, Response<EmailModel>>
+    IRequestHandler<SendEmailCommand, Response<EmailModel>>,
+    IRequestHandler<ConfirmEmailCommand, Response<ConfirmEmailResponseModel>>
 {
     private readonly IUnitOfServices _services;
     public EmailCommandsHandlers(
@@ -16,6 +17,7 @@ public class EmailCommandsHandlers :
         _services = services;
     }
 
+    #region Send Email Handler
     public async Task<Response<EmailModel>>
         Handle(SendEmailCommand request, CancellationToken cancellationToken)
     {
@@ -26,6 +28,19 @@ public class EmailCommandsHandlers :
 
         return Success(emailModel);
     }
+    #endregion
 
+    #region Confirm Email Handler
 
+    public async Task<Response<ConfirmEmailResponseModel>>
+        Handle(ConfirmEmailCommand request, CancellationToken cancellationToken)
+    {
+        var model = await _services.EmailServices.ConfirmEmailAsync(request.Model.UserId, request.Model.Code);
+
+        if (!model.IsEmailConfirmed)
+            return Conflict(model);
+
+        return Success(model);
+    }
+    #endregion
 }

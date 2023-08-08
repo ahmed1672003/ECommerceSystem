@@ -13,10 +13,10 @@ public static class ApplicationDependencies
         });
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-        services.AddTransient(typeof(IResponseHandler), typeof(ResponseHandler));
-        services.AddTransient(typeof(IResponseHandler), typeof(PaginationResponseHandler));
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-        services.AddTransient<EmailAddressAttribute>();
+        services.AddScoped<IResponseHandler, ResponseHandler>();
+        services.AddScoped<IResponseHandler, PaginationResponseHandler>();
+        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        services.AddScoped<EmailAddressAttribute>();
         return services;
     }
 }

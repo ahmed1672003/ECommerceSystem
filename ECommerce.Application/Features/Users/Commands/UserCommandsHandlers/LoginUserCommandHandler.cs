@@ -44,6 +44,9 @@ public class LoginUserCommandHandler :
         var signInResult =
             await Context.Users.SignInManager.CheckPasswordSignInAsync(user, request.Model.Password, false);
 
+        if (!user.EmailConfirmed)
+            return BadRequest<AuthenticationModel>(message: "email does not confirmed");
+
         // check password is correct or not
         if (!signInResult.Succeeded)
             return BadRequest<AuthenticationModel>(message: "make sure from email or user name or password !");

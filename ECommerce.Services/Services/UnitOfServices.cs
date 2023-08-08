@@ -12,7 +12,8 @@ public class UnitOfServices : IUnitOfServices
         IIPInfoService iPInfoService,
         ICookieService cookieServices,
         ISessionService sessionServices,
-        IEmailService emailServices)
+        IEmailService emailServices
+        )
     {
         AuthServices = authServices;
         IPInfoService = iPInfoService;

@@ -1,4 +1,6 @@
-﻿namespace ECommerce.Infrastructure.Repositories;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+
+namespace ECommerce.Infrastructure.Repositories;
 public class UnitOfWork : IUnitOfWork
 {
     private readonly ECommerceDbContext _context;
@@ -25,6 +27,7 @@ public class UnitOfWork : IUnitOfWork
         UserTokens = userTokens;
         UserJWTs = userJWTTokens;
     }
+    public IDbContextTransaction Transaction => _context.Database.BeginTransaction();
     public ICategoryRepository Categories { get; private set; }
     public IRoleClaimRepository RoleClaims { get; private set; }
     public IRoleRepository Roles { get; private set; }
@@ -34,10 +37,7 @@ public class UnitOfWork : IUnitOfWork
     public IUserRoleRepository UserRoles { get; private set; }
     public IUserTokenRepository UserTokens { get; private set; }
     public IUserJWTRepository UserJWTs { get; private set; }
-
     public async ValueTask DisposeAsync() => await _context.DisposeAsync();
-
-    public async Task<int>
-        SaveChangesAsync(CancellationToken cancellationToken = default) =>
+    public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) =>
         await _context.SaveChangesAsync(cancellationToken);
 }

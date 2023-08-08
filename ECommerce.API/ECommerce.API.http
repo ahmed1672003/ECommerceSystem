@@ -1,0 +1,40 @@
+﻿@ECommerce.API_HostAddress = https://localhost:7193
+
+GET {{ECommerce.API_HostAddress}}/api/v1/category/Paginate
+
+###
+
+GET {{ECommerce.API_HostAddress}}/api/v1/category/RetrieveAll
+
+###
+
+POST {{ECommerce.API_HostAddress}}/api/v1/auth/Register
+Content-Type: application/json
+
+{
+  "userName": "ahmed",
+  "email": "ahmedadel1672003@gmail.com",
+  "phoneNumber": "01018856093",
+  "password": "Ahmed#01280755031",
+  "confirmedPassword": "Ahmed#01280755031"
+}
+
+###
+
+PATCH {{ECommerce.API_HostAddress}}/api/v1/email/ConfirmEmail
+Content-Type: application/json
+
+{
+  //ConfirmEmailRequestModel
+}
+
+###
+
+POST {{ECommerce.API_HostAddress}}/api/v1/auth/Register
+Content-Type: application/json
+
+{
+  //PostUserModel
+}
+
+###

@@ -17,7 +17,7 @@ public static class ServicesDependencies
             .AddScoped<ICookieService, CookieService>()
             .AddScoped<IIPInfoService, IPInfoService>()
             .AddScoped<ISessionService, SessionService>()
-            .AddSingleton<IActionContextAccessor, ActionContextAccessor>()
+            .AddTransient<IActionContextAccessor, ActionContextAccessor>()
             .Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)))
             .Configure<EmailSettings>(configuration.GetSection(nameof(EmailSettings)));
         #endregion
