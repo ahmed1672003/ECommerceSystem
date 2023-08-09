@@ -1,5 +1,5 @@
 ﻿namespace ECommerce.Domain.Entities;
-[Table("Categories"), PrimaryKey(nameof(Id)), Index(nameof(Name), IsUnique = true)]
+[Table("Categories"), PrimaryKey(nameof(Id)), Index(nameof(Name), IsUnique = true, Name = "IX_Categories_Name")]
 public class Category : Entity<string>, IEquatable<Category>
 {
     #region Properties

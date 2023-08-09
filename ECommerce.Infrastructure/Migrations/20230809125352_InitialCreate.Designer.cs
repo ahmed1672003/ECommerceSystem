@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECommerce.Infrastructure.Migrations
 {
     [DbContext(typeof(ECommerceDbContext))]
-    [Migration("20230725174801_InitialCreate")]
+    [Migration("20230809125352_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace ECommerce.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.0-preview.5.23280.1")
+                .HasAnnotation("ProductVersion", "7.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -37,7 +37,7 @@ namespace ECommerce.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name")
+                    b.HasIndex(new[] { "Name" }, "IX_Categories_Name")
                         .IsUnique();
 
                     b.ToTable("Categories");
@@ -191,6 +191,44 @@ namespace ECommerce.Infrastructure.Migrations
                     b.ToTable("UserClaims", (string)null);
                 });
 
+            modelBuilder.Entity("ECommerce.Domain.Entities.IdentityEntities.UserJWT", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsRefreshJWTUsed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("JWT")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("JWTExpirationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RefreshJWT")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RefreshJWTExpirtionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("RefreshJWTRevokedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserJWTs", (string)null);
+                });
+
             modelBuilder.Entity("ECommerce.Domain.Entities.IdentityEntities.UserLogin", b =>
                 {
                     b.Property<string>("LoginProvider")
@@ -256,43 +294,6 @@ namespace ECommerce.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ECommerce.Domain.Entities.IdentityEntities.User", b =>
-                {
-                    b.OwnsMany("ECommerce.Domain.Entities.IdentityEntities.UserRefreshToken", "RefreshTokens", b1 =>
-                        {
-                            b1.Property<string>("UserId")
-                                .HasColumnType("nvarchar(450)");
-
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
-
-                            b1.Property<DateTime>("CreatedOn")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<DateTime>("ExpiresOn")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<DateTime?>("RevokedOn")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<string>("Token")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.HasKey("UserId", "Id");
-
-                            b1.ToTable("UserRefreshTokens");
-
-                            b1.WithOwner()
-                                .HasForeignKey("UserId");
-                        });
-
-                    b.Navigation("RefreshTokens");
-                });
-
             modelBuilder.Entity("ECommerce.Domain.Entities.IdentityEntities.UserClaim", b =>
                 {
                     b.HasOne("ECommerce.Domain.Entities.IdentityEntities.User", null)
@@ -300,6 +301,17 @@ namespace ECommerce.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ECommerce.Domain.Entities.IdentityEntities.UserJWT", b =>
+                {
+                    b.HasOne("ECommerce.Domain.Entities.IdentityEntities.User", "User")
+                        .WithMany("UserJWTs")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ECommerce.Domain.Entities.IdentityEntities.UserLogin", b =>
@@ -333,6 +345,11 @@ namespace ECommerce.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ECommerce.Domain.Entities.IdentityEntities.User", b =>
+                {
+                    b.Navigation("UserJWTs");
                 });
 #pragma warning restore 612, 618
         }

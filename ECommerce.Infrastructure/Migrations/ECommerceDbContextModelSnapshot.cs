@@ -17,7 +17,7 @@ namespace ECommerce.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.9")
+                .HasAnnotation("ProductVersion", "7.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -34,7 +34,7 @@ namespace ECommerce.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name")
+                    b.HasIndex(new[] { "Name" }, "IX_Categories_Name")
                         .IsUnique();
 
                     b.ToTable("Categories");
@@ -291,43 +291,6 @@ namespace ECommerce.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ECommerce.Domain.Entities.IdentityEntities.User", b =>
-                {
-                    b.OwnsMany("ECommerce.Domain.Entities.IdentityEntities.UserRefreshToken", "UserRefreshTokens", b1 =>
-                        {
-                            b1.Property<string>("UserId")
-                                .HasColumnType("nvarchar(450)");
-
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
-
-                            b1.Property<DateTime>("CreatedOn")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<DateTime>("ExpiresOn")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<DateTime?>("RevokedOn")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<string>("Token")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.HasKey("UserId", "Id");
-
-                            b1.ToTable("UserRefreshTokens");
-
-                            b1.WithOwner()
-                                .HasForeignKey("UserId");
-                        });
-
-                    b.Navigation("UserRefreshTokens");
-                });
-
             modelBuilder.Entity("ECommerce.Domain.Entities.IdentityEntities.UserClaim", b =>
                 {
                     b.HasOne("ECommerce.Domain.Entities.IdentityEntities.User", null)
@@ -340,7 +303,7 @@ namespace ECommerce.Infrastructure.Migrations
             modelBuilder.Entity("ECommerce.Domain.Entities.IdentityEntities.UserJWT", b =>
                 {
                     b.HasOne("ECommerce.Domain.Entities.IdentityEntities.User", "User")
-                        .WithMany("UserJWTTokens")
+                        .WithMany("UserJWTs")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -383,7 +346,7 @@ namespace ECommerce.Infrastructure.Migrations
 
             modelBuilder.Entity("ECommerce.Domain.Entities.IdentityEntities.User", b =>
                 {
-                    b.Navigation("UserJWTTokens");
+                    b.Navigation("UserJWTs");
                 });
 #pragma warning restore 612, 618
         }

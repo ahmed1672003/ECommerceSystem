@@ -105,6 +105,31 @@ namespace ECommerce.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserJWTs",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    JWT = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RefreshJWT = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    JWTExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    RefreshJWTExpirtionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    RefreshJWTRevokedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsRefreshJWTUsed = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserJWTs", x => new { x.Id, x.UserId });
+                    table.ForeignKey(
+                        name: "FK_UserJWTs_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserLogins",
                 columns: table => new
                 {
@@ -118,29 +143,6 @@ namespace ECommerce.Infrastructure.Migrations
                     table.PrimaryKey("PK_UserLogins", x => new { x.LoginProvider, x.ProviderKey });
                     table.ForeignKey(
                         name: "FK_UserLogins_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserRefreshTokens",
-                columns: table => new
-                {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Token = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ExpiresOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    RevokedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserRefreshTokens", x => new { x.UserId, x.Id });
-                    table.ForeignKey(
-                        name: "FK_UserRefreshTokens_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -215,6 +217,11 @@ namespace ECommerce.Infrastructure.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_UserJWTs_UserId",
+                table: "UserJWTs",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserLogins_UserId",
                 table: "UserLogins",
                 column: "UserId");
@@ -262,10 +269,10 @@ namespace ECommerce.Infrastructure.Migrations
                 name: "UserClaims");
 
             migrationBuilder.DropTable(
-                name: "UserLogins");
+                name: "UserJWTs");
 
             migrationBuilder.DropTable(
-                name: "UserRefreshTokens");
+                name: "UserLogins");
 
             migrationBuilder.DropTable(
                 name: "UserRoles");
