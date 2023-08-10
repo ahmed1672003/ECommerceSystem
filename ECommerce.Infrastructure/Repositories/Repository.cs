@@ -1,7 +1,9 @@
-﻿namespace ECommerce.Infrastructure.Repositories;
+﻿using ECommerce.Domain.Enums.Shared;
+
+namespace ECommerce.Infrastructure.Repositories;
 public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
 {
-    private readonly ECommerceDbContext _context;
+    protected readonly ECommerceDbContext _context;
     protected readonly DbSet<TEntity> _entities;
 
     public Repository(ECommerceDbContext context)

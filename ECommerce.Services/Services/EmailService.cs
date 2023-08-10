@@ -1,6 +1,5 @@
 ﻿using ECommerce.Domain.IRepositories;
 using ECommerce.Models.Email;
-using ECommerce.Services.Helpers;
 
 using MailKit.Net.Smtp;
 using MailKit.Security;

@@ -1,4 +1,4 @@
-﻿namespace ECommerce.Domain.Enums;
+﻿namespace ECommerce.Domain.Enums.Shared;
 public enum OrderByDirection
 {
     Ascending,

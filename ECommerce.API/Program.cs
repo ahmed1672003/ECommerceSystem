@@ -16,7 +16,7 @@ public class Program
         #region Custom Dependencies
         builder.Services
            .AddApplicationDependencies()
-            .AddInfrastructureDependencies(builder.Configuration)
+           .AddInfrastructureDependencies(builder.Configuration)
            .AddServicesDependencies(builder.Configuration);
         #endregion
 
@@ -89,10 +89,6 @@ public class Program
         #endregion
 
         #region Add Authorization Configurations
-        //builder.Services.AddAuthorization(options =>
-        //{
-        //    options.AddPolicy("Permission", policy => policy.RequireClaim(Permissions.Categories.Create));
-        //});
 
         #endregion
 

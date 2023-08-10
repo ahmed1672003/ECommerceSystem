@@ -1,6 +1,4 @@
-﻿using ECommerce.Infrastructure.Enums;
-
-namespace ECommerce.Infrastructure.Seeds;
+﻿namespace ECommerce.Infrastructure.Seeds;
 public static class DefaultRoles
 {
     public static async Task SeedAsync(IUnitOfWork context)

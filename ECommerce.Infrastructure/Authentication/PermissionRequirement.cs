@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace ECommerce.Infrastructure.Filters;
+namespace ECommerce.Infrastructure.Authentication;
 public class PermissionRequirement : IAuthorizationRequirement
 {
     public string Permission { get; private set; }

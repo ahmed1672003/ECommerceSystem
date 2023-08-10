@@ -13,4 +13,5 @@ public class UserRepository : Repository<User>, IUserRepository
     public UserManager<User> Manager { get; }
     public SignInManager<User> SignInManager { get; }
 
+
 }

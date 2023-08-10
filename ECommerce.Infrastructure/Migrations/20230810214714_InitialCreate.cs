@@ -246,7 +246,9 @@ namespace ECommerce.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Users_UserName",
                 table: "Users",
-                column: "UserName");
+                column: "UserName",
+                unique: true,
+                filter: "[UserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",

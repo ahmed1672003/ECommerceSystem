@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using ECommerce.Domain.Enums.Claim;
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 
-namespace ECommerce.Infrastructure.Filters;
+namespace ECommerce.Infrastructure.Authentication;
 public class PermissionPolicyProvider : IAuthorizationPolicyProvider
 {
     public DefaultAuthorizationPolicyProvider FallbackPolicyProvider { get; }
@@ -19,7 +21,7 @@ public class PermissionPolicyProvider : IAuthorizationPolicyProvider
 
     public Task<AuthorizationPolicy> GetPolicyAsync(string policyName)
     {
-        if (policyName.StartsWith("Permission", StringComparison.OrdinalIgnoreCase))
+        if (policyName.StartsWith(CustomClaims.Permission.ToString(), StringComparison.OrdinalIgnoreCase))
         {
             var policy = new AuthorizationPolicyBuilder();
             policy.AddRequirements(new PermissionRequirement(policyName));

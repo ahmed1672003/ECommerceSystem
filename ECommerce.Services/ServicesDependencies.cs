@@ -1,7 +1,4 @@
-﻿using ECommerce.Services.Helpers;
-
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.OpenApi.Models;
+﻿
 
 namespace ECommerce.Services;
 public static class ServicesDependencies
@@ -17,9 +14,8 @@ public static class ServicesDependencies
             .AddTransient<ICookieService, CookieService>()
             .AddTransient<IIPInfoService, IPInfoService>()
             .AddTransient<ISessionService, SessionService>()
-            .AddTransient<IActionContextAccessor, ActionContextAccessor>()
-            .Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)))
-            .Configure<EmailSettings>(configuration.GetSection(nameof(EmailSettings)));
+            .AddTransient<IActionContextAccessor, ActionContextAccessor>();
+
         #endregion
 
         #region JWT Services

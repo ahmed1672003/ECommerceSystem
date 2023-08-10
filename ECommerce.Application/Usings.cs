@@ -9,7 +9,7 @@ global using ECommerce.Application.Features.Categories.Queries.CategoryQueries;
 global using ECommerce.Application.Responses.IResponseServices;
 global using ECommerce.Application.Responses.ResponseServices;
 global using ECommerce.Domain.Entities;
-global using ECommerce.Domain.Enums;
+global using ECommerce.Domain.Enums.Category;
 global using ECommerce.Domain.IRepositories;
 global using ECommerce.Models.Category;
 

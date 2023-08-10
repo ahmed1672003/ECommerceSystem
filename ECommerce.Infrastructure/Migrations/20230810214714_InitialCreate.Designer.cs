@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECommerce.Infrastructure.Migrations
 {
     [DbContext(typeof(ECommerceDbContext))]
-    [Migration("20230809125352_InitialCreate")]
+    [Migration("20230810214714_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -161,7 +161,9 @@ namespace ECommerce.Infrastructure.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("UserName");
+                    b.HasIndex("UserName")
+                        .IsUnique()
+                        .HasFilter("[UserName] IS NOT NULL");
 
                     b.ToTable("Users", (string)null);
                 });

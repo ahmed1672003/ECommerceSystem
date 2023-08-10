@@ -158,7 +158,9 @@ namespace ECommerce.Infrastructure.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("UserName");
+                    b.HasIndex("UserName")
+                        .IsUnique()
+                        .HasFilter("[UserName] IS NOT NULL");
 
                     b.ToTable("Users", (string)null);
                 });

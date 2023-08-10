@@ -7,8 +7,8 @@ public class Role : IdentityRole<string>
     public override string? Name { get => base.Name; set => base.Name = value; }
     public override string? NormalizedName { get => base.NormalizedName; set => base.NormalizedName = value; }
     public override string? ConcurrencyStamp { get => base.ConcurrencyStamp; set => base.ConcurrencyStamp = value; }
-    #endregion
 
+    #endregion
 
     #region Behaviors
 
@@ -27,4 +27,6 @@ public class Role : IdentityRole<string>
         return base.ToString();
     }
     #endregion
+
+
 }

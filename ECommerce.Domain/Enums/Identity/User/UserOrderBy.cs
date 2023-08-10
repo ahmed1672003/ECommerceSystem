@@ -1,5 +1,5 @@
-﻿namespace ECommerce.Domain.Enums.IdentityEnums;
-public enum UserEnum
+﻿namespace ECommerce.Domain.Enums.Identity.User;
+public enum UserOrderBy
 {
     Id,
     UserName,

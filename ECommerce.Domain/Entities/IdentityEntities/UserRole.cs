@@ -5,8 +5,8 @@ public class UserRole : IdentityUserRole<string>
     #region Properties
     public override string UserId { get => base.UserId; set => base.UserId = value; }
     public override string RoleId { get => base.RoleId; set => base.RoleId = value; }
-    #endregion
 
+    #endregion
     #region Behaviors
     public override bool Equals(object? obj)
     {

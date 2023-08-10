@@ -1,4 +1,4 @@
-﻿namespace ECommerce.Services.Helpers;
+﻿namespace ECommerce.Infrastructure.Settings;
 public class EmailSettings
 {
     public int Port { get; set; }

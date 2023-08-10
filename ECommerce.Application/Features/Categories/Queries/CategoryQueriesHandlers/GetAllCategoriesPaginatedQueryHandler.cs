@@ -18,7 +18,7 @@ public class GetAllCategoriesPaginatedQueryHandler :
 
         switch (request.OrderBy)
         {
-            case CategoryEnum.CategoryName:
+            case CategoryOrderBy.CategoryName:
                 orderBy = (c) => c.Name;
                 break;
             default:

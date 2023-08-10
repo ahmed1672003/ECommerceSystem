@@ -1,8 +1,8 @@
 ﻿namespace ECommerce.Domain.Entities.IdentityEntities;
 [Table("Users"),
-    PrimaryKey(nameof(Id)),
-    Index(nameof(Email), IsUnique = true),
-    Index(nameof(UserName))]
+PrimaryKey(nameof(Id)),
+Index(nameof(Email), IsUnique = true),
+Index(nameof(UserName), IsUnique = true)]
 public class User : IdentityUser<string>
 {
     #region Properties

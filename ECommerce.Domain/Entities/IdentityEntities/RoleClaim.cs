@@ -8,6 +8,9 @@ public class RoleClaim : IdentityRoleClaim<string>
     public override string RoleId { get => base.RoleId; set => base.RoleId = value; }
     public override string? ClaimType { get => base.ClaimType; set => base.ClaimType = value; }
     public override string? ClaimValue { get => base.ClaimValue; set => base.ClaimValue = value; }
+
+
+
     #endregion
 
     #region Behaviors

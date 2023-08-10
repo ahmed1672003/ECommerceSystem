@@ -1,4 +1,6 @@
-﻿namespace ECommerce.Domain.IRepositories;
+﻿using ECommerce.Domain.Enums.Shared;
+
+namespace ECommerce.Domain.IRepositories;
 public interface IRepository<TEntity> where TEntity : class
 {
     #region Commands

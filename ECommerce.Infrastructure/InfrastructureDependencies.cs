@@ -1,5 +1,5 @@
-﻿
-using ECommerce.Infrastructure.Repositories.IdentityRepositories;
+﻿using ECommerce.Infrastructure.Repositories.IdentityRepositories;
+using ECommerce.Infrastructure.Settings;
 
 namespace ECommerce.Infrastructure;
 public static class InfrastructureDependencies
@@ -49,25 +49,30 @@ public static class InfrastructureDependencies
         .AddDefaultTokenProviders()
         .AddDefaultUI();
 
-        services.AddDbContext<ECommerceDbContext>(options =>
-        {
-            options.UseSqlServer(configuration.GetConnectionString("ECommerceConnection"));
-        });
         services
-            .AddScoped<ECommerceDbContext>()
-            .AddScoped<ICategoryRepository, CategoryRepository>()
-            .AddScoped<IUserJWTRepository, UserJWTRepository>()
-            .AddScoped<IUserLoginRepository, UserLoginRepository>()
-            .AddScoped<IUserRoleRepository, UserRoleRepository>()
-            .AddScoped<IUserRepository, UserRepository>()
-            .AddScoped<IUserTokenRepository, UserTokenRepository>()
-            .AddScoped<IUserClaimRepository, UserClaimRepository>()
-            .AddScoped<IRoleClaimRepository, RoleClaimRepository>()
-            .AddScoped<IRoleRepository, RoleRepository>()
-            .AddScoped<IUnitOfWork, UnitOfWork>()
-            .AddScoped<UserManager<User>>()
-            .AddScoped<SignInManager<User>>()
-            .AddScoped<RoleManager<Role>>();
+            .AddDbContext<ECommerceDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("ECommerceConnection")));
+
+        services
+            .AddTransient<ECommerceDbContext>()
+            .AddTransient<ICategoryRepository, CategoryRepository>()
+            .AddTransient<IUserJWTRepository, UserJWTRepository>()
+            .AddTransient<IUserLoginRepository, UserLoginRepository>()
+            .AddTransient<IUserRoleRepository, UserRoleRepository>()
+            .AddTransient<IUserRepository, UserRepository>()
+            .AddTransient<IUserTokenRepository, UserTokenRepository>()
+            .AddTransient<IUserClaimRepository, UserClaimRepository>()
+            .AddTransient<IRoleClaimRepository, RoleClaimRepository>()
+            .AddTransient<IRoleRepository, RoleRepository>()
+            .AddTransient<IUnitOfWork, UnitOfWork>()
+            //.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>()
+            //.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>()
+            .AddTransient<UserManager<User>>()
+            .AddTransient<SignInManager<User>>()
+            .AddTransient<RoleManager<Role>>();
+
+        services
+            .Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)))
+            .Configure<EmailSettings>(configuration.GetSection(nameof(EmailSettings)));
         return services;
     }
 }

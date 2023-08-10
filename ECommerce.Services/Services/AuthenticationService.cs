@@ -69,12 +69,24 @@ public class AuthenticationService : IAuthenticationService
                 RefreshJWTExpirtionDate = DateTime.UtcNow.AddDays(_jWTSettings.RefreshTokenExpireDate)
             };
 
-            user.UserJWTs.Add(userJWT);
+            var trasaction = _context.Transaction;
+            try
+            {
+                user.UserJWTs.Add(userJWT);
+                var identityResult = await _context.Users.Manager.UpdateAsync(user);
 
-            var identityResult = await _context.Users.Manager.UpdateAsync(user);
+                await trasaction.CommitAsync();
 
-            if (!identityResult.Succeeded)
-                return new AuthenticationModel();
+                if (!identityResult.Succeeded)
+                    return new AuthenticationModel();
+            }
+            catch
+            {
+                await trasaction.RollbackAsync();
+            }
+
+
+
 
             authenticationModel.JWTModel = new()
             {
@@ -144,17 +156,19 @@ public class AuthenticationService : IAuthenticationService
         var userRolesNames = await _context.Users.Manager.GetRolesAsync(user);
         var userClaims = await _context.Users.Manager.GetClaimsAsync(user);
 
-        #region MyRegion
+        #region Get Permissions
 
-        var roleClaims = await _context.RoleClaims.RetrieveAllAsync();
+        // get user roles
+        var userRoles = await _context.Roles.RetrieveAllAsync(r => userRolesNames.Contains(r.Name));
+        // get role claims
         var permissions = new List<Claim>();
-
-        foreach (var roleClaim in roleClaims)
-            permissions.Add(roleClaim.ToClaim());
-
+        foreach (var role in userRoles)
+        {
+            var roleClams = await _context.Roles.Manager.GetClaimsAsync(role);
+            permissions.AddRange(roleClams);
+        }
 
         #endregion
-
 
         var claims = new List<Claim>()
         {
@@ -166,6 +180,7 @@ public class AuthenticationService : IAuthenticationService
 
         foreach (var role in userRolesNames)
             claims.Add(new(ClaimTypes.Role, role));
+
 
         claims.AddRange(userClaims);
         claims.AddRange(permissions);

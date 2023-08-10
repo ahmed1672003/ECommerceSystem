@@ -1,6 +1,7 @@
 ﻿using System.Net;
 
-using ECommerce.Infrastructure.Enums;
+using ECommerce.Domain.Enums.Category;
+using ECommerce.Domain.Enums.Identity.Role;
 using ECommerce.Infrastructure.Filters;
 using ECommerce.Infrastructure.Seeds;
 using ECommerce.Models.Category;
@@ -54,7 +55,7 @@ public class CategoryController : ECommerceController
 
     [HttpGet, ActionName(nameof(Paginate))]
     public async Task<IActionResult> Paginate(
-        [FromQuery] int? pageNumber, [FromQuery] int? pageSize, [FromQuery] CategoryEnum orderBy) =>
+        [FromQuery] int? pageNumber, [FromQuery] int? pageSize, [FromQuery] CategoryOrderBy orderBy) =>
 
          NewResult(await Mediator.Send(
             new GetAllCategoriesPaginatedQuery(

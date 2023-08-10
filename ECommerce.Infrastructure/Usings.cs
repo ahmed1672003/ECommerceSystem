@@ -2,11 +2,10 @@
 
 global using ECommerce.Domain.Entities;
 global using ECommerce.Domain.Entities.IdentityEntities;
-global using ECommerce.Domain.Enums;
+global using ECommerce.Domain.Enums.Identity.Role;
 global using ECommerce.Domain.IRepositories;
 global using ECommerce.Domain.IRepositories.IIdentityRepositories;
 global using ECommerce.Infrastructure.Context;
-global using ECommerce.Infrastructure.Context.Configurations;
 global using ECommerce.Infrastructure.Repositories;
 
 global using Microsoft.AspNetCore.Identity;

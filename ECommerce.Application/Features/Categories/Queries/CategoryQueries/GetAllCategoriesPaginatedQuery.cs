@@ -1,5 +1,7 @@
-﻿namespace ECommerce.Application.Features.Categories.Queries.CategoryQueries;
+﻿
+
+namespace ECommerce.Application.Features.Categories.Queries.CategoryQueries;
 public record GetAllCategoriesPaginatedQuery(
     int? PageNumber,
     int? PageSize,
-    CategoryEnum OrderBy) : IRequest<PaginationResponse<IEnumerable<CategoryModel>>>;
+    CategoryOrderBy OrderBy) : IRequest<PaginationResponse<IEnumerable<CategoryModel>>>;
