@@ -1,6 +1,4 @@
-﻿
-
-using ECommerce.Domain.IRepositories;
+﻿using ECommerce.Domain.IRepositories;
 using ECommerce.Models.Email;
 using ECommerce.Services.Helpers;
 
@@ -97,32 +95,32 @@ public class EmailService : IEmailService
         }
     }
 
-    public async Task<ConfirmEmailResponseModel> ConfirmEmailAsync(string? userId, string? code)
+    public async Task<ConfirmEmailResponseModel> ConfirmEmailAsync(string? userId, string? token)
     {
         // new String(request.Plate.Where(Char.IsDigit).ToArray()).ToLower();
 
         //code = new String(code.Where(c => !Char.IsWhiteSpace(c)).ToArray());
 
         var user = await _context.Users.RetrieveAsync(u => u.Id.Equals(userId));
-        var result = await _context.Users.Manager.ConfirmEmailAsync(user!, code!);
+        var result = await _context.Users.Manager.ConfirmEmailAsync(user!, token!);
 
         if (string.IsNullOrEmpty(userId) ||
             string.IsNullOrWhiteSpace(userId) ||
-            string.IsNullOrEmpty(code) ||
-            string.IsNullOrWhiteSpace(code) ||
+            string.IsNullOrEmpty(token) ||
+            string.IsNullOrWhiteSpace(token) ||
             user is null ||
             !result.Succeeded)
 
             return new()
             {
-                Code = code,
+                Token = token,
                 UserId = userId,
                 IsEmailConfirmed = false,
             };
 
         return new()
         {
-            Code = code,
+            Token = token,
             UserId = userId,
             IsEmailConfirmed = true,
         };

@@ -2,7 +2,8 @@
 
 namespace ECommerce.Infrastructure.Context;
 public class ECommerceDbContext :
-    IdentityDbContext<User, Role, string, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>
+    IdentityDbContext<User, Role, string, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>,
+    IECommerceDbContext
 {
     #region Constructors
     public ECommerceDbContext(DbContextOptions<ECommerceDbContext> options) : base(options) { }
@@ -14,7 +15,6 @@ public class ECommerceDbContext :
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
-
     #endregion
 
     #region Properties
@@ -27,8 +27,5 @@ public class ECommerceDbContext :
     public DbSet<UserRole> UserRoles { get; set; }
     public DbSet<UserToken> UserTokens { get; set; }
     public DbSet<UserJWT> UserJWTs { get; set; }
-
-
-
     #endregion
 }

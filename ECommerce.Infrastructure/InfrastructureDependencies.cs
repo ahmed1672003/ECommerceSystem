@@ -4,14 +4,13 @@ using ECommerce.Infrastructure.Repositories.IdentityRepositories;
 namespace ECommerce.Infrastructure;
 public static class InfrastructureDependencies
 {
-    public static IServiceCollection AddInfrastructureDependencies
-        (this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddInfrastructureDependencies(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddIdentity<User, Role>(options =>
         {
             #region Email Options
             options.SignIn.RequireConfirmedEmail = true;
-            options.SignIn.RequireConfirmedPhoneNumber = true;
+            options.SignIn.RequireConfirmedPhoneNumber = false;
             options.SignIn.RequireConfirmedAccount = true;
             #endregion
 

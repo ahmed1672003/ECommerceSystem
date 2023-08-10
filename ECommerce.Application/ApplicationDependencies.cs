@@ -18,6 +18,9 @@ public static class ApplicationDependencies
         services.AddScoped<IResponseHandler, PaginationResponseHandler>();
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         services.AddScoped<EmailAddressAttribute>();
+
+
+
         return services;
     }
 }

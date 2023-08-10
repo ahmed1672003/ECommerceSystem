@@ -141,8 +141,20 @@ public class AuthenticationService : IAuthenticationService
 
     private async Task<List<Claim>> GetClaimsAsync(User user)
     {
-        var roles = await _context.Users.Manager.GetRolesAsync(user);
+        var userRolesNames = await _context.Users.Manager.GetRolesAsync(user);
         var userClaims = await _context.Users.Manager.GetClaimsAsync(user);
+
+        #region MyRegion
+
+        var roleClaims = await _context.RoleClaims.RetrieveAllAsync();
+        var permissions = new List<Claim>();
+
+        foreach (var roleClaim in roleClaims)
+            permissions.Add(roleClaim.ToClaim());
+
+
+        #endregion
+
 
         var claims = new List<Claim>()
         {
@@ -152,10 +164,11 @@ public class AuthenticationService : IAuthenticationService
             new (ClaimTypes.MobilePhone, user.PhoneNumber),
         };
 
-        foreach (var role in roles)
+        foreach (var role in userRolesNames)
             claims.Add(new(ClaimTypes.Role, role));
 
         claims.AddRange(userClaims);
+        claims.AddRange(permissions);
 
         return claims;
     }

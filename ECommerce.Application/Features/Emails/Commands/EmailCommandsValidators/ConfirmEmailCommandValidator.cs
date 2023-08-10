@@ -9,7 +9,7 @@ public class ConfirmEmailCommandValidator : AbstractValidator<ConfirmEmailComman
     }
     void ApplyValidatorRules()
     {
-        RuleFor(c => c.Model.Code)
+        RuleFor(c => c.Model.Token)
         .NotNull()
         .NotEmpty();
         RuleFor(c => c.Model.UserId)

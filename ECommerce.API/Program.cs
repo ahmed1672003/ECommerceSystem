@@ -1,21 +1,42 @@
 using ECommerce.Application.MiddleWares;
+using ECommerce.Domain.IRepositories;
+using ECommerce.Infrastructure.Seeds;
 using ECommerce.Services;
 
 namespace ECommerce.API;
 public class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
-        #region Register Services
+        #region Register Custom Services
 
         #region Custom Dependencies
         builder.Services
-         .AddApplicationDependencies()
-         .AddInfrastructureDependencies(builder.Configuration)
-         .AddServicesDependencies(builder.Configuration);
+           .AddApplicationDependencies()
+            .AddInfrastructureDependencies(builder.Configuration)
+           .AddServicesDependencies(builder.Configuration);
+        #endregion
+
+        #region Seed Default Data
+        var loggerFactory = builder.Services.BuildServiceProvider().GetRequiredService<ILoggerFactory>();
+        var logger = loggerFactory.CreateLogger("app");
+        var context = builder.Services.BuildServiceProvider().GetRequiredService<IUnitOfWork>();
+        try
+        {
+            await DefaultRoles.SeedAsync(context);
+            await UsersSeeder.SeedSuperAdminUserAsync(context);
+            await UsersSeeder.SeedAdminUserAsync(context);
+            await UsersSeeder.SeedBasicUserAsync(context);
+            logger.LogInformation("Default Data Seeded Successfully");
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "An error occurred while seeding data", ex.Message);
+        }
+
         #endregion
 
         #region Handel Serialize loop references
@@ -67,7 +88,18 @@ public class Program
         //    });
         #endregion
 
+        #region Add Authorization Configurations
+        //builder.Services.AddAuthorization(options =>
+        //{
+        //    options.AddPolicy("Permission", policy => policy.RequireClaim(Permissions.Categories.Create));
+        //});
+
         #endregion
+
+        #endregion
+
+        #region Built In Services
+
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
@@ -81,15 +113,15 @@ public class Program
             // By default, all incoming requests will be authorized according to the default policy.
             //options.FallbackPolicy = options.DefaultPolicy;
         });
+        #endregion
 
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
 
+        #region Use Services
         app.UseSwagger();
         app.UseSwaggerUI();
-
-        #region Use Services
 
         #region Use Cors
         app.UseCors("ECommerce");
@@ -107,8 +139,6 @@ public class Program
         //});
         #endregion
 
-        #endregion
-
         app.UseAuthentication();
 
         app.UseHttpsRedirection();
@@ -116,6 +146,8 @@ public class Program
         app.UseAuthorization();
 
         app.MapControllers();
+
+        #endregion
 
         app.Run();
     }

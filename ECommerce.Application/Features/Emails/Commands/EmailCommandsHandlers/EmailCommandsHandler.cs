@@ -35,10 +35,11 @@ public class EmailCommandsHandler :
     public async Task<Response<ConfirmEmailResponseModel>>
         Handle(ConfirmEmailCommand request, CancellationToken cancellationToken)
     {
-        var model = await _services.EmailServices.ConfirmEmailAsync(request.Model.UserId, request.Model.Code);
+        var model = await _services.EmailServices.ConfirmEmailAsync(request.Model.UserId, request.Model.Token);
 
         if (!model.IsEmailConfirmed)
             return Conflict(model);
+
 
         return Success(model);
     }

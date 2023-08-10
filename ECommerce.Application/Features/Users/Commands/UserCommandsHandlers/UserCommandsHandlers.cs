@@ -49,11 +49,13 @@ public class UserCommandsHandlers : ResponseHandler,
                 u.Email.Equals(request.Model.EmailOrUserName),
             includes: new string[] { nameof(User.UserJWTs) });
 
-        var signInResult =
-            await Context.Users.SignInManager.CheckPasswordSignInAsync(user, request.Model.Password, false);
 
         if (!user.EmailConfirmed)
             return BadRequest<AuthenticationModel>(message: "email does not confirmed");
+
+        var signInResult =
+            await Context.Users.SignInManager.CheckPasswordSignInAsync(user, request.Model.Password, true);
+
 
         // check password is correct or not
         if (!signInResult.Succeeded)
@@ -122,14 +124,14 @@ public class UserCommandsHandlers : ResponseHandler,
             var authenticationModel = await _services.AuthServices.GetJWTAsync(user);
 
             // email confirmation
-            var code = await Context.Users.Manager.GenerateEmailConfirmationTokenAsync(user);
+            var token = await Context.Users.Manager.GenerateEmailConfirmationTokenAsync(user);
 
             var url =
             $"{_accessor.HttpContext.Request.Scheme.Trim().ToLower()}://{_accessor.HttpContext.Request.Host.ToUriComponent().Trim().ToLower()}/api/v1/Email/ConfirmEmail";
 
             var parameters = new Dictionary<string, string>
             {
-                {"Code",code},
+                {"Token",token},
                 { "UserId" , user.Id}
             };
 
