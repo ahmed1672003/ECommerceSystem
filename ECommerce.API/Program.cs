@@ -1,4 +1,5 @@
 using ECommerce.Application.MiddleWares;
+using ECommerce.Domain.Enums.Claim;
 using ECommerce.Domain.IRepositories;
 using ECommerce.Infrastructure.Seeds;
 using ECommerce.Services;
@@ -88,8 +89,14 @@ public class Program
         //    });
         #endregion
 
-        #region Add Authorization Configurations
-
+        #region Add Authorization Policy
+        builder.Services.AddAuthorization(o =>
+        {
+            o.AddPolicy(Permissions.Categories.Create, p =>
+            {
+                p.RequireClaim(CustomClaims.Permission.ToString());
+            });
+        });
         #endregion
 
         #endregion
@@ -104,11 +111,6 @@ public class Program
             .AddAuthentication(NegotiateDefaults.AuthenticationScheme)
             .AddNegotiate();
 
-        builder.Services.AddAuthorization(options =>
-        {
-            // By default, all incoming requests will be authorized according to the default policy.
-            //options.FallbackPolicy = options.DefaultPolicy;
-        });
         #endregion
 
         var app = builder.Build();

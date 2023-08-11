@@ -1,8 +1,8 @@
 ﻿using System.Net;
 
 using ECommerce.Domain.Enums.Category;
+using ECommerce.Domain.Enums.Claim;
 using ECommerce.Domain.Enums.Identity.Role;
-using ECommerce.Infrastructure.Filters;
 using ECommerce.Infrastructure.Seeds;
 using ECommerce.Models.Category;
 using ECommerce.Services.IServices;
@@ -14,7 +14,6 @@ namespace ECommerce.API.Controllers;
 [Route("api/v1/[controller]/[action]")]
 [ApiController]
 [Authorize(Roles = $"{nameof(Roles.Basic)}")]
-
 public class CategoryController : ECommerceController
 {
     private readonly IUnitOfServices _services;
@@ -24,7 +23,7 @@ public class CategoryController : ECommerceController
     }
 
     [HttpPost, ActionName(nameof(Post))]
-    [HasPermission(Permissions.Categories.Create)]
+    [Authorize(nameof(CustomClaims.Permission), Policy = Permissions.Categories.Create, Roles = nameof(Roles.SuperAdmin))]
     public async Task<IActionResult> Post([FromBody] PostCategoryModel model) =>
       NewResult(await Mediator.Send(new PostCategoryCommand(model)));
 

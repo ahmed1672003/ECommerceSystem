@@ -1,4 +1,5 @@
-﻿using ECommerce.Infrastructure.Enums;
+﻿using ECommerce.Domain.Enums.Claim;
+using ECommerce.Infrastructure.Enums;
 
 namespace ECommerce.Infrastructure.Seeds;
 public static class UsersSeeder
@@ -86,7 +87,7 @@ public static class UsersSeeder
     private static async Task SeedClaimsForSuperAdminAsync(this RoleManager<Role> roleManager)
     {
         var superAdminRole = await roleManager.FindByNameAsync(Roles.SuperAdmin.ToString());
-        await roleManager.AddPermissionClaimsAsync(superAdminRole, "Categories");
+        await roleManager.AddPermissionClaimsAsync(superAdminRole, Modules.Categories.ToString());
     }
 
     /// <summary>
@@ -106,7 +107,7 @@ public static class UsersSeeder
 
         // add all claims to role and add permissions to claim
         foreach (var permission in allModulePermissions)
-            if (!roleClaims.Any(c => c.Type.Equals("Permission") && c.Value.Equals(permission)))
-                await roleManager.AddClaimAsync(role, new("Permission", permission));
+            if (!roleClaims.Any(c => c.Type.Equals(CustomClaims.Permission.ToString()) && c.Value.Equals(permission)))
+                await roleManager.AddClaimAsync(role, new(CustomClaims.Permission.ToString(), permission));
     }
 }
