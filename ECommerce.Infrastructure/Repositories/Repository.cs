@@ -122,6 +122,9 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
                 .ExecuteUpdateAsync(entity =>
                     entity.SetProperty(property, propertyExpression), cancellationToken);
     }
+
+
+
     #endregion
 
     #region Queries
@@ -246,5 +249,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
         else
             return await _entities.CountAsync(filter, cancellationToken);
     }
+
+
     #endregion
 }

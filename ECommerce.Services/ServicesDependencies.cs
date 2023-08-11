@@ -8,14 +8,13 @@ public static class ServicesDependencies
         #region Register Service
         services
             .AddHttpContextAccessor()
-            .AddTransient<IAuthenticationService, AuthenticationService>()
-            .AddTransient<IUnitOfServices, UnitOfServices>()
-            .AddTransient<IEmailService, EmailService>()
-            .AddTransient<ICookieService, CookieService>()
-            .AddTransient<IIPInfoService, IPInfoService>()
-            .AddTransient<ISessionService, SessionService>()
+            .AddScoped<IAuthenticationService, AuthenticationService>()
+            .AddScoped<IUnitOfServices, UnitOfServices>()
+            .AddScoped<IEmailService, EmailService>()
+            .AddScoped<ICookieService, CookieService>()
+            .AddScoped<IIPInfoService, IPInfoService>()
+            .AddScoped<ISessionService, SessionService>()
             .AddTransient<IActionContextAccessor, ActionContextAccessor>();
-
         #endregion
 
         #region JWT Services

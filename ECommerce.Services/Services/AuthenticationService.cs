@@ -66,27 +66,26 @@ public class AuthenticationService : IAuthenticationService
                 IsRefreshJWTUsed = true,
                 UserId = user.Id,
                 JWTExpirationDate = DateTime.UtcNow.AddDays(_jWTSettings.AccessTokenExpireDate),
-                RefreshJWTExpirtionDate = DateTime.UtcNow.AddDays(_jWTSettings.RefreshTokenExpireDate)
+                RefreshJWTExpirtionDate = DateTime.UtcNow.AddDays(_jWTSettings.RefreshTokenExpireDate),
             };
 
-            var trasaction = _context.Transaction;
+            using var trasaction = await _context.BeginTransactionAsync();
             try
             {
-                user.UserJWTs.Add(userJWT);
-                var identityResult = await _context.Users.Manager.UpdateAsync(user);
+                await _context.UserJWTs.CreateAsync(userJWT);
+                //await _context.Users.UpdateAsync(user);
+                //var identityResult = await _context.Users.Manager.UpdateAsync(user);
 
+                await _context.SaveChangesAsync();
                 await trasaction.CommitAsync();
 
-                if (!identityResult.Succeeded)
-                    return new AuthenticationModel();
+                //if (!identityResult.Succeeded)
+                //    return new AuthenticationModel();
             }
             catch
             {
                 await trasaction.RollbackAsync();
             }
-
-
-
 
             authenticationModel.JWTModel = new()
             {
@@ -159,7 +158,7 @@ public class AuthenticationService : IAuthenticationService
         #region Get Permissions
 
         // get user roles
-        var userRoles = await _context.Roles.RetrieveAllAsync(r => userRolesNames.Contains(r.Name));
+        var userRoles = (await _context.Roles.RetrieveAllAsync(r => userRolesNames.Contains(r.Name))).ToList();
         // get role claims
         var permissions = new List<Claim>();
         foreach (var role in userRoles)

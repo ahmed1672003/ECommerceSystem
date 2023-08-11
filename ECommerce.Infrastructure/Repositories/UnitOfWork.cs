@@ -26,8 +26,8 @@ public class UnitOfWork : IUnitOfWork
         UserRoles = userRoles;
         UserTokens = userTokens;
         UserJWTs = userJWTTokens;
+
     }
-    public IDbContextTransaction Transaction => _context.Database.BeginTransaction();
     public ICategoryRepository Categories { get; private set; }
     public IRoleClaimRepository RoleClaims { get; private set; }
     public IRoleRepository Roles { get; private set; }
@@ -40,4 +40,10 @@ public class UnitOfWork : IUnitOfWork
     public async ValueTask DisposeAsync() => await _context.DisposeAsync();
     public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) =>
         await _context.SaveChangesAsync(cancellationToken);
+    public async Task CommitAsync(CancellationToken cancellationToken = default) =>
+        await _context.Database.CommitTransactionAsync();
+    public async Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default) =>
+        await _context.Database.BeginTransactionAsync();
+    public async Task RollBackAsync(CancellationToken cancellationToken = default) =>
+        await _context.Database.RollbackTransactionAsync();
 }

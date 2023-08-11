@@ -10,6 +10,5 @@ public static class DefaultRoles
             await context.Roles.Manager.CreateAsync(new Role() { Name = Roles.Admin.ToString() });
             await context.Roles.Manager.CreateAsync(new Role() { Name = Roles.Basic.ToString() });
         }
-
     }
 }

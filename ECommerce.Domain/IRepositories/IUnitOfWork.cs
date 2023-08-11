@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore.Storage;
 namespace ECommerce.Domain.IRepositories;
 public interface IUnitOfWork : IAsyncDisposable
 {
-    IDbContextTransaction Transaction { get; }
     ICategoryRepository Categories { get; }
     IRoleClaimRepository RoleClaims { get; }
     IRoleRepository Roles { get; }
@@ -16,4 +15,7 @@ public interface IUnitOfWork : IAsyncDisposable
     IUserTokenRepository UserTokens { get; }
     IUserJWTRepository UserJWTs { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+    Task CommitAsync(CancellationToken cancellationToken = default);
+    Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default);
+    Task RollBackAsync(CancellationToken cancellationToken = default);
 }

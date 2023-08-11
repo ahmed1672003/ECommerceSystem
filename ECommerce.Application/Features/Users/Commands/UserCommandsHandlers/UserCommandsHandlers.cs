@@ -111,7 +111,7 @@ public class UserCommandsHandlers : ResponseHandler,
         Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
         var user = Mapper.Map<User>(request.Model);
-        using var trasaction = Context.Transaction;
+        using var trasaction = await Context.BeginTransactionAsync();
 
         try
         {
