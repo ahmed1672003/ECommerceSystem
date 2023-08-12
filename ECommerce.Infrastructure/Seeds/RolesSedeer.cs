@@ -1,5 +1,5 @@
 ﻿namespace ECommerce.Infrastructure.Seeds;
-public static class DefaultRoles
+public static class RolesSedeer
 {
     public static async Task SeedAsync(IUnitOfWork context)
     {

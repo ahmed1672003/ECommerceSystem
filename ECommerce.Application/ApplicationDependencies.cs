@@ -7,10 +7,11 @@ public static class ApplicationDependencies
 {
     public static IServiceCollection AddApplicationDependencies(this IServiceCollection services)
     {
+        #region Add Services
         services.AddMediatR(cfg =>
-        {
-            cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly());
-        });
+      {
+          cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly());
+      });
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
@@ -18,8 +19,7 @@ public static class ApplicationDependencies
         services.AddScoped<IResponseHandler, PaginationResponseHandler>();
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         services.AddScoped<EmailAddressAttribute>();
-
-
+        #endregion
 
         return services;
     }

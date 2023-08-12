@@ -21,7 +21,7 @@ public static class UsersSeeder
 
         if (!await context.Users.IsExistAsync(u => u.Email.Equals(superAdminUser.Email)))
         {
-            await context.Users.Manager.CreateAsync(superAdminUser, "Ahmed#01280755031");
+            await context.Users.Manager.CreateAsync(superAdminUser, "Ahmed#12364987");
             await context.Users.Manager.AddToRolesAsync(superAdminUser, new List<string>
                 {
                     Roles.SuperAdmin.ToString(),
@@ -52,7 +52,7 @@ public static class UsersSeeder
 
         if (!await context.Users.IsExistAsync(u => u.Email.Equals(adminUser.Email)))
         {
-            await context.Users.Manager.CreateAsync(adminUser, "Ahmed#01280755031");
+            await context.Users.Manager.CreateAsync(adminUser, "Ahmed#12364987");
             await context.Users.Manager.AddToRolesAsync(adminUser, new List<string>
                 {
                     Roles.Admin.ToString(),
@@ -78,7 +78,7 @@ public static class UsersSeeder
 
         if (!await context.Users.IsExistAsync(u => u.Email.Equals(basicUser.Email)))
         {
-            await context.Users.Manager.CreateAsync(basicUser, "Ahmed#01280755031");
+            await context.Users.Manager.CreateAsync(basicUser, "Ahmed#12364987");
             await context.Users.Manager.AddToRoleAsync(basicUser, Roles.Basic.ToString());
         }
 
