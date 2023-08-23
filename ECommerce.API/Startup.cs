@@ -1,8 +1,13 @@
-﻿using ECommerce.Application.MiddleWares;
+﻿using System.Globalization;
+
+using ECommerce.Application.MiddleWares;
 using ECommerce.Domain.Enums.Claim;
 using ECommerce.Domain.IRepositories;
 using ECommerce.Infrastructure.Seeds;
 using ECommerce.Services;
+
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Options;
 
 namespace ECommerce.API;
 
@@ -63,30 +68,25 @@ public class Startup
             });
         #endregion
 
+
         #region Add Localization
-        //builder.Services.AddControllersWithViews();
-        //builder.Services
-        //    .AddLocalization(options =>
-        //    {
-        //        options.ResourcesPath = string.Empty;
-        //    });
 
-        //builder.Services
-        //    .Configure<RequestLocalizationOptions>(options =>
-        //    {
-        //        IList<CultureInfo> supportedCultures = new List<CultureInfo>
-        //        {
-        //            new ("en-US"),
-        //            new ("de-DE"),
-        //            new ("fr-FR"),
-        //            new ("en-GB"),
-        //            new ("ar-EG"),
-        //        };
-
-        //        options.DefaultRequestCulture = new("ar-EG");
-        //        options.SupportedCultures = supportedCultures;
-        //        options.SupportedUICultures = supportedCultures;
-        //    });
+        builder.Services
+            .AddLocalization(/*options => options.ResourcesPath = ""*/)
+            .Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new[]
+                {
+                    new CultureInfo("en-US"), // english
+                    new CultureInfo("ar-EG"), // arabic
+                    new CultureInfo("de-DE"), // germaney
+                    new CultureInfo("fr-FR"), // frensh
+                    new CultureInfo("es"), // spanish
+                };
+                options.DefaultRequestCulture = new RequestCulture(culture: "en-US", uiCulture: "en-US");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+            });
         #endregion
 
         #region Add Authorization Policy
@@ -112,7 +112,6 @@ public class Startup
             .AddNegotiate();
 
         #endregion
-
     }
 
     public static void UseServices(WebApplication app)
@@ -129,12 +128,15 @@ public class Startup
         app.UseMiddleware<ErrorHandlerMiddleWare>();
         #endregion
 
-        #region Use Localization Middle Ware
-        //var options = app.Services.GetService<RequestLocalizationOptions>();
-        //app.UseRequestLocalization(options =>
-        //{
-        //    // To Do
-        //});
+        #region Use Localization
+        app.UseRequestLocalization(new RequestLocalizationOptions
+        {
+            ApplyCurrentCultureToResponseHeaders = true
+        });
+
+        var options = app.Services.GetService<IOptions<RequestLocalizationOptions>>();
+        app.UseRequestLocalization(options.Value);
+        app.UseStaticFiles();
         #endregion
 
         app.UseAuthentication();

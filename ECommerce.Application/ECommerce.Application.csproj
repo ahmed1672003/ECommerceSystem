@@ -19,26 +19,26 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Resources\Shared\SharedResources.Arabic.Designer.cs">
+    <Compile Update="Resources\Shared\SharedResources.Ar.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>SharedResources.Arabic.resx</DependentUpon>
+      <DependentUpon>SharedResources.ar.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\Shared\SharedResources.English.Designer.cs">
+    <Compile Update="Resources\Shared\SharedResources.En.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>SharedResources.English.resx</DependentUpon>
+      <DependentUpon>SharedResources.en.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Resources\Shared\SharedResources.Arabic.resx">
+    <EmbeddedResource Update="Resources\Shared\SharedResources.ar.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>SharedResources.Arabic.Designer.cs</LastGenOutput>
+      <LastGenOutput>SharedResources.Ar.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Shared\SharedResources.English.resx">
+    <EmbeddedResource Update="Resources\Shared\SharedResources.en.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>SharedResources.English.Designer.cs</LastGenOutput>
+      <LastGenOutput>SharedResources.En.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

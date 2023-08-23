@@ -9,9 +9,9 @@ public static class ApplicationDependencies
     {
         #region Add Services
         services.AddMediatR(cfg =>
-      {
-          cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly());
-      });
+        {
+            cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly());
+        });
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());

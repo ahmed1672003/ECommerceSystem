@@ -1,19 +1,14 @@
 ﻿using System.Net;
 
 using ECommerce.Domain.Enums.Category;
-using ECommerce.Domain.Enums.Claim;
-using ECommerce.Domain.Enums.Identity.Role;
-using ECommerce.Infrastructure.Seeds;
 using ECommerce.Models.Category;
 using ECommerce.Services.IServices;
-
-using Microsoft.AspNetCore.Authorization;
 
 namespace ECommerce.API.Controllers;
 
 [Route("api/v1/[controller]/[action]")]
 [ApiController]
-[Authorize(Roles = $"{nameof(Roles.Basic)}")]
+//[Authorize(Roles = $"{nameof(Roles.Basic)}")]
 public class CategoryController : ECommerceController
 {
     private readonly IUnitOfServices _services;
@@ -23,12 +18,12 @@ public class CategoryController : ECommerceController
     }
 
     [HttpPost, ActionName(nameof(Post))]
-    [Authorize(nameof(CustomClaims.Permission), Policy = Permissions.Categories.Create, Roles = nameof(Roles.SuperAdmin))]
+    //[Authorize(nameof(CustomClaims.Permission), Policy = Permissions.Categories.Create, Roles = nameof(Roles.SuperAdmin))]
     public async Task<IActionResult> Post([FromBody] PostCategoryModel model) =>
       NewResult(await Mediator.Send(new PostCategoryCommand(model)));
 
     [HttpPut, ActionName(nameof(Put))]
-    [Authorize(Roles = $"{nameof(Roles.SuperAdmin)}")]
+    //[Authorize(Roles = $"{nameof(Roles.SuperAdmin)}")]
     public async Task<IActionResult> Put([FromQuery] string id, [FromBody] CategoryModel model) =>
 
          NewResult(await Mediator.Send(new PutCategoryCommand(id, model)));

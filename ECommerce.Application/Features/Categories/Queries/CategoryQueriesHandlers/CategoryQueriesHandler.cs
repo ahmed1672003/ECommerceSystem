@@ -1,11 +1,17 @@
-﻿namespace ECommerce.Application.Features.Categories.Queries.CategoryQueriesHandlers;
+﻿using ECommerce.Application.Resources.Shared;
+
+using Microsoft.Extensions.Localization;
+
+namespace ECommerce.Application.Features.Categories.Queries.CategoryQueriesHandlers;
 public class CategoryQueriesHandler :
     ResponseHandler,
         IRequestHandler<GetAllCategoriesQuery, Response<IEnumerable<CategoryModel>>>,
         IRequestHandler<GetCategoryByIdQuery, Response<CategoryModel>>
 {
-    public CategoryQueriesHandler(IUnitOfWork context, IMapper mapper) : base(context, mapper)
+    private readonly IStringLocalizer<SharedResources> _stringLocalizer;
+    public CategoryQueriesHandler(IUnitOfWork context, IMapper mapper, IStringLocalizer<SharedResources> stringLocalizer) : base(context, mapper)
     {
+        _stringLocalizer = stringLocalizer;
     }
 
     #region Get All Categories Query
@@ -24,6 +30,10 @@ public class CategoryQueriesHandler :
     #region Get Category By Id Query
     public async Task<Response<CategoryModel>> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
     {
+
+        if (!await Context.Categories.IsExistAsync(c => c.Id == request.Id))
+            return NotFound<CategoryModel>(message: _stringLocalizer[SharedResourcesKeys.NotFound]);
+
         var CategoryModel = Mapper.Map<CategoryModel>(
             await Context.Categories.RetrieveAsync(c => c.Id.Equals(request.Id)));
 
