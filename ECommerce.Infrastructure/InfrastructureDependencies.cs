@@ -7,57 +7,60 @@ public static class InfrastructureDependencies
     public static IServiceCollection AddInfrastructureDependencies(this IServiceCollection services, IConfiguration configuration)
     {
         #region Add DbContext Options
-        services.AddIdentity<User, Role>(options =>
-       {
-           #region Email Options
-           options.SignIn.RequireConfirmedEmail = true;
-           options.SignIn.RequireConfirmedPhoneNumber = false;
-           options.SignIn.RequireConfirmedAccount = true;
-           #endregion
+        services
+        .AddIdentity<User, Role>(options =>
+        {
+            #region Email Options
+            options.SignIn.RequireConfirmedEmail = true;
+            options.SignIn.RequireConfirmedPhoneNumber = false;
+            options.SignIn.RequireConfirmedAccount = true;
+            #endregion
 
-           #region Stores Options
-           //options.Stores.ProtectPersonalData = true;
+            #region Stores Options
+            //options.Stores.ProtectPersonalData = true;
 
-           #endregion
+            #endregion
 
-           #region Password Options
-           options.Password.RequireNonAlphanumeric = true;
-           options.Password.RequireLowercase = true;
-           options.Password.RequireUppercase = true;
-           options.Password.RequireDigit = true;
-           options.Password.RequiredLength = 10;
-           #endregion
+            #region Password Options
+            options.Password.RequireNonAlphanumeric = true;
+            options.Password.RequireLowercase = true;
+            options.Password.RequireUppercase = true;
+            options.Password.RequireDigit = true;
+            options.Password.RequiredLength = 10;
+            #endregion
 
-           #region User Options
-           options.User.RequireUniqueEmail = true;
-           #endregion
+            #region User Options
+            options.User.RequireUniqueEmail = true;
+            #endregion
 
-           #region Lock Out Options
-           options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromSeconds(30);
-           options.Lockout.MaxFailedAccessAttempts = 5;
-           options.Lockout.AllowedForNewUsers = true;
-           #endregion
+            #region Lock Out Options
+            options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromSeconds(30);
+            options.Lockout.MaxFailedAccessAttempts = 5;
+            options.Lockout.AllowedForNewUsers = true;
+            #endregion
 
-           #region Claims Options
+            #region Claims Options
 
-           #endregion
+            #endregion
 
-           #region Token Options
+            #region Token Options
 
-           #endregion
+            #endregion
 
-       })
-       .AddEntityFrameworkStores<ECommerceDbContext>()
-       .AddDefaultTokenProviders()
-       .AddDefaultUI();
+        })
+        .AddEntityFrameworkStores<ECommerceDbContext>()
+        .AddDefaultTokenProviders()
+        .AddDefaultUI();
 
-        services.AddDbContext<ECommerceDbContext>(options =>
-        options.UseSqlServer(configuration.GetConnectionString("ECommerceConnection")));
+        services
+            .AddDbContext<ECommerceDbContext>(options =>
+                options.UseSqlServer(configuration.GetConnectionString("ECommerceConnection")));
 
         #endregion
 
         #region Add Services
         services
+          .AddScoped<IECommerceDbContext, ECommerceDbContext>()
           .AddScoped<ICategoryRepository, CategoryRepository>()
           .AddScoped<IUserJWTRepository, UserJWTRepository>()
           .AddScoped<IUserLoginRepository, UserLoginRepository>()

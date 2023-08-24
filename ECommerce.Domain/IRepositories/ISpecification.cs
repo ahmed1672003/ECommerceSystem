@@ -4,8 +4,8 @@ public interface ISpecification<TEntity>
     Expression<Func<TEntity, bool>> FirstCriteria { get; }
     Expression<Func<TEntity, bool>> SecondCriteria { get; }
     Expression<Func<TEntity, object>> GroupBy { get; }
-    IEnumerable<Expression<Func<TEntity, object>>> Includes { get; }
-    IEnumerable<string> ThenIncludes { get; }
+    List<Expression<Func<TEntity, object>>> Includes { get; }
+    List<string> IncludesString { get; }
     Expression<Func<TEntity, object>> OrderBy { get; }
     Expression<Func<TEntity, object>> OrderByDescending { get; }
 

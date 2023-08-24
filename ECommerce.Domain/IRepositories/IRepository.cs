@@ -16,7 +16,6 @@ public interface IRepository<TEntity> where TEntity : class
     Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default);
     Task ExecuteDeleteAsync(Expression<Func<TEntity, bool>> filter = null, CancellationToken cancellationToken = default);
 
-
     #endregion
 
     #region Queries

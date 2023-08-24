@@ -3,9 +3,9 @@
 namespace ECommerce.Infrastructure.Repositories;
 public class UnitOfWork : IUnitOfWork
 {
-    private readonly ECommerceDbContext _context;
+    private readonly IECommerceDbContext _context;
     public UnitOfWork(
-        ECommerceDbContext context,
+        IECommerceDbContext context,
         ICategoryRepository categories,
         IRoleClaimRepository roleClaims,
         IRoleRepository roles,
@@ -40,10 +40,10 @@ public class UnitOfWork : IUnitOfWork
     public async ValueTask DisposeAsync() => await _context.DisposeAsync();
     public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) =>
         await _context.SaveChangesAsync(cancellationToken);
-    public async Task CommitAsync(CancellationToken cancellationToken = default) =>
-        await _context.Database.CommitTransactionAsync();
+    public async Task CommitTransactionAsync(CancellationToken cancellationToken = default) =>
+        await _context.Database.CommitTransactionAsync(cancellationToken);
     public async Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default) =>
-        await _context.Database.BeginTransactionAsync();
-    public async Task RollBackAsync(CancellationToken cancellationToken = default) =>
-        await _context.Database.RollbackTransactionAsync();
+        await _context.Database.BeginTransactionAsync(cancellationToken);
+    public async Task RollbackTransactionAsync(CancellationToken cancellationToken = default) =>
+        await _context.Database.RollbackTransactionAsync(cancellationToken);
 }

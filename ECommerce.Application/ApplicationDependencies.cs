@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 using ECommerce.Application.Behaviors.ValidatorBehavior;
+using ECommerce.Application.ResponseServices;
 
 namespace ECommerce.Application;
 public static class ApplicationDependencies
@@ -9,9 +10,7 @@ public static class ApplicationDependencies
     {
         #region Add Services
         services.AddMediatR(cfg =>
-        {
-            cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly());
-        });
+            cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());

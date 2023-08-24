@@ -3,10 +3,10 @@
 namespace ECommerce.Infrastructure.Repositories;
 public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
 {
-    protected readonly ECommerceDbContext _context;
+    protected readonly IECommerceDbContext _context;
     protected readonly DbSet<TEntity> _entities;
 
-    public Repository(ECommerceDbContext context)
+    public Repository(IECommerceDbContext context)
     {
         _context = context;
         _entities = context.Set<TEntity>();

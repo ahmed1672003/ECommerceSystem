@@ -26,6 +26,7 @@ public class Startup
            .AddServicesDependencies(builder.Configuration);
         #endregion
 
+
         #region Seed Default Data
         var loggerFactory = builder.Services.BuildServiceProvider().GetRequiredService<ILoggerFactory>();
         var logger = loggerFactory.CreateLogger("app");
@@ -67,7 +68,6 @@ public class Startup
                 });
             });
         #endregion
-
 
         #region Add Localization
 

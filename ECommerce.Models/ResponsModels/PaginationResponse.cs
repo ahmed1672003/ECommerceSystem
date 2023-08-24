@@ -1,4 +1,6 @@
-﻿namespace ECommerce.Application.Responses.ResponseServices;
+﻿using System.Net;
+
+namespace ECommerce.Models.ResponsModels;
 public class PaginationResponse<TData> : Response<TData> where TData : class
 {
     public PaginationResponse(

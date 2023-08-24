@@ -2,7 +2,7 @@
 
 namespace ECommerce.Application.Behaviors.ValidatorBehavior;
 public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : class
+    where TRequest : IRequest<TResponse>
 {
     private IEnumerable<IValidator<TRequest>> _validators;
 
@@ -10,6 +10,7 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
 
     public async Task<TResponse>
         Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+
     {
         if (_validators.Any())
         {
@@ -28,4 +29,6 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
         }
         return await next();
     }
+
+
 }

@@ -1,7 +1,8 @@
 ﻿using ECommerce.Application.Constants;
+using ECommerce.Models.ResponsModels;
 
-namespace ECommerce.Application.Responses.ResponseServices;
-public class PaginationResponseHandler : IResponseHandler
+namespace ECommerce.Application.ResponseServices;
+public sealed class PaginationResponseHandler : IResponseHandler
 {
     public PaginationResponseHandler(IUnitOfWork context, IMapper mapper)
     {
@@ -10,7 +11,7 @@ public class PaginationResponseHandler : IResponseHandler
     }
     public IUnitOfWork Context { get; private set; }
     public IMapper Mapper { get; private set; }
-    public PaginationResponse<TData> Success<TData>(
+    public static PaginationResponse<TData> Success<TData>(
        TData data = null,
        dynamic meta = null,
        string message = null,
@@ -29,7 +30,7 @@ public class PaginationResponseHandler : IResponseHandler
            currentPage: currentPage,
            pageSize: pageSize);
 
-    public PaginationResponse<TData> NotFound<TData>(
+    public static PaginationResponse<TData> NotFound<TData>(
       TData data = null,
       dynamic meta = null,
       string message = null,

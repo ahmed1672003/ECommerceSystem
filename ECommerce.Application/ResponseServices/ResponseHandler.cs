@@ -1,7 +1,8 @@
 ﻿using ECommerce.Application.Constants;
+using ECommerce.Models.ResponsModels;
 
-namespace ECommerce.Application.Responses.ResponseServices;
-public class ResponseHandler : IResponseHandler
+namespace ECommerce.Application.ResponseServices;
+public sealed class ResponseHandler : IResponseHandler
 {
     public ResponseHandler(IUnitOfWork context, IMapper mapper)
     {
@@ -11,7 +12,7 @@ public class ResponseHandler : IResponseHandler
 
     public IUnitOfWork Context { get; private set; }
     public IMapper Mapper { get; private set; }
-    public Response<TData> Success<TData>(
+    public static Response<TData> Success<TData>(
         TData data = null,
         dynamic meta = null,
         string message = null,
@@ -23,7 +24,7 @@ public class ResponseHandler : IResponseHandler
             errors: errors == null ? ErrorMessages.SuccessErrorsList : errors,
             meta: meta);
 
-    public Response<TData> NotFound<TData>(
+    public static Response<TData> NotFound<TData>(
         TData data = null,
         dynamic meta = null,
         string message = null,
@@ -35,7 +36,7 @@ public class ResponseHandler : IResponseHandler
             errors: errors == null ? ErrorMessages.SuccessErrorsList : errors,
             meta: meta);
 
-    public Response<TData> BadRequest<TData>(
+    public static Response<TData> BadRequest<TData>(
         TData data = null,
         dynamic meta = null,
         string message = null,
@@ -47,7 +48,7 @@ public class ResponseHandler : IResponseHandler
             errors: errors == null ? ErrorMessages.SuccessErrorsList : errors,
             meta: meta);
 
-    public Response<TData> UnAuthorized<TData>(
+    public static Response<TData> UnAuthorized<TData>(
         TData data = null,
         dynamic meta = null,
         string message = null,
@@ -60,7 +61,7 @@ public class ResponseHandler : IResponseHandler
             errors: errors == null ? ErrorMessages.SuccessErrorsList : errors,
             meta: meta);
 
-    public Response<TData> InternalServerError<TData>(
+    public static Response<TData> InternalServerError<TData>(
         TData data = null,
         dynamic meta = null,
         string message = null,
@@ -72,7 +73,7 @@ public class ResponseHandler : IResponseHandler
             errors: errors == null ? ErrorMessages.InternalServerErrorsList : errors,
             meta: meta);
 
-    public Response<TData> Conflict<TData>(
+    public static Response<TData> Conflict<TData>(
         TData data = null,
         dynamic meta = null,
         string message = null,

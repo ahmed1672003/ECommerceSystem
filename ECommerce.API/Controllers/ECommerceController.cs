@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-using ECommerce.Application.Responses.ResponseServices;
+using ECommerce.Models.ResponsModels;
 
 namespace ECommerce.API.Controllers;
 [Route("api/v1/[controller]")]

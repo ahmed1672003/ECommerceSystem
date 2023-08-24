@@ -15,7 +15,7 @@ public interface IUnitOfWork : IAsyncDisposable
     IUserTokenRepository UserTokens { get; }
     IUserJWTRepository UserJWTs { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
-    Task CommitAsync(CancellationToken cancellationToken = default);
+    Task CommitTransactionAsync(CancellationToken cancellationToken = default);
     Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default);
-    Task RollBackAsync(CancellationToken cancellationToken = default);
+    Task RollbackTransactionAsync(CancellationToken cancellationToken = default);
 }

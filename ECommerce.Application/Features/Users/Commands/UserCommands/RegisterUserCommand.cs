@@ -1,4 +1,5 @@
-﻿using ECommerce.Models.User;
+﻿using ECommerce.Models.ResponsModels;
+using ECommerce.Models.User;
 using ECommerce.Models.User.Authentication;
 
 namespace ECommerce.Application.Features.Users.Commands.UserCommands;

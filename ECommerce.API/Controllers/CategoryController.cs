@@ -52,7 +52,7 @@ public class CategoryController : ECommerceController
         [FromQuery] int? pageNumber, [FromQuery] int? pageSize, [FromQuery] CategoryOrderBy orderBy) =>
 
          NewResult(await Mediator.Send(
-            new GetAllCategoriesPaginatedQuery(
+            new CategoriesPaginationQuery(
                 pageNumber.HasValue ? pageNumber : 1,
                 pageSize.HasValue ? pageSize : 10,
                 orderBy)));
